@@ -45,8 +45,9 @@ namespace _Project.Scripts.Data
         [Header("Cau hinh hinh dang chi tiet")]
         // Mảng 1D lưu hình dạng của 1 item -> bằng cách true false
         //Do Mảng 2D không serializefield được
-        [SerializeField] private bool[] shapeSerialized;
-        
+        [SerializeField]
+        private bool[] shapeSerialized;
+
         [Header("Kinh te va thoi gian")] [SerializeField] [Min(1)]
         private int value = 1;
 
@@ -69,27 +70,24 @@ namespace _Project.Scripts.Data
         {
             get { return isFragile; }
         }
-        
+
         //Chuyển mảng 1D thành ma trận bool[,] theo chuẩn nhóm đã thống nhất.
         // Gốc [0,0] là góc dưới - bên trái.
         public bool[,] GetShapeMatrix()
         {
-            bool[,] matrix = new bool[width, height];
-            
+            bool[,] matrix = new bool[height, width];
+
             //y - hang, x - cot
             for (int y = 0; y < height; y++)
             {
-                for (int x=0; x < width; x++)
+                for (int x = 0; x < width; x++)
                 {
                     int index = y * width + x;
                     matrix[y, x] = shapeSerialized[index];
-                    
                 }
             }
 
             return matrix;
         }
-        
-
     }
 }
