@@ -77,13 +77,19 @@ namespace _Project.Scripts.Data
         {
             bool[,] matrix = new bool[height, width];
 
-            //y - hang, x - cot
             for (int y = 0; y < height; y++)
             {
                 for (int x = 0; x < width; x++)
                 {
                     int index = y * width + x;
-                    matrix[y, x] = shapeSerialized[index];
+                    if (shapeSerialized != null && index < shapeSerialized.Length)
+                    {
+                        matrix[y, x] = shapeSerialized[index];
+                    }
+                    else
+                    {
+                        matrix[y, x] = false;
+                    }
                 }
             }
 
