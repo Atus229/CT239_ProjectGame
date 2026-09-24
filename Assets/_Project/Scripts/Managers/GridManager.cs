@@ -7,12 +7,30 @@ namespace _Project.Scripts.Core
     {
         [SerializeField] private int columns = 4;
         [SerializeField] private int rows = 4;
+        [SerializeField] private float cellSize = 1f;
 
         private ItemData[,] grid;
 
         private void Awake()
         {
             grid = new ItemData[columns, rows];
+        }
+        
+        public Vector2Int WorldToGridPosition(Vector3 worldPosition)
+        {
+            Vector3 localPosition = worldPosition - transform.position;
+            int x = Mathf.FloorToInt(localPosition.x / cellSize);
+            int y = Mathf.FloorToInt(localPosition.y / cellSize);
+            
+            return new Vector2Int(x, y);
+        }
+        
+        public Vector3 GridToWorldPosition(Vector2Int gridPosition)
+        {
+            float worldX = gridPosition.x * cellSize;
+            float worldY = gridPosition.y * cellSize;
+            
+            return transform.position + new Vector3(worldX, worldY, 0f);
         }
 
         public bool CanPlace(Vector2Int startPos, ItemData item)
@@ -86,6 +104,27 @@ namespace _Project.Scripts.Core
                             }
                         }
                     }
+                }
+            }
+        }
+
+        private void OnDrawGizmos()
+        {
+            for (int x = 0; x < columns; x++)
+            {
+                for (int y = 0; y < rows; y++)
+                {
+                    if (Application.isPlaying && grid != null && grid[x, y] != null)
+                    {
+                        Gizmos.color = Color.red;
+                    }
+                    else
+                    {
+                        Gizmos.color = Color.green;
+                    }
+
+                    Vector3 cellCenter = GridToWorldPosition(new Vector2Int(x, y)) + new Vector3(cellSize / 2f, cellSize / 2f, 0f);
+                    Gizmos.DrawWireCube(cellCenter, new Vector3(cellSize * 0.95f, cellSize * 0.95f, 0.1f));
                 }
             }
         }
