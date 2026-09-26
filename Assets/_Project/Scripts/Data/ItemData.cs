@@ -76,6 +76,10 @@ namespace _Project.Scripts.Data
         public bool[,] GetShapeMatrix()
         {
             bool[,] matrix = new bool[height, width];
+            if (shapeSerialized == null || shapeSerialized.Length != width * height)
+            {
+                Debug.LogWarning($"[ItemData] Chu y: Item '{ItemName}' dang bi cai dat sai so luong o Shape Serialized!");
+            }
 
             for (int y = 0; y < height; y++)
             {
