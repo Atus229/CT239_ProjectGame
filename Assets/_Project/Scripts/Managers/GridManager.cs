@@ -77,7 +77,7 @@ namespace _Project.Scripts.Core
                 }
             }
 
-            Vector3 dropPosition = new Vector3(startPos.x, startPos.y, 0f);
+            Vector3 dropPosition = GridToWorldPosition(startPos);
             EventBus.Publish(new GameEvent.ItemPlacedEvent(item, dropPosition));
         }
 
