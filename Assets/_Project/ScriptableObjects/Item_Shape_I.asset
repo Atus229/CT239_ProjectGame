@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e4668f5d04009764ca9b5032507f064d, type: 3}
+  m_Name: Item_Shape_I
+  m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.Data.ItemData
+  itemID: ITEM_I_01
+  itemName: "Th\xF9ng D\xE0i (I)"
+  itemIcon: {fileID: 1847396364811023608, guid: 34bc44eafb19ee0439f575602572bbbb, type: 3}
+  width: 1
+  height: 3
+  shapeSerialized: 010101
+  value: 10
+  handlingTime: 2
+  isFragile: 0

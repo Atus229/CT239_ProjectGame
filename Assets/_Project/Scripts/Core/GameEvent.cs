@@ -1,5 +1,6 @@
 using _Project.Scripts.Data;
 using UnityEngine;
+using _Project.Scripts.Ui;
 
 namespace _Project.Scripts.Core
 {
@@ -9,11 +10,13 @@ namespace _Project.Scripts.Core
         {
             public ItemData ItemPlaced;
             public Vector3 DropPosition;
+            public ItemView SourceView;
 
-            public ItemPlacedEvent(ItemData itemPlaced, Vector3  dropPosition)
+            public ItemPlacedEvent(ItemData itemPlaced, Vector3 dropPosition, ItemView sourceView)
             {
                 this.ItemPlaced = itemPlaced;
                 this.DropPosition = dropPosition;
+                this.SourceView = sourceView;
             }
         }
 
@@ -29,6 +32,6 @@ namespace _Project.Scripts.Core
                 this.TotalHandlingTime = totalHandlingTime;
             }
         }
-        
+
     }
 }
