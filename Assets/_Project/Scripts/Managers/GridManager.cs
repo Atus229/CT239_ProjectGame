@@ -25,7 +25,7 @@ namespace _Project.Scripts.Core
             return new Vector2Int(x, y);
         }
         
-        public Vector3 GridToWorldPosition(Vector2Int gridPosition)
+        public Vector3 GridToWorldPosition(Vector2Int gridPosition, bool snapToCenter = true)
         {
             float worldX = gridPosition.x * cellSize;
             float worldY = gridPosition.y * cellSize;
@@ -39,9 +39,9 @@ namespace _Project.Scripts.Core
 
             bool[,] shape = item.GetShapeMatrix();
 
-            for (int x = 0; x < item.Width; x++)
+            for (int y = 0; y < item.Height; y++)
             {
-                for (int y = 0; y < item.Height; y++)
+                for (int x = 0; x < item.Width; x++)
                 {
                     if (shape[y, x])
                     {
