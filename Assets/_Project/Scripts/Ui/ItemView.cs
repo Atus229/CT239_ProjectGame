@@ -86,7 +86,7 @@ namespace _Project.Scripts.Ui
             ResetToStartPos();
         }
 
-        private void ResetToStartPos()
+        public void ResetToStartPos()
         {
             transform.position = startPosition;
         }

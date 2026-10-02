@@ -33,5 +33,20 @@ namespace _Project.Scripts.Core
             }
         }
 
+        public struct ItemPlacedEvent
+        {
+            public ItemData Item;
+            public Vector2Int GridPosition;
+            public Vector3 WorldPosition;
+            
+            public ItemPlacedEvent(ItemData item, Vector2Int gridPosition, Vector3 worldPosition)
+            {
+                Item = item;
+                GridPosition = gridPosition;
+                WorldPosition = worldPosition;
+            }
+        }
+            
+        
     }
 }
