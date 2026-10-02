@@ -6,13 +6,13 @@ namespace _Project.Scripts.Core
 {
     public class GameEvent
     {
-        public struct ItemPlacedEvent
+        public struct ItemDroppedEvent
         {
             public ItemData ItemPlaced;
             public Vector3 DropPosition;
             public ItemView SourceView;
 
-            public ItemPlacedEvent(ItemData itemPlaced, Vector3 dropPosition, ItemView sourceView)
+            public ItemDroppedEvent(ItemData itemPlaced, Vector3 dropPosition, ItemView sourceView)
             {
                 this.ItemPlaced = itemPlaced;
                 this.DropPosition = dropPosition;
