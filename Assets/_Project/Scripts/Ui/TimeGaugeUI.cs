@@ -82,9 +82,16 @@ namespace _Project.Scripts.Ui
         {
             if (gaugeMaxLimit <= 0 || gaugeBackground == null) return;
 
-            // Tính toán tỷ lệ phần trăm
-            float minPercent = tMin / gaugeMaxLimit;
-            float maxPercent = tMax / gaugeMaxLimit;
+            // Tính toán tỷ lệ phần trăm và đảm bảo anchor hợp lệ trong [0, 1]
+            float minPercent = Mathf.Clamp01(tMin / gaugeMaxLimit);
+            float maxPercent = Mathf.Clamp01(tMax / gaugeMaxLimit);
+
+            if (minPercent > maxPercent)
+            {
+                float temp = minPercent;
+                minPercent = maxPercent;
+                maxPercent = temp;
+            }
 
             if (tMinMarker != null)
             {
