@@ -48,14 +48,13 @@ namespace _Project.Scripts.Ui
 
         private void OnEnable()
         {
-            // Đăng ký event thay đổi thời gian ở đây (Ví dụ)
-            // JobEconomyManager.OnTotalTimeChanged += UpdateGauge;
+            // TODO: Have the owning gameplay/system layer drive UpdateGauge(float)
+            // when total time changes, or replace this with the real event subscription.
         }
 
         private void OnDisable()
         {
-            // Huỷ đăng ký event
-            // JobEconomyManager.OnTotalTimeChanged -= UpdateGauge;
+            // TODO: If a real event subscription is added in OnEnable, unsubscribe here.
         }
 
         /// <summary>
