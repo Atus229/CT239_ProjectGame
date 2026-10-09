@@ -11,12 +11,14 @@ namespace _Project.Scripts.Core
             public ItemData ItemPlaced;
             public Vector3 DropPosition;
             public ItemView SourceView;
+            public bool[,] CurrentShape;
 
-            public ItemDroppedEvent(ItemData itemPlaced, Vector3 dropPosition, ItemView sourceView)
+            public ItemDroppedEvent(ItemData itemPlaced, Vector3 dropPosition, ItemView sourceView, bool[,] currentShape)
             {
                 this.ItemPlaced = itemPlaced;
                 this.DropPosition = dropPosition;
                 this.SourceView = sourceView;
+                this.CurrentShape = currentShape;
             }
         }
 
@@ -46,7 +48,15 @@ namespace _Project.Scripts.Core
                 WorldPosition = worldPosition;
             }
         }
-            
-        
+
+        public struct ItemRemovedEvent
+        {
+            public ItemData Item;
+
+            public ItemRemovedEvent(ItemData item)
+            {
+                this.Item = item;
+            }
+        }
     }
 }
