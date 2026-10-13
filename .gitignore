@@ -110,3 +110,11 @@ InitTestScene*.unity*
 
 # Auto-generated cache in Assets folder
 /[Aa]ssets/[Ss]ceneDependencyCache*
+
+# ==========================================
+# .NET / C# Console Test Artifacts
+# ==========================================
+**/[Bb]in/
+**/[Oo]bj/
+*.deps.json
+*.runtimeconfig.json
