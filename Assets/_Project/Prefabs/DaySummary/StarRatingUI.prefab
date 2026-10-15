@@ -400,7 +400,7 @@ GameObject:
   - component: {fileID: 771407606109116332}
   - component: {fileID: 5363688758257924514}
   m_Layer: 5
-  m_Name: 'Img_Star_1 '
+  m_Name: 'Img_Star_1'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
