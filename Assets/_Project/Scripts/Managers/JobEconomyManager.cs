@@ -1,4 +1,5 @@
 using UnityEngine;
+using System;
 
 public class JobEconomyManager : MonoBehaviour
 {
@@ -37,15 +38,7 @@ public class JobEconomyManager : MonoBehaviour
 
         return Mathf.Max(minStars, calculatedStars);
     }
-
-    /// <summary>
-    /// BR-05: Tính tiền thưởng thu được dựa trên tổng giá trị hàng hóa và hệ số thưởng.
-    /// </summary>
-    public int CalculateEarnedGold(int totalItemValue, float rewardMultiplier)
-    {
-        float gold = totalItemValue * rewardMultiplier;
-        return Mathf.Max(0, Mathf.RoundToInt(gold));
-    }
+    
 
     /// <summary>
     /// BR-02: Kiểm tra đơn hàng có đủ điều kiện nhận trên Bảng việc (DayTimeRemaining >= Tmin).
@@ -66,15 +59,14 @@ public class JobEconomyManager : MonoBehaviour
     /// <summary>
     /// Hàm tổng hợp tính toán kết quả khi hoàn thành đơn hàng.
     /// </summary>
-    public JobResult CalculateJobResult(float totalJobTime, float tMin, float tMax, int totalItemValue, float rewardMultiplier)
+    public JobResult CalculateJobResult(float totalJobTime, float tMin, float tMax, int totalItemValue)
     {
         int stars = CalculateStarRating(totalJobTime, tMin, tMax);
-        int gold = CalculateEarnedGold(totalItemValue, rewardMultiplier);
 
         return new JobResult
         {
             Stars = stars,
-            EarnedGold = gold,
+            EarnedGold = totalItemValue,
             TotalJobTime = totalJobTime,
             IsOnTime = totalJobTime <= tMax
         };
