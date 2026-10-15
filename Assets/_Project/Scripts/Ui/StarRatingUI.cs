@@ -11,6 +11,8 @@ namespace _Project.Scripts.Ui
 
         public void SetStars(int starCount)
         {
+            if (starImages == null) return;
+            
             starCount = Mathf.Clamp(starCount, 0, starImages.Length);
             for (int i = 0; i < starImages.Length; i++)
             {

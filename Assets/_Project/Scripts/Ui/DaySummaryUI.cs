@@ -80,7 +80,7 @@ namespace _Project.Scripts.Ui
             int jobsCompleted,
             int dailyRevenue,
             float averageRating,
-            float usedTimePercent,
+            float usedTimeNormalized,
             List<DayHistoryRecord> previousDaysHistory = null)
         {
             if (txtCurrentDayBadge != null)
@@ -96,7 +96,7 @@ namespace _Project.Scripts.Ui
                 txtAverageRating.text = $"Star {averageRating:0.0}";
 
             if (imgUsedTimeFill != null)
-                imgUsedTimeFill.fillAmount = Mathf.Clamp01(usedTimePercent);
+                imgUsedTimeFill.fillAmount = Mathf.Clamp01(usedTimeNormalized);
 
             PopulateHistory(previousDaysHistory);
 
@@ -107,28 +107,20 @@ namespace _Project.Scripts.Ui
         {
             if (historyContainer == null) return;
 
-            // Xóa các dòng cũ đã sinh động
-            foreach (var row in spawnedRows)
-            {
-                if (row != null) Destroy(row.gameObject);
-            }
-            spawnedRows.Clear();
-
-            // Nếu không có dữ liệu truyền vào hoặc chưa gắn prefab thì giữ nguyên các dòng mẫu trong Scene
+            // Nếu không có dữ liệu truyền vào hoặc chưa gắn prefab thì giữ nguyên
             if (history == null || history.Count == 0 || historyRowPrefab == null) return;
 
-            // Xóa các con mẫu có sẵn trong container
+            // 1. Dọn sạch mọi dòng cũ
             for (int i = historyContainer.childCount - 1; i >= 0; i--)
             {
                 Destroy(historyContainer.GetChild(i).gameObject);
             }
 
-            // Sinh dòng mới từ danh sách lịch sử
+            // 2. Sinh các dòng mới
             foreach (var record in history)
             {
                 DayHistoryRowUI newRow = Instantiate(historyRowPrefab, historyContainer);
                 newRow.SetData(record);
-                spawnedRows.Add(newRow);
             }
         }
 
