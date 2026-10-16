@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e4668f5d04009764ca9b5032507f064d, type: 3}
+  m_Name: Item_HopSach
+  m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.Data.ItemData
+  itemID: 04
+  itemName: Hop sach
+  itemIcon: {fileID: -3163888196901254331, guid: bc485102f6d016942a29eb1785e5b8eb, type: 3}
+  width: 1
+  height: 1
+  shapeSerialized: 01
+  value: 15
+  handlingTime: 5
+  isFragile: 0

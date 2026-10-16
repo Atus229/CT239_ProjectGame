@@ -50,7 +50,7 @@ namespace _Project.Scripts.Core
             if (Keyboard.current.cKey.wasPressedThisFrame)
             {
                 bool canPlace = gridManager.CanPlace(gridPos, currentTestShape);
-                Debug.Log($"[Test] Ô Grid: {gridPos} | Có thể đặt (CanPlace): {canPlace}");
+                Debug.Log($"[Test] World: {dragItem.position} -> Ô Grid: {gridPos} | Có thể đặt (CanPlace): {canPlace}");
             }
 
             // Bấm P: Đặt vật phẩm và Snap vào ô (PlaceItem)
@@ -59,13 +59,15 @@ namespace _Project.Scripts.Core
                 if (gridManager.CanPlace(gridPos, currentTestShape))
                 {
                     gridManager.PlaceItem(gridPos, testItem, currentTestShape);
-                    // Hít vị trí về gốc ô lưới
+                    
+                    // Gán toạ độ căn giữa ô lưới (hỗ trợ snapToCenter)
                     dragItem.position = gridManager.GridToWorldPosition(gridPos);
-                    Debug.Log($"[Test] ĐÃ ĐẶT '{testItem.ItemName}' tại {gridPos} thành công!");
+                    
+                    Debug.Log($"[Test] ĐÃ ĐẶT '{testItem.ItemName}' tại {gridPos} và SNAPPED thành công!");
                 }
                 else
                 {
-                    Debug.LogWarning($"[Test] KHÔNG THỂ ĐẶT tại {gridPos} (tràn biên hoặc trùng ô)!");
+                    Debug.LogWarning($"[Test] KHÔNG THỂ ĐẶT tại Grid: {gridPos} (tràn biên hoặc trùng ô)!");
                 }
             }
 
@@ -88,6 +90,7 @@ namespace _Project.Scripts.Core
             {
                 for (int c = 0; c < oldCols; c++)
                 {
+                    // Sửa lỗi cú pháp: bổ sung toán tử trừ '-'
                     rotated[c, (oldRows - 1) - r] = original[r, c];
                 }
             }

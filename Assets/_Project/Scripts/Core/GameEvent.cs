@@ -58,5 +58,29 @@ namespace _Project.Scripts.Core
                 this.Item = item;
             }
         }
+
+        public struct JobTimeUpdatedEvent
+        {
+            public float currentTime;
+            public float MinTime;
+            public float MaxTime;
+
+            public JobTimeUpdatedEvent(float currentTime, float minTime, float maxTime)
+            {
+                this.currentTime = currentTime;
+                this.MinTime = minTime;
+                this.MaxTime = maxTime;
+            }
+        }
+
+        public struct JobConfirmStateChangedEvent
+        {
+            public bool CanConfirm;
+
+            public JobConfirmStateChangedEvent(bool canConfirm)
+            {
+                this.CanConfirm = canConfirm;
+            }
+        }
     }
 }
