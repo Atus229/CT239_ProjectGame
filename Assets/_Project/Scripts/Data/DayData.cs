@@ -9,11 +9,19 @@ namespace _Project.Scripts.Data
         [Header("Thông tin ngày")] [SerializeField]
         private int dayIndex = 1;
 
-        public int DayIndex => dayIndex;
+        public int DayIndex
+        {
+            get => dayIndex;
+            set => dayIndex = value;
+        }
 
         [Header("Quỹ thời gian(phút)")] [SerializeField] [Min(10f)]
         private float dayTimeBudget = 180f;
-        public float DayTimeBudget => dayTimeBudget;
+        public float DayTimeBudget
+        {
+            get => dayTimeBudget;
+            set => dayTimeBudget = value;
+        }
     }
     
     [Serializable]

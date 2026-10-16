@@ -45,7 +45,7 @@ namespace _Project.Scripts.Core
         }
         
         //Ham phat tin 
-        public static void Publish<T>(T eventData) where T : struct
+        public static void Publish<T>(T eventData)
         {
             Type eventType = typeof(T);
             if (_events.TryGetValue(eventType, out Delegate d))
