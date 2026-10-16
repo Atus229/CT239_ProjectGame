@@ -50,7 +50,7 @@ namespace _Project.Scripts.Core
 
         private void OnDisable()
         {
-            
+            EventBus.Unsubscribe<GameEvent.JobSubmittedEvent>(HandleJobSubmitted);
         }
         
         /// <summary>
