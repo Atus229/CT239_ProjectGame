@@ -114,7 +114,6 @@ namespace _Project.Scripts.Core
 
             if (hasRemoved)
             {
-                EventBus.Publish(new GameEvent.ItemRemovedEvent(item));
                 Debug.Log($"[GridManager] Đã gỡ bỏ món '{item.ItemName}' khỏi khoang xe.");
             }
         }
