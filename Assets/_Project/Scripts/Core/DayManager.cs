@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using _Project.Scripts.Data;
 using UnityEngine;
 
 public class DayManager : MonoBehaviour
