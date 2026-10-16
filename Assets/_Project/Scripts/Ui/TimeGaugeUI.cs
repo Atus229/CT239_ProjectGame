@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using _Project.Scripts.Core;
 
 namespace _Project.Scripts.Ui
 {
@@ -48,13 +49,12 @@ namespace _Project.Scripts.Ui
 
         private void OnEnable()
         {
-            // TODO: Have the owning gameplay/system layer drive UpdateGauge(float)
-            // when total time changes, or replace this with the real event subscription.
+            EventBus.Subscribe<GameEvent.JobTimeUpdatedEvent>(OnJobTimeUpdated);
         }
 
         private void OnDisable()
         {
-            // TODO: If a real event subscription is added in OnEnable, unsubscribe here.
+            EventBus.Unsubscribe<GameEvent.JobTimeUpdatedEvent>(OnJobTimeUpdated);
         }
 
         /// <summary>
@@ -174,6 +174,22 @@ namespace _Project.Scripts.Ui
                     timeText.color = Color.white;
                 }
             }
+            
+        }
+        
+        /// <summary>
+        /// Hàm này tự động kích hoạt mỗi khi JobEconomyManager phát ra JobTimeUpdatedEvent
+        /// </summary>
+        private void OnJobTimeUpdated(GameEvent.JobTimeUpdatedEvent e)
+        {
+            //Neu tmin, tmax bi thay doi -> khi nap don hang moi
+            if (tMin != e.MinTime || tMax != e.MaxTime)
+            {
+                SetupTargetWindow(e.MinTime, e.MaxTime);
+            }
+            
+            //Cap nhat gia tri hien thi thoi gian hien tai
+            UpdateGauge(e.currentTime);
         }
     }
 }

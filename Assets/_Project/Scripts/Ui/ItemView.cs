@@ -87,6 +87,13 @@ namespace _Project.Scripts.Ui
             }
             
             currentShape = itemData.GetShapeMatrix();
+            if (currentShape != null && rectTransform != null)
+            {
+                int rows = currentShape.GetLength(0);
+                int cols = currentShape.GetLength(1);
+                
+                rectTransform.sizeDelta = new Vector2(cols * 100f,  rows * 100f);
+            }
         }
 
         public void OnBeginDrag(PointerEventData eventData)

@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e5775a22a68ee34429f6bddc7ecf59d7, type: 3}
+  m_Name: Job_Test_W2
+  m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.Data.JobData
+  jobID: JOB_001
+  customerName: Hai Thanh
+  timeMin: 30
+  timeMax: 40
+  itemQueue:
+  - {fileID: 11400000, guid: 760274081a63891469e98a8d74e4d89f, type: 2}
+  - {fileID: 11400000, guid: 52a29acae6272f54e84e9c9a8e0a063c, type: 2}
+  - {fileID: 11400000, guid: 5dc1caf5f219fb748a4a987a832f5b52, type: 2}
+  - {fileID: 11400000, guid: 9743a88f04f40234aa61cbf676e02478, type: 2}
+  rewardMultiplier: 1

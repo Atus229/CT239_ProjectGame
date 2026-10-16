@@ -18,26 +18,27 @@ namespace _Project.Scripts.Core
             grid = new ItemData[columns, rows];
         }
         
+        /// <summary>
+        /// Quy đổi từ vị trí thả chuột (Góc Dưới - Trái của ItemView) sang toạ độ Ô lưới (X, Y).
+        /// </summary>
         public Vector2Int WorldToGridPosition(Vector3 worldPosition, int shapeWidth = 1, int shapeHeight = 1)
         {
             Vector3 localPos = transform.InverseTransformPoint(worldPosition);
-
-            // 1. Tìm vị trí mép dưới-trái thực tế bằng cách lấy tâm trừ đi nửa kích thước
-            float bottomLeftX = localPos.x - (shapeWidth * cellSize / 2f);
-            float bottomLeftY = localPos.y - (shapeHeight * cellSize / 2f);
-
-            // 2. Chia cho cellSize và lấy phần sàn (FloorToInt) với hệ số dung sai 0.5 ô
-            int x = Mathf.FloorToInt((bottomLeftX + (cellSize * 0.5f)) / cellSize);
-            int y = Mathf.FloorToInt((bottomLeftY + (cellSize * 0.5f)) / cellSize);
+            
+            int x = Mathf.FloorToInt((localPos.x + (cellSize * 0.5f)) / cellSize);
+            int y = Mathf.FloorToInt((localPos.y + (cellSize * 0.5f)) / cellSize);
 
             return new Vector2Int(x, y);
         }
         
+        /// <summary>
+        /// Quy đổi từ toạ độ ô lưới (x, y) sang toạ độ thực tế trên Canvas.
+        /// Trả về góc Dưới - Trái của ô lưới để khớp tuyệt đối với Pivot (0, 0) của ItemView.
+        /// </summary>
         public Vector3 GridToWorldPosition(Vector2Int gridPosition, int shapeWidth = 1, int shapeHeight = 1)
         {
-            // Tọa độ tâm = Tọa độ gốc ô + Nửa chiều rộng/cao của khối hình
-            float localCenterX = (gridPosition.x * cellSize) + (shapeWidth * cellSize / 2f);
-            float localCenterY = (gridPosition.y * cellSize) + (shapeHeight * cellSize / 2f);
+            float localCenterX = (gridPosition.x * cellSize);
+            float localCenterY = (gridPosition.y * cellSize);
 
             return transform.TransformPoint(new Vector3(localCenterX, localCenterY, 0f));
         }
@@ -153,7 +154,7 @@ namespace _Project.Scripts.Core
         private void OnDisable()
         {
             EventBus.Unsubscribe<GameEvent.ItemDroppedEvent>(OnItemDropped);
-            EventBus.Subscribe<GameEvent.ItemRemovedEvent>(OnItemRemoved);
+            EventBus.Unsubscribe<GameEvent.ItemRemovedEvent>(OnItemRemoved);
         }
 
         private void OnItemDropped(GameEvent.ItemDroppedEvent e)
