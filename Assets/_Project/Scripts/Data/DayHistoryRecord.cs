@@ -12,6 +12,18 @@ namespace _Project.Scripts.Data
         public float averageRating;
         public float usedTime;
 
+        // Alias tương thích cho Core (DayManager)
+        public int totalEarned
+        {
+            get => revenue;
+            set => revenue = value;
+        }
+        public float averageStars
+        {
+            get => averageRating;
+            set => averageRating = value;
+        }
+        
         public DayHistoryRecord(int dayIndex, int jobsCompleted, int revenue, float averageRating, float usedTime = 0f)
         {
             this.dayIndex = dayIndex;

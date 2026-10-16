@@ -24,13 +24,4 @@ namespace _Project.Scripts.Data
         }
     }
     
-    [Serializable]
-    public struct  DayHistoryRecord
-    {
-        public int dayIndex;
-        public int jobsCompleted;
-        public int totalEarned;
-        public float averageStars;
-        public float usedTime;
-    }
 }

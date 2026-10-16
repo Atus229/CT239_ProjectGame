@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using _Project.Scripts.Data;
 using UnityEngine;
-using _Project.Scripts.Data;
 
 namespace _Project.Scripts.Core
 {
