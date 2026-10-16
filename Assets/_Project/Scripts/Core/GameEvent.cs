@@ -26,12 +26,12 @@ namespace _Project.Scripts.Core
         public struct JobSubmittedEvent
         {
             public JobData Job;
-            public float TotalHandlingTime;
+            public JobResult JobResult;
 
-            public JobSubmittedEvent(JobData job, float totalHandlingTime)
+            public JobSubmittedEvent(JobData job, JobResult jobResult)
             {
                 this.Job = job;
-                this.TotalHandlingTime = totalHandlingTime;
+                this.JobResult = jobResult;
             }
         }
 
@@ -82,5 +82,42 @@ namespace _Project.Scripts.Core
                 this.CanConfirm = canConfirm;
             }
         }
+
+        public struct DayStartedEvent
+        {
+            public int dayIndex;
+            public float dayTimeBudget;
+
+            public DayStartedEvent(int dayIndex, float dayTimeBudget)
+            {
+                this.dayIndex = dayIndex;
+                this.dayTimeBudget = dayTimeBudget;
+            }
+        }
+        
+        //Sự kiện cập nhật quỹ thời gian còn lại trong ngày
+        public struct DayTimeUpdatedEvent
+        {
+            public float RemainingTime;
+            public float Budget;
+
+            public DayTimeUpdatedEvent(float remainingTime, float budget)
+            {
+                this.RemainingTime = remainingTime;
+                this.Budget = budget;
+            }
+        }
+
+        public struct DayEndedEvent
+        {
+            public DayHistoryRecord record;
+
+            public DayEndedEvent(DayHistoryRecord record)
+            {
+                this.record = record;
+            }
+        }
+        
+        
     }
 }
