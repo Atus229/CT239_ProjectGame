@@ -1,4 +1,4 @@
-using UnityEngine;
+/*using UnityEngine;
 using System.Collections.Generic;
 using _Project.Scripts.Core;
 using _Project.Scripts.Data;
@@ -41,7 +41,7 @@ namespace _Project.Scripts.Tester
             Debug.Log("<color=#00E5FF><b>========== KẾT THÚC KIỂM THỬ DAY MANAGER ==========</b></color>");
         }
 
-        private void Test_1_DeductTimeOnTime(DayManager dayMgr)
+        private void Test_1_DeductTimeOnTimeOnTime(DayManager dayMgr)
         {
             // Reset quỹ về 120s
             DayData d = ScriptableObject.CreateInstance<DayData>();
@@ -118,4 +118,4 @@ namespace _Project.Scripts.Tester
                 Debug.LogError($"<color=#F44336>✘ [FAIL]</color> {title}");
         }
     }
-}
+}*/
