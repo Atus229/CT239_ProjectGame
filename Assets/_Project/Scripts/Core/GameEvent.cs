@@ -118,6 +118,29 @@ namespace _Project.Scripts.Core
             }
         }
         
-        
+        //Sự kiện phát ra khi người chơi chọn một đơn hàng trên Bảng việc (JobCardUI -> JobBoardUI ẩn)
+        public struct JobSelectedEvent
+        {
+            public JobData SelectedJob;
+
+            public JobSelectedEvent(JobData selectedJob)
+            {
+                this.SelectedJob = selectedJob;
+            }
+        }
+
+
+        //Sự kiện phát ra khi hoàn thành đơn và chọn tiếp tục (Quay lại Bảng việc JobBoardUI)
+        public struct ContinueFromJobResultEvent
+        {
+            public JobData CompletedJob;
+            public float RemainingTime;
+
+            public ContinueFromJobResultEvent(JobData completedJob, float remainingTime)
+            {
+                this.CompletedJob = completedJob;
+                this.RemainingTime = remainingTime;
+            }
+        }
     }
 }
