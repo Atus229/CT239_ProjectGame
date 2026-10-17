@@ -7,14 +7,47 @@ namespace _Project.Scripts.Core
 {
     public class GridManager : MonoBehaviour
     {
+        public static GridManager Instance { get; private set; }
+
         [SerializeField] private int columns = 4;
         [SerializeField] private int rows = 4;
         [SerializeField] private float cellSize = 100f;
 
         private ItemData[,] grid;
 
+        public int Columns => columns;
+        public int Rows => rows;
+        public int TotalCellCount => columns * rows;
+
+        /// <summary>
+        /// Số ô hiện đang chứa hàng hoá trên xe
+        /// </summary>
+        public int OccupiedCellCount
+        {
+            get
+            {
+                if (grid == null) return 0;
+                int count = 0;
+                for (int x = 0; x < columns; x++)
+                {
+                    for (int y = 0; y < rows; y++)
+                    {
+                        if (grid[x, y] != null) count++;
+                    }
+                }
+                return count;
+            }
+        }
+
         private void Awake()
         {
+            if (Instance != null && Instance != this)
+            {
+                Destroy(gameObject);
+                return;
+            }
+            Instance = this;
+
             grid = new ItemData[columns, rows];
         }
         

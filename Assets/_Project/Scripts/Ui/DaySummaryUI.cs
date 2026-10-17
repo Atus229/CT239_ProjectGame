@@ -39,6 +39,17 @@ namespace _Project.Scripts.Ui
         public event Action OnBusinessReportClicked;
         public event Action OnUpgradeShopClicked;
 
+        public bool TestInPlayMode
+        {
+            get => testInPlayMode;
+            set => testInPlayMode = value;
+        }
+
+        public void SetTestMode(bool enabled)
+        {
+            testInPlayMode = enabled;
+        }
+
         private readonly List<DayHistoryRowUI> spawnedRows = new List<DayHistoryRowUI>();
 
         private void Awake()

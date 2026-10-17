@@ -18,7 +18,20 @@ namespace _Project.Scripts.Ui
             {
                 if (starImages[i] != null)
                 {
-                    starImages[i].sprite = (i < starCount) ? starFilledSprite : starEmptySprite;
+                    bool isFilled = i < starCount;
+
+                    // Nếu có gán 2 Sprite khác nhau trong Inspector thì đổi Sprite
+                    if (starFilledSprite != null && starEmptySprite != null && starFilledSprite != starEmptySprite)
+                    {
+                        starImages[i].sprite = isFilled ? starFilledSprite : starEmptySprite;
+                    }
+
+                    // Luôn đổi màu rõ ràng:
+                    // Sao đạt: Vàng sáng (#FFD700)
+                    // Sao bị trừ: Xám tối có độ trong suốt để phân biệt rõ ràng
+                    starImages[i].color = isFilled 
+                        ? new Color(0.95f, 0.85f, 0.1f, 1f) 
+                        : new Color(0.35f, 0.35f, 0.35f, 0.3f);
                 }
             }
         }

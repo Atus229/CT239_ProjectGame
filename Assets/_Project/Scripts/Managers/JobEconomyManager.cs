@@ -19,6 +19,10 @@ public class JobEconomyManager : MonoBehaviour
     private float timeMin = 40f;
     [SerializeField]
     private float timeMax = 60f;
+
+    public float TimeMin => timeMin;
+    public float TimeMax => timeMax;
+    public JobData CurrentJobData => currentJobData;
     
     //Bien luu tong thoi gian va tong tien hien tai tren xe
     public float CurrentJobTime { get; private set; } = 0f;

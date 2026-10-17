@@ -49,8 +49,14 @@ namespace _Project.Scripts.Ui
 
             JobResult result = JobEconomyManager.Instance.CalculateJobResult();
 
-            // Bắn sự kiện ra toàn bộ hệ thống (DayManager sẽ tự nhận được)
-            EventBus.Publish(new GameEvent.JobSubmittedEvent(null, result));
+            // Cập nhật trừ quỹ thời gian ngày trước khi hiển thị kết quả ra UI
+            if (DayManager.Instance != null)
+            {
+                DayManager.Instance.DeductTimeAndRecordJob(result.TotalJobTime, result.EarnedGold, result.Stars);
+            }
+
+            // Bắn sự kiện ra toàn bộ hệ thống
+            EventBus.Publish(new GameEvent.JobSubmittedEvent(JobEconomyManager.Instance.CurrentJobData, result));
 
             // In kết quả ra màn hình Console với màu sắc trực quan
             string statusText = result.IsOnTime ? "<color=#00FF00>ĐÚNG HẠN</color>" : "<color=#FF0000>TRỄ HẠN</color>";

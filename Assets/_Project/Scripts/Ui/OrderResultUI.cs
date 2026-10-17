@@ -37,6 +37,17 @@ namespace _Project.Scripts.Ui
 
         public event Action OnContinueClicked;
 
+        public bool TestInPlayMode
+        {
+            get => testInPlayMode;
+            set => testInPlayMode = value;
+        }
+
+        public void SetTestMode(bool enabled)
+        {
+            testInPlayMode = enabled;
+        }
+
         private void Start()
         {
             if (testInPlayMode)

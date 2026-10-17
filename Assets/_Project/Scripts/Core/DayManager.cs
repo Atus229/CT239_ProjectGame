@@ -16,7 +16,8 @@ namespace _Project.Scripts.Core
         private float dayTimeRemaining; // Quỹ thời gian còn lại
         private int currentDayIndex;
 
-        [Header("Daily Statistics")] private int completedJobsCount;
+        [Header("Daily Statistics")]
+        private int completedJobsCount;
         private int totalEarnedInDay;
         private int totalStarsInDay;
 
@@ -40,7 +41,22 @@ namespace _Project.Scripts.Core
                 Destroy(gameObject);
             }
         }
-
+        
+        private void Start()
+        {
+            if (currentDayData != null)
+            {
+                StartNewDay(currentDayData);
+            }
+            else
+            {
+                DayData defaultDay = ScriptableObject.CreateInstance<DayData>();
+                defaultDay.DayIndex = 1;
+                defaultDay.DayTimeBudget = 180f;
+                StartNewDay(defaultDay);
+            }
+        }
+        
         private void OnEnable()
         {
             EventBus.Subscribe<GameEvent.JobSelectedEvent>(HandleJobSelected);
