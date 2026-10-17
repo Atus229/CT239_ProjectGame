@@ -25,9 +25,13 @@ namespace _Project.Scripts.Core
         public event Action OnDayStarted;
         public event Action OnDayEnded;
 
-        public float TimeRemaining => dayTimeRemaining; //[cite: 2]
-        public float TimeBudget => dayTimeBudget; //[cite: 2]
+        public float TimeRemaining => dayTimeRemaining; 
+        public float TimeBudget => dayTimeBudget; 
         public int CurrentDayIndex => currentDayIndex;
+
+        private JobData currentActiveJob;
+        private JobResult lastJobResult;
+        private List<JobData> activeJobsOnBoard = new List<JobData>();
 
         private void Awake()
         {
@@ -44,12 +48,21 @@ namespace _Project.Scripts.Core
 
         private void OnEnable()
         {
+            EventBus.Subscribe<GameEvent.JobSelectedEvent>(HandleJobSelected);
             EventBus.Subscribe<GameEvent.JobSubmittedEvent>(HandleJobSubmitted);
+            EventBus.Subscribe<GameEvent.JobCompletedEvent>(HandleJobCompleted);
+            EventBus.Subscribe<GameEvent.ContinueFromJobResultEvent>(HandleContinueFromJobResult);
+            EventBus.Subscribe<GameEvent.NextDayRequestedEvent>(HandleNextDayRequested);
         }
+        
 
         private void OnDisable()
         {
+            EventBus.Unsubscribe<GameEvent.JobSelectedEvent>(HandleJobSelected);
             EventBus.Unsubscribe<GameEvent.JobSubmittedEvent>(HandleJobSubmitted);
+            EventBus.Unsubscribe<GameEvent.JobCompletedEvent>(HandleJobCompleted);
+            EventBus.Unsubscribe<GameEvent.ContinueFromJobResultEvent>(HandleContinueFromJobResult);
+            EventBus.Unsubscribe<GameEvent.NextDayRequestedEvent>(HandleNextDayRequested);
         }
         
         /// <summary>
@@ -59,8 +72,9 @@ namespace _Project.Scripts.Core
         {
             currentDayData = dayData;
             currentDayIndex = dayData.DayIndex;
-            dayTimeBudget = dayData.DayTimeBudget; //[cite: 2]
-            dayTimeRemaining = dayTimeBudget; //[cite: 2]
+            dayTimeBudget = dayData.DayTimeBudget; 
+            dayTimeRemaining = dayTimeBudget;
+            activeJobsOnBoard = new List<JobData>(dayData.DailyJobs);
 
             completedJobsCount = 0;
             totalEarnedInDay = 0;
@@ -84,11 +98,11 @@ namespace _Project.Scripts.Core
         }
 
         /// <summary>
-        /// Trừ quỹ thời gian sau khi hoàn tất một đơn[cite: 2]
+        /// Trừ quỹ thời gian sau khi hoàn tất một đơn
         /// </summary>
         public void DeductTimeAndRecordJob(float totalJobTime, int earnedMoney, int stars)
         {
-            dayTimeRemaining -= totalJobTime; // Trừ đúng số giây thực tế[cite: 2]
+            dayTimeRemaining = Mathf.Max(0f, dayTimeRemaining - totalJobTime);
 
             completedJobsCount++;
             totalEarnedInDay += earnedMoney;
@@ -104,21 +118,29 @@ namespace _Project.Scripts.Core
         /// </summary>
         public void CheckAutoEndDayCondition(List<JobData> activeJobsOnBoard)
         {
-            bool hasValidJob = false;
-            if (activeJobsOnBoard != null)
+            if (activeJobsOnBoard == null || activeJobsOnBoard.Count == 0 || dayTimeRemaining <= 0)
             {
-                foreach (var job in activeJobsOnBoard)
+                EndDay(isManual:false);
+                return;
+            }
+            
+            
+            bool hasValidJob = false;
+            foreach (var job in activeJobsOnBoard)
+            {
+                if (CanAcceptJob(job)) 
                 {
-                    if (CanAcceptJob(job)) //[cite: 2]
-                    {
-                        hasValidJob = true;
-                        break;
-                    }
+                    hasValidJob = true;
+                    break;
                 }
             }
 
             // Nếu không còn đơn nào đủ điều kiện nhận -> Tự động kết thúc ngày[cite: 2]
-            if (!hasValidJob)
+            if (hasValidJob)
+            {
+                EventBus.Publish(new GameEvent.DayTimeUpdatedEvent(dayTimeRemaining, dayTimeBudget));
+            }
+            else
             {
                 EndDay(isManual: false);
             }
@@ -149,6 +171,43 @@ namespace _Project.Scripts.Core
         private void HandleJobSubmitted(GameEvent.JobSubmittedEvent e)
         {
             DeductTimeAndRecordJob(e.JobResult.TotalJobTime,e.JobResult.EarnedGold, e.JobResult.Stars);
+        }
+        
+        private void HandleNextDayRequested(GameEvent.NextDayRequestedEvent obj)
+        {
+            //Gia su co cau hinh du lieu ngay tiep theo hoac nap lai currenDayData
+            if (currentDayData != null)
+            {
+                StartNewDay(currentDayData);
+            }
+        }
+
+        
+        private void HandleContinueFromJobResult(GameEvent.ContinueFromJobResultEvent obj)
+        {
+           //Tru thoi gian hoan thanh cong viec va ghi nhan thong ke
+           DeductTimeAndRecordJob(lastJobResult.TotalJobTime, lastJobResult.EarnedGold, lastJobResult.Stars);
+           
+           //Xoa don ra khoi bang viec
+           if (currentActiveJob != null)
+           {
+               activeJobsOnBoard.Remove(currentActiveJob);
+               currentActiveJob = null;
+           }
+           
+           //Kiem tra dieu kien ket thuc ngay
+           CheckAutoEndDayCondition(activeJobsOnBoard);
+        }
+
+        //Nguoi choi xem bang ket qua(truoc khi nhan tiep tuc)
+        private void HandleJobCompleted(GameEvent.JobCompletedEvent e)
+        {
+            lastJobResult = e.result;
+        }
+
+        private void HandleJobSelected(GameEvent.JobSelectedEvent e)
+        {
+            currentActiveJob = e.job;
         }
     }
 }

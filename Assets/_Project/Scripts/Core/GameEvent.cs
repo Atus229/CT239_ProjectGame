@@ -117,7 +117,39 @@ namespace _Project.Scripts.Core
                 this.record = record;
             }
         }
+
+        public struct JobSelectedEvent
+        {
+            public JobData job;
+
+            public JobSelectedEvent(JobData job)
+            {
+                this.job = job;
+            }
+        }
+
+        public struct JobCompletedEvent
+        {
+            public JobData job;
+            public JobResult result;
+
+            public JobCompletedEvent(JobData job, JobResult result)
+            {
+                this.job = job;
+                this.result = result;
+            }
+        }
         
+        //Su kien an tiep tuc tai man hinh result
+        public struct ContinueFromJobResultEvent
+        {
+            //Dong vai tro la tin hieu -> rong
+        }
         
+        //Su kien khi nguoi choi an bat dau ngay moi
+        public struct NextDayRequestedEvent
+        {
+            //Dong vai tro la tin hieu -> rong
+        }
     }
 }
