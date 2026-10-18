@@ -49,13 +49,7 @@ namespace _Project.Scripts.Ui
 
             JobResult result = JobEconomyManager.Instance.CalculateJobResult();
 
-            // Cập nhật trừ quỹ thời gian ngày trước khi hiển thị kết quả ra UI
-            if (DayManager.Instance != null)
-            {
-                DayManager.Instance.DeductTimeAndRecordJob(result.TotalJobTime, result.EarnedGold, result.Stars);
-            }
-
-            // Bắn sự kiện ra toàn bộ hệ thống
+            // Bắn sự kiện ra toàn bộ hệ thống (DayManager và UI sẽ tự xử lý qua EventBus)
             EventBus.Publish(new GameEvent.JobSubmittedEvent(JobEconomyManager.Instance.CurrentJobData, result));
 
             // In kết quả ra màn hình Console với màu sắc trực quan
@@ -65,8 +59,6 @@ namespace _Project.Scripts.Ui
                       $"Tổng thời gian: <b>{result.TotalJobTime:F1}s</b>\n" +
                       $"Đánh giá: <b>{result.Stars} SAO ⭐</b>\n" +
                       $"Tiền thưởng nhận được: <b>{result.EarnedGold} VÀNG 💰</b>");
-
         }
-
     }
 }

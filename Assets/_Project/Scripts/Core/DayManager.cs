@@ -5,6 +5,7 @@ using UnityEngine;
 
 namespace _Project.Scripts.Core
 {
+    [DefaultExecutionOrder(-100)]
     public class DayManager : MonoBehaviour
     {
         public static DayManager Instance { get; private set; }
