@@ -61,7 +61,7 @@ namespace _Project.Scripts.Core
         private void OnEnable()
         {
             EventBus.Subscribe<GameEvent.JobSelectedEvent>(HandleJobSelected);
-            /*EventBus.Subscribe<GameEvent.JobSubmittedEvent>(HandleJobSubmitted);*/
+            EventBus.Subscribe<GameEvent.JobSubmittedEvent>(HandleJobSubmitted);
             EventBus.Subscribe<GameEvent.JobCompletedEvent>(HandleJobCompleted);
             EventBus.Subscribe<GameEvent.ContinueFromJobResultEvent>(HandleContinueFromJobResult);
             EventBus.Subscribe<GameEvent.NextDayRequestedEvent>(HandleNextDayRequested);
@@ -71,8 +71,7 @@ namespace _Project.Scripts.Core
         private void OnDisable()
         {
             EventBus.Unsubscribe<GameEvent.JobSelectedEvent>(HandleJobSelected);
-            //Khi nhấn nút xác nhận -> đã bắn sự kiện này rồi
-            /*EventBus.Unsubscribe<GameEvent.JobSubmittedEvent>(HandleJobSubmitted);*/
+            EventBus.Unsubscribe<GameEvent.JobSubmittedEvent>(HandleJobSubmitted);
             EventBus.Unsubscribe<GameEvent.JobCompletedEvent>(HandleJobCompleted);
             EventBus.Unsubscribe<GameEvent.ContinueFromJobResultEvent>(HandleContinueFromJobResult);
             EventBus.Unsubscribe<GameEvent.NextDayRequestedEvent>(HandleNextDayRequested);
