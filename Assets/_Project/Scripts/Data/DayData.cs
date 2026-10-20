@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace _Project.Scripts.Data
@@ -8,7 +9,7 @@ namespace _Project.Scripts.Data
     {
         [Header("Thông tin ngày")] [SerializeField]
         private int dayIndex = 1;
-
+        
         public int DayIndex
         {
             get => dayIndex;
@@ -22,6 +23,14 @@ namespace _Project.Scripts.Data
             get => dayTimeBudget;
             set => dayTimeBudget = value;
         }
+
+        [Header("Danh sach don hang trong ngay")] [SerializeField]
+        private List<JobData> dailyJobs = new List<JobData>();
+
+        public List<JobData> DailyJobs => dailyJobs;
+        
+        
+
     }
     
 }

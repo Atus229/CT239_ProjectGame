@@ -117,6 +117,18 @@ namespace _Project.Scripts.Core
                 this.record = record;
             }
         }
+
+        public struct JobCompletedEvent
+        {
+            public JobData job;
+            public JobResult result;
+
+            public JobCompletedEvent(JobData job, JobResult result)
+            {
+                this.job = job;
+                this.result = result;
+            }
+        }
         
         //Sự kiện phát ra khi người chơi chọn một đơn hàng trên Bảng việc (JobCardUI -> JobBoardUI ẩn)
         public struct JobSelectedEvent
@@ -141,6 +153,12 @@ namespace _Project.Scripts.Core
                 this.CompletedJob = completedJob;
                 this.RemainingTime = remainingTime;
             }
+        }
+        
+        //Su kien khi nguoi choi an bat dau ngay moi
+        public struct NextDayRequestedEvent
+        {
+            //Dong vai tro la tin hieu -> rong
         }
     }
 }
