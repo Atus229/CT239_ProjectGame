@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using _Project.Scripts.Core;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
@@ -28,7 +29,7 @@ namespace _Project.Scripts.Ui
         [SerializeField] private Button btnStartNextDay;
 
         [Header("Dữ liệu Test thử trong Play Mode")]
-        [SerializeField] private bool testInPlayMode = true;
+        [SerializeField] private bool testInPlayMode = false;
         [SerializeField] private int testCurrentDay = 3;
         [SerializeField] private int testJobs = 4;
         [SerializeField] private int testRevenue = 420;
@@ -55,7 +56,12 @@ namespace _Project.Scripts.Ui
         private void Awake()
         {
             if (btnStartNextDay != null)
-                btnStartNextDay.onClick.AddListener(() => OnStartNextDayClicked?.Invoke());
+                btnStartNextDay.onClick.AddListener(()=>
+            {
+                gameObject.SetActive(false);
+                EventBus.Publish(new GameEvent.NextDayRequestedEvent());
+                OnStartNextDayClicked?.Invoke();
+            });
 
             if (btnBusinessReport != null)
                 btnBusinessReport.onClick.AddListener(() => OnBusinessReportClicked?.Invoke());
@@ -84,6 +90,16 @@ namespace _Project.Scripts.Ui
 
                 DisplaySummary(testCurrentDay, testJobs, testRevenue, testRating, testUsedTimeNormalized, mockHistory);
             }
+        }
+
+        private void OnEnable()
+        {
+            EventBus.Subscribe<GameEvent.DayEndedEvent>(HandleDayEnded); 
+        }
+
+        private void OnDisable()
+        {
+            EventBus.Unsubscribe<GameEvent.DayEndedEvent>(HandleDayEnded); 
         }
 
         public void DisplaySummary(
@@ -138,6 +154,38 @@ namespace _Project.Scripts.Ui
         public void Close()
         {
             gameObject.SetActive(false);
+        }
+        
+        private void HandleDayEnded(GameEvent.DayEndedEvent e)
+        {
+            DayHistoryRecord record = e.record;
+            
+            // Điền các chỉ số text
+            if (txtCurrentDayBadge != null)
+                txtCurrentDayBadge.text = $"Day {record.dayIndex}";
+            
+            if (txtJobsCompleted != null)
+                txtJobsCompleted.text = record.jobsCompleted.ToString();
+            
+            if (txtDailyRevenue != null)
+                txtDailyRevenue.text = $"${record.totalEarned}";
+            
+            if (txtAverageRating != null)
+                txtAverageRating.text = $"Star {record.averageStars:0.0}";
+            
+            // Tính toán thanh thời gian đã dùng (tránh lỗi chia cho 0)
+            if (imgUsedTimeFill != null)
+            {
+                float totalBudget = (DayManager.Instance != null && DayManager.Instance.TimeBudget > 0)
+                    ? DayManager.Instance.TimeBudget
+                    : 180f;
+                imgUsedTimeFill.fillAmount = Mathf.Clamp01(record.usedTime / totalBudget);
+            }
+            // Nạp danh sách lịch sử bảng việc (nếu có)
+            PopulateHistory(null);
+            
+            // Bật sáng bảng tổng kết lên màn hình
+            gameObject.SetActive(true);
         }
     }
 }

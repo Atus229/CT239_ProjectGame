@@ -1,4 +1,6 @@
 using System;
+using _Project.Scripts.Core;
+using _Project.Scripts.Data;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
@@ -24,7 +26,7 @@ namespace _Project.Scripts.Ui
         [SerializeField] private Button btnContinue;
 
         [Header("Dữ liệu Test thử trong Play Mode")]
-        [SerializeField] private bool testInPlayMode = true;
+        [SerializeField] private bool testInPlayMode = false;
         [SerializeField] private int testStars = 4;
         [SerializeField] private float testJobTime = 65f;
         [SerializeField] private float testTargetMin = 50f;
@@ -70,9 +72,22 @@ namespace _Project.Scripts.Ui
         {
             if (btnContinue != null)
             {
-                btnContinue.onClick.AddListener(() => OnContinueClicked?.Invoke());
+                btnContinue.onClick.AddListener(OnContinueButtonPressed);
             }
         }
+
+       
+        private void OnEnable()
+        {
+            EventBus.Subscribe<GameEvent.JobCompletedEvent>(HandleJobCompleted);
+        }
+
+        private void OnDisable()
+        {
+            EventBus.Unsubscribe<GameEvent.JobCompletedEvent>(HandleJobCompleted);
+        }
+
+        
 
         //Nạp toàn bộ dữ liệu kết quả đơn hàng vào giao diện
         public void DisplayResult(
@@ -114,5 +129,49 @@ namespace _Project.Scripts.Ui
         {
             gameObject.SetActive(false);
         }
+        
+        private void HandleJobCompleted(GameEvent.JobCompletedEvent evt)
+        {
+            int stars = evt.result.Stars;
+            int earnedGold = evt.result.EarnedGold;
+            float totalJobTime = evt.result.TotalJobTime;
+            float timeMin = evt.job != null ? evt.job.TimeMin : 0f;
+            float timeMax = evt.job != null ? evt.job.TimeMax : 0f;
+            
+            //tinh quy thoi gian con lai trong ngay
+            float dayTimeRemaining = 0f;
+            if (DayManager.Instance != null)
+            {
+                dayTimeRemaining = Mathf.Max(0f, DayManager.Instance.TimeRemaining - totalJobTime);
+            }
+
+            if (starRating != null)
+            {
+                starRating.SetStars(stars);
+            }
+            
+            //Dien du lieu vao nhan
+            if (txtTotalJobTime != null)
+                txtTotalJobTime.text = $"{totalJobTime:0}s";
+            if (txtTargetWindow != null)
+                txtTargetWindow.text = $"{timeMin:0}–{timeMax:0}s";
+            if (txtMoneyEarned != null)
+                txtMoneyEarned.text = $"+${earnedGold}";
+            if (txtTimeRemaining != null)
+                txtTimeRemaining.text = $"{dayTimeRemaining:0}s";
+            
+            gameObject.SetActive(true);
+        }
+        
+        private void OnContinueButtonPressed()
+        {
+            //An bang ket qua
+            gameObject.SetActive(false);
+            
+            //Phat tin hieu len eventbus cho daymanager va jobboardui nhan dien
+            EventBus.Publish(new GameEvent.ContinueFromJobResultEvent());
+            
+        }
+
     }
 }
