@@ -118,16 +118,6 @@ namespace _Project.Scripts.Core
             }
         }
 
-        public struct JobSelectedEvent
-        {
-            public JobData job;
-
-            public JobSelectedEvent(JobData job)
-            {
-                this.job = job;
-            }
-        }
-
         public struct JobCompletedEvent
         {
             public JobData job;
@@ -140,10 +130,29 @@ namespace _Project.Scripts.Core
             }
         }
         
-        //Su kien an tiep tuc tai man hinh result
+        //Sự kiện phát ra khi người chơi chọn một đơn hàng trên Bảng việc (JobCardUI -> JobBoardUI ẩn)
+        public struct JobSelectedEvent
+        {
+            public JobData SelectedJob;
+
+            public JobSelectedEvent(JobData selectedJob)
+            {
+                this.SelectedJob = selectedJob;
+            }
+        }
+
+
+        //Sự kiện phát ra khi hoàn thành đơn và chọn tiếp tục (Quay lại Bảng việc JobBoardUI)
         public struct ContinueFromJobResultEvent
         {
-            //Dong vai tro la tin hieu -> rong
+            public JobData CompletedJob;
+            public float RemainingTime;
+
+            public ContinueFromJobResultEvent(JobData completedJob, float remainingTime)
+            {
+                this.CompletedJob = completedJob;
+                this.RemainingTime = remainingTime;
+            }
         }
         
         //Su kien khi nguoi choi an bat dau ngay moi
