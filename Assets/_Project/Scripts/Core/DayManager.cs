@@ -197,7 +197,7 @@ namespace _Project.Scripts.Core
 
         private void HandleJobSelected(GameEvent.JobSelectedEvent e)
         {
-            currentActiveJob = e.job;
+            currentActiveJob = e.SelectedJob;
         }
     }
 }

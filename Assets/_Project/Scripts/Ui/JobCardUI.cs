@@ -47,7 +47,8 @@ namespace _Project.Scripts.Ui
         [SerializeField] private float timeMax = 60f;
         [SerializeField] private int reward = 120;
         [SerializeField] private bool isLocked = false;
-
+        
+        
         private JobData currentJob;
         private bool isExpanded = false;
 
@@ -81,7 +82,7 @@ namespace _Project.Scripts.Ui
 
         private void Start()
         {
-            if (testInPlayMode)
+            if (testInPlayMode && currentJob == null)
             {
                 ApplyData(customerName, itemCount, timeMin, timeMax, reward, isLocked);
             }
@@ -152,52 +153,55 @@ namespace _Project.Scripts.Ui
             if (txtItemCount != null) txtItemCount.text = $"Số lượng item: {itemCount}";
 
             // 3. Khóa tương tác nếu bị khóa
-            if (btnCollapsed != null) btnCollapsed.interactable = !isLocked;
-            if (btnAccept != null) btnAccept.interactable = !isLocked;
-            // UpdateLockState(isLocked);
+            UpdateLockState(isLocked);
         }
         
-        ///summary
-        ///Đề xuất: Cập nhật trạng thái khoá/mở thẻ dựa trên quỹ thời gian còn lại trong ngày theo luật BR-02 (nếu còn < TimeMin thì khoá thẻ)
-        ///summary
-       
-        // Cập nhật trạng thái khoá/mở thẻ dựa trên quỹ thời gian còn lại trong ngày
-        //public void UpdateLockState(bool locked)
-        // {
-        //     isLocked = locked;
+        /// <summary>
+        /// Cập nhật hiển thị giao diện theo Luật BR-02: Mờ đi, khoá bấm và đổi chữ nút
+        /// </summary>
+        public void UpdateLockState(bool locked)
+         {
+             isLocked = locked;
 
-        //     if (canvasGroup != null)
-        //     {
-        //         if (isLocked)
-        //         {
-        //             canvasGroup.alpha = 0.5f;
-        //             canvasGroup.interactable = false; // Vô hiệu hoá tương tác nút con (btnAccept)
-        //             canvasGroup.blocksRaycasts = true; // Vẫn cho phép raycast để mở/xem Accordion
-
-        //             if (txtAcceptButton != null)
-        //                 txtAcceptButton.text = "Không đủ thời gian";
-        //         }
-        //         else
-        //         {
-        //             canvasGroup.alpha = 1.0f;
-        //             canvasGroup.interactable = true;
-
-        //             if (txtAcceptButton != null)
-        //                 txtAcceptButton.text = "Nhận đơn";
-        //         }
-        //     }
-        //     else
-        //     {
-        //         if (btnAccept != null) btnAccept.interactable = !isLocked;
-        //     }
-        // }
-
-        //Cập nhật trực tiếp trạng thái khoá dựa theo quỹ thời gian ngày còn lại
-        // public void UpdateLockStateWithTime(float dayTimeRemaining)
-        // {
-        //     bool locked = (currentJob != null) ? (dayTimeRemaining < currentJob.TimeMin) : (dayTimeRemaining < timeMin);
-        //     UpdateLockState(locked);
-        // }
+             if (canvasGroup != null)
+             {
+                 if (isLocked)
+                 {
+                     canvasGroup.alpha = 0.5f;
+                     canvasGroup.interactable = false; // Vô hiệu hoá tương tác nút con (btnAccept)
+                     canvasGroup.blocksRaycasts = true; // Vẫn cho phép raycast để mở/xem Accordion
+                 }
+                 else
+                 {
+                     canvasGroup.alpha = 1.0f;
+                     canvasGroup.interactable = true;
+                     canvasGroup.blocksRaycasts = true;
+                 }
+             }
+             // Đổi nội dung nhãn chữ trên nút Nhận đơn
+             if (txtAcceptButton != null)
+             {
+                 txtAcceptButton.text = isLocked ? "Không đủ thời gian" : "Nhận đơn";
+             }
+             if (btnAccept != null)
+             {
+                 btnAccept.interactable = !isLocked;
+             }
+             if (btnCollapsed != null)
+             {
+                 btnCollapsed.interactable = !isLocked;
+             }
+         }
+         
+        /// <summary>
+        /// Cập nhật trực tiếp trạng thái khoá/mở chỉ bằng quỹ thời gian ngày (nhanh, tối ưu hiệu năng)
+        /// </summary>
+         public void UpdateLockStateWithTime(float dayTimeRemaining)
+         {
+             float minTime = (currentJob != null) ? currentJob.TimeMin : timeMin;
+             bool locked = dayTimeRemaining < minTime;
+             UpdateLockState(locked);
+         }
 
         // Mở rộng thẻ này (TỰ ĐỘNG ĐÓNG THẺ KHÁC NẾU ĐANG MỞ)
         public void Expand()
@@ -274,5 +278,6 @@ namespace _Project.Scripts.Ui
                 EventBus.Publish(new GameEvent.JobSelectedEvent(currentJob));
             }
         }
+        
     }
 }
