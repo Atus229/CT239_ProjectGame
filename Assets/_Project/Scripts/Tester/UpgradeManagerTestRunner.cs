@@ -12,7 +12,6 @@ namespace _Project.Scripts.Tester
     /// </summary>
     public class UpgradeManagerTestRunner : MonoBehaviour
     {
-        [Header("Tùy chọn kiểm thử")]
         [SerializeField] private bool runOnStart = true;
 
         private int totalTests = 0;
@@ -26,7 +25,6 @@ namespace _Project.Scripts.Tester
             }
         }
 
-        [ContextMenu("Chạy Kiểm Thử UpgradeManager")]
         public void RunAllTests()
         {
             totalTests = 0;
@@ -36,15 +34,12 @@ namespace _Project.Scripts.Tester
             Debug.Log("<color=#00E5FF><b>=== BẮT ĐẦU KIỂM THỬ HỆ THỐNG NÂNG CẤP (UPGRADE SYSTEM) ===</b></color>");
             Debug.Log("<color=#00E5FF><b>=====================================================</b></color>");
 
-            // 1. Khởi tạo đối tượng UpgradeManager giả lập phục vụ kiểm thử độc lập
             GameObject testObject = new GameObject("[TestEnv] UpgradeManager");
             UpgradeManager manager = testObject.AddComponent<UpgradeManager>();
 
-            // 2. Tạo 4 ScriptableObject UpgradeData phục vụ kiểm thử
             var testCatalog = CreateMockCatalog();
             manager.SetAvailableUpgrades(testCatalog);
 
-            // 3. Thực thi lần lượt 7 Test Cases
             Test_1_InitialState(manager);
             Test_2_CostCalculationFormula(testCatalog[0]);
             Test_3_SuccessfulPurchase(manager);
@@ -53,10 +48,8 @@ namespace _Project.Scripts.Tester
             Test_6_GameplayEffectsCalculation(manager);
             Test_7_SaveLoadIntegrity(manager);
 
-            // 4. Dọn dẹp đối tượng test sau khi hoàn tất
             Destroy(testObject);
 
-            // 5. Tổng kết kết quả
             Debug.Log("<color=#00E5FF><b>-----------------------------------------------------</b></color>");
             if (passedTests == totalTests)
             {

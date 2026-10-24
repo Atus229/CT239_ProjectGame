@@ -10,7 +10,6 @@ namespace _Project.Scripts.Managers
     /// Quản lý toàn bộ hệ thống nâng cấp trong game.
     /// Chịu trách nhiệm kiểm tra điều kiện mua, trừ tiền, nâng cấp và cung cấp chỉ số hiệu ứng cho gameplay.
     /// </summary>
-    [DefaultExecutionOrder(-90)]
     public class UpgradeManager : MonoBehaviour
     {
         public static UpgradeManager Instance { get; private set; }

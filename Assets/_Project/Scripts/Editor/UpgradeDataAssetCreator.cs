@@ -12,7 +12,6 @@ namespace _Project.Scripts.Editor
     /// </summary>
     public static class UpgradeDataAssetCreator
     {
-        [MenuItem("Tools/Upgrade System/Tạo dữ liệu UpgradeData chuẩn")]
         public static void GenerateDefaultUpgradeAssets()
         {
             string folderPath = "Assets/_Project/ScriptableObjects/UpgradeData";
