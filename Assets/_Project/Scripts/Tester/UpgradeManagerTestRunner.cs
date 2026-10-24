@@ -25,6 +25,7 @@ namespace _Project.Scripts.Tester
             }
         }
 
+        [ContextMenu("Chạy Kiểm Thử UpgradeManager")]
         public void RunAllTests()
         {
             totalTests = 0;
