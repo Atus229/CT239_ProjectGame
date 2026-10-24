@@ -11,18 +11,14 @@ namespace _Project.Scripts.Data
         public const string TypeHandlingEfficiency = "HandlingEfficiency";
         public const string TypeLateGraceBuffer = "LateGraceBuffer";
 
-        [Header("Thông tin định danh")]
         [SerializeField] private int upgradeID;
         [SerializeField] private string upgradeName;
         [SerializeField] private string upgradeType;
 
-        [Header("Cấu hình chi phí tăng trưởng")]
         [SerializeField] [Min(1)] private int baseCost = 100;
         [SerializeField] [Min(1f)] private float costGrowth = 2.0f;
         [SerializeField] [Min(1)] private int maxLevel = 3;
 
-        [Header("Hiệu ứng Gameplay")]
-        [Tooltip("Giá trị cơ bản của hiệu ứng tăng thêm cho mỗi cấp độ")]
         [SerializeField] private float baseEffectValue = 30f;
         [SerializeField] [TextArea(2, 4)] private string description;
         [SerializeField] private Sprite icon;
