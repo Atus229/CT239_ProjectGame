@@ -2657,6 +2657,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7737270708597938900, guid: 2dd1e76e76258be4a801ebf84b0e9380, type: 3}
+      propertyPath: m_ChildAlignment
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7737270708597938900, guid: 2dd1e76e76258be4a801ebf84b0e9380, type: 3}
       propertyPath: m_ChildScaleHeight
       value: 0
       objectReference: {fileID: 0}

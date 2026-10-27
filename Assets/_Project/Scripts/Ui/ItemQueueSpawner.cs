@@ -14,10 +14,6 @@ namespace _Project.Scripts.Ui
         [Tooltip("Transform của Content bên trong ScrollRect Viewport")]
         [SerializeField] private RectTransform contentContainer;
 
-        [Header("Slot / Card Sizing")]
-        [Tooltip("Kích thước đồng nhất của mỗi thẻ hàng trong khay chờ (mặc định 120x120px)")]
-        [SerializeField] private Vector2 queueCardSize = new Vector2(120f, 120f);
-
         [Header("Debugging / Testing")]
         [Tooltip("JobData mẫu để test thử hiển thị khi chạy Playmode")]
         [SerializeField] private JobData debugJobData;
@@ -63,18 +59,12 @@ namespace _Project.Scripts.Ui
             }
         }
 
-        /// <summary>
-        /// Sinh các thẻ hàng hóa từ JobData
-        /// </summary>
         public void SpawnQueue(JobData job)
         {
             if (job == null) return;
             SpawnQueue(job.ItemQueue);
         }
 
-        /// <summary>
-        /// Sinh các thẻ hàng hóa vào trong khay cuộn ScrollRect
-        /// </summary>
         public void SpawnQueue(IReadOnlyList<ItemData> items)
         {
             ClearQueue();
@@ -85,45 +75,38 @@ namespace _Project.Scripts.Ui
             {
                 if (itemData == null) continue;
 
-                // Tạo Slot giữ chỗ với kích thước thẻ bài đồng nhất (queueCardSize)
-                GameObject slotObj = new GameObject($"Slot_{itemData.ItemName}", typeof(RectTransform), typeof(LayoutElement));
-                slotObj.transform.SetParent(contentContainer, false);
-
-                RectTransform slotRect = slotObj.GetComponent<RectTransform>();
-                slotRect.pivot = Vector2.zero;
-                LayoutElement slotLayout = slotObj.GetComponent<LayoutElement>();
-
-                slotRect.sizeDelta = queueCardSize;
-                slotLayout.preferredWidth = queueCardSize.x;
-                slotLayout.preferredHeight = queueCardSize.y;
-                slotLayout.flexibleWidth = 0;
-                slotLayout.flexibleHeight = 0;
-
-                // Sinh ItemView làm con của Slot
-                ItemView itemInstance = Instantiate(itemViewPrefab, slotObj.transform);
+                ItemView itemInstance = Instantiate(itemViewPrefab, contentContainer);
                 RectTransform itemRect = itemInstance.GetComponent<RectTransform>();
                 itemRect.pivot = Vector2.zero;
-                itemRect.anchorMin = Vector2.zero;
-                itemRect.anchorMax = Vector2.zero;
-                itemRect.anchoredPosition = Vector2.zero;
-                itemInstance.SetQueueCardSize(queueCardSize);
+
+                LayoutElement layout = itemInstance.GetComponent<LayoutElement>();
+                if (layout == null)
+                {
+                    layout = itemInstance.gameObject.AddComponent<LayoutElement>();
+                }
+                layout.preferredWidth = itemRect.sizeDelta.x;
+                layout.preferredHeight = itemRect.sizeDelta.y;
+                layout.flexibleWidth = 0;
+                layout.flexibleHeight = 0;
+
                 itemInstance.SetupItem(itemData);
                 spawnedItems.Add(itemInstance);
             }
 
-            // Ép cập nhật lại Layout ngay lập tức để ScrollRect tính đúng kích thước Content
             LayoutRebuilder.ForceRebuildLayoutImmediate(contentContainer);
         }
 
-        /// <summary>
-        /// Xóa sạch các thẻ hàng cũ khi đổi đơn hoặc reset
-        /// </summary>
         public void ClearQueue()
         {
             for (int i = 0; i < spawnedItems.Count; i++)
             {
                 if (spawnedItems[i] != null)
                 {
+                    // Nếu item đang nằm trên xe tải, gỡ khỏi GridManager trước khi hủy GameObject
+                    if (spawnedItems[i].IsPlacedOnGrid && GridManager.Instance != null)
+                    {
+                        GridManager.Instance.RemoveItem(spawnedItems[i].Data);
+                    }
                     Destroy(spawnedItems[i].gameObject);
                 }
             }
@@ -131,9 +114,9 @@ namespace _Project.Scripts.Ui
 
             if (contentContainer != null)
             {
-                foreach (Transform child in contentContainer)
+                for (int i = contentContainer.childCount - 1; i >= 0; i--)
                 {
-                    Destroy(child.gameObject);
+                    Destroy(contentContainer.GetChild(i).gameObject);
                 }
             }
         }
