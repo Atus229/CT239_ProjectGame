@@ -128,6 +128,7 @@ namespace _Project.Scripts.Ui
             PopulateHistory(previousDaysHistory);
 
             gameObject.SetActive(true);
+            transform.SetAsLastSibling();
         }
 
         private void PopulateHistory(List<DayHistoryRecord> history)
@@ -186,6 +187,7 @@ namespace _Project.Scripts.Ui
             
             // Bật sáng bảng tổng kết lên màn hình
             gameObject.SetActive(true);
+            transform.SetAsLastSibling();
         }
     }
 }
