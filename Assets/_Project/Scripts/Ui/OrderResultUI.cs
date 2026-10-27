@@ -123,6 +123,7 @@ namespace _Project.Scripts.Ui
                 txtReviewQuote.text = $"\"{reviewQuote}\"";
 
             gameObject.SetActive(true);
+            transform.SetAsLastSibling(); // Luôn nổi lên trên cùng của Canvas khi hiển thị kết quả
         }
 
         public void Close()
@@ -161,6 +162,7 @@ namespace _Project.Scripts.Ui
                 txtTimeRemaining.text = $"{dayTimeRemaining:0}s";
             
             gameObject.SetActive(true);
+            transform.SetAsLastSibling(); // Luôn nổi lên trên cùng của Canvas khi hiển thị kết quả
         }
         
         private void OnContinueButtonPressed()
