@@ -2509,6 +2509,14 @@ PrefabInstance:
       value: ItemQueuePanel
       objectReference: {fileID: 0}
     - target: {fileID: 2428363937877723241, guid: 2dd1e76e76258be4a801ebf84b0e9380, type: 3}
+      propertyPath: m_Type
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2428363937877723241, guid: 2dd1e76e76258be4a801ebf84b0e9380, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
+    - target: {fileID: 2428363937877723241, guid: 2dd1e76e76258be4a801ebf84b0e9380, type: 3}
       propertyPath: m_Color.a
       value: 0.74509805
       objectReference: {fileID: 0}
