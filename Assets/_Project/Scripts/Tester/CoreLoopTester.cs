@@ -72,7 +72,7 @@ public class CoreLoopTester : MonoBehaviour
                 EarnedGold = 100,
                 IsOnTime = true
             };
-            EventBus.Publish(new GameEvent.JobCompletedEvent(testJobSmall, result));
+            EventBus.Publish(new GameEvent.JobSubmittedEvent(testJobSmall, result));
         }
 
         // 3. Phím Space

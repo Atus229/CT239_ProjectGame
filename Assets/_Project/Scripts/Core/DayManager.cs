@@ -28,7 +28,7 @@ namespace _Project.Scripts.Core
 
         private JobData currentActiveJob;
         private JobResult lastJobResult;
-        private List<JobData> activeJobsOnBoard = new List<JobData>();
+        public List<JobData> activeJobsOnBoard = new List<JobData>();
 
         private void Awake()
         {
@@ -62,7 +62,6 @@ namespace _Project.Scripts.Core
         {
             EventBus.Subscribe<GameEvent.JobSelectedEvent>(HandleJobSelected);
             EventBus.Subscribe<GameEvent.JobSubmittedEvent>(HandleJobSubmitted);
-            EventBus.Subscribe<GameEvent.JobCompletedEvent>(HandleJobCompleted);
             EventBus.Subscribe<GameEvent.ContinueFromJobResultEvent>(HandleContinueFromJobResult);
             EventBus.Subscribe<GameEvent.NextDayRequestedEvent>(HandleNextDayRequested);
         }
@@ -72,7 +71,6 @@ namespace _Project.Scripts.Core
         {
             EventBus.Unsubscribe<GameEvent.JobSelectedEvent>(HandleJobSelected);
             EventBus.Unsubscribe<GameEvent.JobSubmittedEvent>(HandleJobSubmitted);
-            EventBus.Unsubscribe<GameEvent.JobCompletedEvent>(HandleJobCompleted);
             EventBus.Unsubscribe<GameEvent.ContinueFromJobResultEvent>(HandleContinueFromJobResult);
             EventBus.Unsubscribe<GameEvent.NextDayRequestedEvent>(HandleNextDayRequested);
         }
@@ -92,7 +90,7 @@ namespace _Project.Scripts.Core
             totalEarnedInDay = 0;
             totalStarsInDay = 0;
             
-            EventBus.Publish(new GameEvent.DayStartedEvent(currentDayIndex, dayTimeBudget));
+            EventBus.Publish(new GameEvent.DayStartedEvent(currentDayIndex, dayTimeBudget, activeJobsOnBoard));
             EventBus.Publish(new GameEvent.DayTimeUpdatedEvent(dayTimeRemaining, dayTimeBudget));
         }
 
@@ -191,8 +189,8 @@ namespace _Project.Scripts.Core
         
         private void HandleContinueFromJobResult(GameEvent.ContinueFromJobResultEvent obj)
         {
-           //Tru thoi gian hoan thanh cong viec va ghi nhan thong ke
-           DeductTimeAndRecordJob(lastJobResult.TotalJobTime, lastJobResult.EarnedGold, lastJobResult.Stars);
+           //Đã trừ ở handlejobsubmitted rồi
+           //DeductTimeAndRecordJob(lastJobResult.TotalJobTime, lastJobResult.EarnedGold, lastJobResult.Stars);
            
            //Xoa don ra khoi bang viec
            if (currentActiveJob != null)
@@ -203,12 +201,6 @@ namespace _Project.Scripts.Core
            
            //Kiem tra dieu kien ket thuc ngay
            CheckAutoEndDayCondition(activeJobsOnBoard);
-        }
-
-        //Nguoi choi xem bang ket qua(truoc khi nhan tiep tuc)
-        private void HandleJobCompleted(GameEvent.JobCompletedEvent e)
-        {
-            lastJobResult = e.result;
         }
 
         private void HandleJobSelected(GameEvent.JobSelectedEvent e)
