@@ -14,3 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.Data.DayData
   dayIndex: 1
   dayTimeBudget: 180
+  dailyJobs:
+  - {fileID: 11400000, guid: 03c093bde82b2c3428718cac05f14e4a, type: 2}
+  - {fileID: 11400000, guid: 2e9e0796f22567347926c8ab7cda418d, type: 2}
+  - {fileID: 11400000, guid: 44459c28aac20944999c85e7a00816c7, type: 2}

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using _Project.Scripts.Data;
 using UnityEngine;
 using _Project.Scripts.Ui;
@@ -87,11 +88,13 @@ namespace _Project.Scripts.Core
         {
             public int dayIndex;
             public float dayTimeBudget;
+            public List<JobData> dailyJobs;
 
-            public DayStartedEvent(int dayIndex, float dayTimeBudget)
+            public DayStartedEvent(int dayIndex, float dayTimeBudget, List<JobData> dailyJobs)
             {
                 this.dayIndex = dayIndex;
                 this.dayTimeBudget = dayTimeBudget;
+                this.dailyJobs =  dailyJobs;
             }
         }
         
@@ -148,7 +151,7 @@ namespace _Project.Scripts.Core
             public JobData CompletedJob;
             public float RemainingTime;
 
-            public ContinueFromJobResultEvent(JobData completedJob, float remainingTime)
+            public ContinueFromJobResultEvent(JobData completedJob= null, float remainingTime= -1f)
             {
                 this.CompletedJob = completedJob;
                 this.RemainingTime = remainingTime;

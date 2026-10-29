@@ -18,6 +18,6 @@ MonoBehaviour:
   width: 1
   height: 3
   shapeSerialized: 010101
-  value: 10
-  handlingTime: 2
+  value: 20
+  handlingTime: 10
   isFragile: 0

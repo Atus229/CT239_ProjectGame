@@ -37,6 +37,8 @@ namespace _Project.Scripts.Ui
         [SerializeField] private float testTimeRemaining = 166f;
         [SerializeField] private string testQuote = "Cảm ơn bạn, đồ đạc đến nơi an toàn!";
 
+        [SerializeField] private CanvasGroup canvasGroup;
+        
         public event Action OnContinueClicked;
 
         public bool TestInPlayMode
@@ -70,21 +72,41 @@ namespace _Project.Scripts.Ui
 
         private void Awake()
         {
+            if(canvasGroup==null)
+            {
+                canvasGroup = GetComponent<CanvasGroup>();
+            }
             if (btnContinue != null)
             {
                 btnContinue.onClick.AddListener(OnContinueButtonPressed);
             }
+
+            SetVisibility(false);
         }
 
-       
+        private void SetVisibility(bool visible)
+        {
+            if (canvasGroup != null)
+            {
+                canvasGroup.alpha = visible ? 1f : 0f;
+                canvasGroup.interactable = visible;
+                canvasGroup.blocksRaycasts = visible;
+            }
+            else
+            {
+                gameObject.SetActive(visible);
+            }
+        }
+
+
         private void OnEnable()
         {
-            EventBus.Subscribe<GameEvent.JobCompletedEvent>(HandleJobCompleted);
+            EventBus.Subscribe<GameEvent.JobSubmittedEvent>(HandleJobSubmitted);
         }
 
         private void OnDisable()
         {
-            EventBus.Unsubscribe<GameEvent.JobCompletedEvent>(HandleJobCompleted);
+            EventBus.Unsubscribe<GameEvent.JobSubmittedEvent>(HandleJobSubmitted);
         }
 
         
@@ -127,22 +149,22 @@ namespace _Project.Scripts.Ui
 
         public void Close()
         {
-            gameObject.SetActive(false);
+            SetVisibility(false);
         }
         
-        private void HandleJobCompleted(GameEvent.JobCompletedEvent evt)
+        private void HandleJobSubmitted(GameEvent.JobSubmittedEvent evt)
         {
-            int stars = evt.result.Stars;
-            int earnedGold = evt.result.EarnedGold;
-            float totalJobTime = evt.result.TotalJobTime;
-            float timeMin = evt.job != null ? evt.job.TimeMin : 0f;
-            float timeMax = evt.job != null ? evt.job.TimeMax : 0f;
+            int stars = evt.JobResult.Stars;
+            int earnedGold = evt.JobResult.EarnedGold;
+            float totalJobTime = evt.JobResult.TotalJobTime;
+            float timeMin = evt.Job != null ? evt.Job.TimeMin : 0f;
+            float timeMax = evt.Job != null ? evt.Job.TimeMax : 0f;
             
             //tinh quy thoi gian con lai trong ngay
             float dayTimeRemaining = 0f;
             if (DayManager.Instance != null)
             {
-                dayTimeRemaining = Mathf.Max(0f, DayManager.Instance.TimeRemaining - totalJobTime);
+                dayTimeRemaining = DayManager.Instance.TimeRemaining;
             }
 
             if (starRating != null)
@@ -160,16 +182,19 @@ namespace _Project.Scripts.Ui
             if (txtTimeRemaining != null)
                 txtTimeRemaining.text = $"{dayTimeRemaining:0}s";
             
-            gameObject.SetActive(true);
+            SetVisibility(true);
         }
         
         private void OnContinueButtonPressed()
         {
             //An bang ket qua
-            gameObject.SetActive(false);
+            SetVisibility(false);
+            
+            JobData currentJob = JobEconomyManager.Instance != null ? JobEconomyManager.Instance.CurrentJobData : null;
+            float timeRemaining = DayManager.Instance != null ? DayManager.Instance.TimeRemaining : 0f;
             
             //Phat tin hieu len eventbus cho daymanager va jobboardui nhan dien
-            EventBus.Publish(new GameEvent.ContinueFromJobResultEvent());
+            EventBus.Publish(new GameEvent.ContinueFromJobResultEvent(currentJob, timeRemaining));
             
         }
 

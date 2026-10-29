@@ -43,12 +43,14 @@ public class JobEconomyManager : MonoBehaviour
     {
         EventBus.Subscribe<GameEvent.ItemPlacedEvent>(HandleItemPlaced);
         EventBus.Subscribe<GameEvent.ItemRemovedEvent>(HandleItemRemoved);
+        EventBus.Subscribe<GameEvent.JobSelectedEvent>(HandleJobSelected);
     }
 
     private void OnDisable()
     {
         EventBus.Unsubscribe<GameEvent.ItemPlacedEvent>(HandleItemPlaced);
         EventBus.Unsubscribe<GameEvent.ItemRemovedEvent>(HandleItemRemoved);
+        EventBus.Unsubscribe<GameEvent.JobSelectedEvent>(HandleJobSelected);
     }
 
     private void Start()
@@ -139,13 +141,15 @@ public class JobEconomyManager : MonoBehaviour
     {
         if (job == null) return;
 
-        //cap nhat moc min max tu don hang moi
+        //cap nhat moc min max tu don hanng moi
         timeMin = job.TimeMin;
         timeMax = job.TimeMax;
         
         //Reset thoi gian va tien
         CurrentJobTime = 0f;
         CurrentJobValue = 0;
+
+        currentJobData = job;
         
         //bao cho UI biet -> don hang moi da vao
         NotifyStateChanged();
@@ -194,6 +198,14 @@ public class JobEconomyManager : MonoBehaviour
         
         //Tinh toan xong thi bao tin cho UI
         NotifyStateChanged();
+    }
+    
+    private void HandleJobSelected(GameEvent.JobSelectedEvent e)
+    {
+        if (e.SelectedJob != null)
+        {
+            LoadDataJob(e.SelectedJob);
+        }
     }
 }
 
