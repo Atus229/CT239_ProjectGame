@@ -163,5 +163,24 @@ namespace _Project.Scripts.Core
         {
             //Dong vai tro la tin hieu -> rong
         }
+
+        // Su kien khi nguoi choi mua nang cap thanh cong
+        public struct UpgradePurchasedEvent
+        {
+            public int PlayerUpgradeID;
+            public int UpgradeID;
+            public int NewLevel;
+            public int CostPaid;
+            public string UpgradeType;
+
+            public UpgradePurchasedEvent(int playerUpgradeId, int upgradeId, int newLevel, int costPaid, string upgradeType)
+            {
+                this.PlayerUpgradeID = playerUpgradeId;
+                this.UpgradeID = upgradeId;
+                this.NewLevel = newLevel;
+                this.CostPaid = costPaid;
+                this.UpgradeType = upgradeType;
+            }
+        }
     }
 }
