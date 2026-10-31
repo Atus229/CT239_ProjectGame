@@ -22,7 +22,7 @@ namespace _Project.Scripts.Ui
         [SerializeField] private Button btnClose;
 
         [Header("Mock Data Test Settings")]
-        [SerializeField] private int playerGoldMock = 200; // Tiền giả lập để test (thẻ $500 sẽ bị mờ)
+        [SerializeField] private int playerGoldMock = 200; // Tiền giả lập để test
 
         private List<UpgradeCardUI> spawnedCards = new List<UpgradeCardUI>();
 
@@ -36,6 +36,15 @@ namespace _Project.Scripts.Ui
             if (btnClose != null)
             {
                 btnClose.onClick.AddListener(CloseShop);
+            }
+        }
+
+        private void OnDestroy()
+        {
+            // Yêu cầu 4: Dọn dẹp sự kiện để tránh rò rỉ bộ nhớ
+            if (btnClose != null)
+            {
+                btnClose.onClick.RemoveListener(CloseShop);
             }
         }
 
@@ -72,7 +81,7 @@ namespace _Project.Scripts.Ui
         }
 
         /// <summary>
-        /// Tạo 3 thẻ nâng cấp mẫu với dữ liệu Mock để kiểm tra Layout và Button Lock
+        /// Tạo danh sách thẻ nâng cấp mẫu ban đầu
         /// </summary>
         private void GenerateMockCards()
         {
@@ -83,7 +92,8 @@ namespace _Project.Scripts.Ui
                 "Mở rộng thùng xe",
                 "Tăng thêm 1 cột ô chứa đồ trong thùng hàng.",
                 150,
-                null
+                null,
+                false
             );
 
             // Thẻ 2: Đủ tiền mua ($100)
@@ -91,7 +101,8 @@ namespace _Project.Scripts.Ui
                 "Tăng tốc độ di chuyển",
                 "Tốc độ di chuyển xe tải tăng thêm 15%.",
                 100,
-                null
+                null,
+                false
             );
 
             // Thẻ 3: THIẾU TIỀN ($500 > Vàng hiện có $200)
@@ -99,24 +110,34 @@ namespace _Project.Scripts.Ui
                 "Bảo hiểm hàng hóa",
                 "Giảm 50% thiệt hại tiền phạt khi làm hỏng đồ.",
                 500,
-                null
+                null,
+                false
             );
 
-            // Cập nhật lại Layout để ScrollView nhận diện chiều cao Content
+            // Thẻ 4: ĐÃ ĐẠT CẤP TỐI ĐA (Test Max Level)
+            CreateCardMockInstance(
+                "Bình xăng phụ",
+                "Đã nâng cấp đến cấp độ tối đa.",
+                0,
+                null,
+                true
+            );
+
+            // Cập nhật lại Layout cho ScrollView
             if (cardContainer is RectTransform rectTransform)
             {
                 LayoutRebuilder.ForceRebuildLayoutImmediate(rectTransform);
             }
         }
 
-        private void CreateCardMockInstance(string title, string description, int price, Sprite icon)
+        private void CreateCardMockInstance(string title, string description, int price, Sprite icon, bool isMaxLevel = false)
         {
             if (upgradeCardPrefab == null || cardContainer == null) return;
 
             UpgradeCardUI cardInstance = Instantiate(upgradeCardPrefab, cardContainer);
-            cardInstance.SetupCardMock(title, description, price, icon, playerGoldMock, () =>
+            cardInstance.SetupCardMock(title, description, price, icon, playerGoldMock, isMaxLevel, () =>
             {
-                if (playerGoldMock >= price)
+                if (playerGoldMock >= price && !isMaxLevel)
                 {
                     playerGoldMock -= price;
                     UpdateGoldUI();
@@ -127,9 +148,18 @@ namespace _Project.Scripts.Ui
             spawnedCards.Add(cardInstance);
         }
 
+        /// <summary>
+        /// Yêu cầu 1: Duyệt danh sách thẻ đã khởi tạo để cập nhật trạng thái, KHÔNG tạo lại (Destroy/Instantiate)
+        /// </summary>
         private void RefreshAllCardsState()
         {
-            GenerateMockCards();
+            foreach (var card in spawnedCards)
+            {
+                if (card != null)
+                {
+                    card.UpdateAffordability(playerGoldMock);
+                }
+            }
         }
 
         private void ClearCards()

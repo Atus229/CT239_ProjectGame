@@ -16,6 +16,8 @@ namespace _Project.Scripts.Ui
         [SerializeField] private TextMeshProUGUI txtBuyButton;
 
         private Action onBuyClickAction;
+        private int cardPrice;
+        private bool isMaxLevel;
 
         private void Awake()
         {
@@ -30,41 +32,73 @@ namespace _Project.Scripts.Ui
             }
         }
 
-        /// <summary>
-        /// Setup dữ liệu giả lập (Mock data) cho thẻ Nâng cấp
-        /// </summary>
-        public void SetupCardMock(string title, string description, int price, Sprite icon, int currentGold, Action onBuyCallback = null)
+        private void OnDestroy()
         {
-            if (txtName != null) txtName.text = title;
-            if (txtDescription != null) txtDescription.text = description;
-            if (txtPrice != null) txtPrice.text = $"${price}";
-            if (imgIcon != null && icon != null) imgIcon.sprite = icon;
-
-            onBuyClickAction = onBuyCallback;
-
-            // Kiểm tra khả năng mua (đủ tiền hay thiếu tiền)
-            bool canAfford = currentGold >= price;
-            SetBuyButtonState(canAfford);
+            // Yêu cầu 4: Dọn dẹp sự kiện để tránh rò rỉ bộ nhớ
+            if (btnBuy != null)
+            {
+                btnBuy.onClick.RemoveListener(OnBuyButtonClicked);
+            }
         }
 
         /// <summary>
-        /// Cập nhật trạng thái nút Mua (xám/tắt tương tác nếu thiếu tiền)
+        /// Setup dữ liệu giả lập (Mock data) cho thẻ Nâng cấp
         /// </summary>
-        public void SetBuyButtonState(bool canAfford)
+        public void SetupCardMock(string title, string description, int price, Sprite icon, int currentGold, bool isMaxLevel = false, Action onBuyCallback = null)
         {
-            if (btnBuy != null)
+            cardPrice = price;
+            this.isMaxLevel = isMaxLevel;
+            onBuyClickAction = onBuyCallback;
+
+            if (txtName != null) txtName.text = title;
+            if (txtDescription != null) txtDescription.text = description;
+
+            // Yêu cầu 3: Xử lý Icon bị Null -> Ẩn GameObject Icon tránh hiển thị ô vuông màu trắng mặc định
+            if (imgIcon != null)
             {
-                btnBuy.interactable = canAfford;
+                if (icon != null)
+                {
+                    imgIcon.sprite = icon;
+                    imgIcon.gameObject.SetActive(true);
+                }
+                else
+                {
+                    imgIcon.gameObject.SetActive(false);
+                }
             }
 
-            if (txtBuyButton != null)
+            UpdateAffordability(currentGold);
+        }
+
+        /// <summary>
+        /// Yêu cầu 1 & 2: Cập nhật lại trạng thái nút bấm và giá tiền mà không cần Destroy / Instantiate lại thẻ
+        /// </summary>
+        public void UpdateAffordability(int currentGold)
+        {
+            // Yêu cầu 2: Bổ sung trạng thái Đạt Cấp Tối Đa (Max Level)
+            if (isMaxLevel)
             {
-                txtBuyButton.text = canAfford ? "Mua" : "Không đủ tiền";
+                if (txtPrice != null) txtPrice.text = "MAX";
+                if (btnBuy != null) btnBuy.interactable = false;
+                if (txtBuyButton != null) txtBuyButton.text = "Đã tối đa";
+                return;
             }
+
+            if (txtPrice != null) txtPrice.text = $"${cardPrice}";
+
+            bool canAfford = currentGold >= cardPrice;
+            if (btnBuy != null) btnBuy.interactable = canAfford;
+            if (txtBuyButton != null) txtBuyButton.text = canAfford ? "Mua" : "Không đủ tiền";
         }
 
         private void OnBuyButtonClicked()
         {
+            // Yêu cầu 3: Chống Spam Click - Tắt tương tác ngay lập tức khi bấm
+            if (btnBuy != null)
+            {
+                btnBuy.interactable = false;
+            }
+
             onBuyClickAction?.Invoke();
             Debug.Log($"<color=green>[UpgradeCardUI]</color> Đã bấm mua {txtName?.text}!");
         }
