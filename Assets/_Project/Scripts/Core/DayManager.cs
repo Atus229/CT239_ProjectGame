@@ -207,5 +207,24 @@ namespace _Project.Scripts.Core
         {
             currentActiveJob = e.SelectedJob;
         }
+
+        /// <summary>
+        /// Cộng thêm một lượng thời gian (tính bằng giây) vào quỹ thời gian làm việc trong ngày[cite: 1, 3].
+        /// Tự động cập nhật TimeBudget, TimeRemaining và phát sự kiện cập nhật UI[cite: 3, 7].
+        /// API dành cho Leader gọi khi áp dụng Nâng cấp Quỹ thời gian[cite: 4, 8].
+        /// </summary>
+        /// <param name="extraSeconds">Số giây muốn cộng thêm (ví dụ: 20f để tăng từ 180s lên 200s)[cite: 1, 3]</param>
+        public void IncreaseDayBudget(float extraSeconds)
+        {
+            if (extraSeconds <= 0f) return;
+
+            dayTimeBudget += extraSeconds;
+            dayTimeRemaining += extraSeconds;
+
+            // Cập nhật giao diện thanh quỹ thời gian theo thời gian thực[cite: 3, 7]
+            EventBus.Publish(new GameEvent.DayTimeUpdatedEvent(dayTimeRemaining, dayTimeBudget));
+            
+            Debug.Log($"[DayManager] Đã cộng +{extraSeconds}s vào quỹ thời gian. Quỹ mới: {dayTimeBudget}s (Còn lại: {dayTimeRemaining}s)[cite: 3].");
+        }
     }
 }

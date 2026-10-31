@@ -240,5 +240,40 @@ namespace _Project.Scripts.Core
         {
             CleanGrid();
         }
+
+        /// <summary>
+        /// Mở rộng kích thước khoang xe bằng cách cộng thêm số cột và số hàng.
+        /// Giữ nguyên các hàng hóa hiện có trên lưới ô[cite: 2].
+        /// API dành cho Leader gọi từ UpgradeManager hoặc Save/Load Manager[cite: 4, 8].
+        /// </summary>
+        /// <param name="extraCols">Số cột muốn tăng thêm (ví dụ: 0 nếu giữ nguyên cột)</param>
+        /// <param name="extraRows">Số hàng muốn tăng thêm (ví dụ: 1 để mở rộng 4x4 thành 4x5)</param>
+        public void ExpandGrid(int extraCols, int extraRows)
+        {
+            if (extraCols <= 0 && extraRows <= 0) return;
+
+            int oldCols = columns;
+            int oldRows = rows;
+
+            columns += Mathf.Max(0, extraCols);
+            rows += Mathf.Max(0, extraRows);
+
+            ItemData[,] newGrid = new ItemData[columns, rows];
+
+            // Sao chép dữ liệu từ ma trận cũ sang ma trận mới mở rộng[cite: 2]
+            if (grid != null)
+            {
+                for (int x = 0; x < oldCols; x++)
+                {
+                    for (int y = 0; y < oldRows; y++)
+                    {
+                        newGrid[x, y] = grid[x, y];
+                    }
+                }
+            }
+
+            grid = newGrid;
+            Debug.Log($"[GridManager] Đã mở rộng lưới xe: {oldCols}x{oldRows} -> {columns}x{rows}[cite: 2].");
+        }
     }
 }
