@@ -47,6 +47,8 @@ namespace _Project.Scripts.Ui
                 return;
             }
 
+            confirmButton.interactable = false;
+            
             JobResult result = JobEconomyManager.Instance.CalculateJobResult();
 
             // Bắn sự kiện ra toàn bộ hệ thống (DayManager và UI sẽ tự xử lý qua EventBus)

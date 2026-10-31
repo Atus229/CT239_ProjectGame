@@ -65,6 +65,22 @@ namespace _Project.Scripts.Ui
             }
         }
 
+        private void OnEnable()
+        {
+            EventBus.Subscribe<GameEvent.ContinueFromJobResultEvent>(OnContinueFromResult);
+        }
+
+        private void OnDisable()
+        {
+            EventBus.Unsubscribe<GameEvent.ContinueFromJobResultEvent>(OnContinueFromResult);
+        }
+
+        private void OnContinueFromResult(GameEvent.ContinueFromJobResultEvent e)
+        {
+            ReturnToTrayPosition();
+        }
+
+
         /// <summary>
         /// Hàm nạp ScriptableObject ItemData vào ItemView để đổi Tên và Ảnh
         /// </summary>

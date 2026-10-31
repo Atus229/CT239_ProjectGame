@@ -36,9 +36,13 @@ namespace _Project.Scripts.Ui
         [SerializeField] private float testRating = 4.2f;
         [SerializeField] [Range(0f, 1f)] private float testUsedTimeNormalized = 0.85f;
 
+        [SerializeField] CanvasGroup  canvasGroup;
+        
         public event Action OnStartNextDayClicked;
         public event Action OnBusinessReportClicked;
         public event Action OnUpgradeShopClicked;
+        
+        
 
         public bool TestInPlayMode
         {
@@ -55,10 +59,18 @@ namespace _Project.Scripts.Ui
 
         private void Awake()
         {
+            if (canvasGroup == null)
+            {
+                canvasGroup = GetComponent<CanvasGroup>();
+            }
+
+            SetVisibility(false);
+            
+            
             if (btnStartNextDay != null)
                 btnStartNextDay.onClick.AddListener(()=>
             {
-                gameObject.SetActive(false);
+                SetVisibility(false);
                 EventBus.Publish(new GameEvent.NextDayRequestedEvent());
                 OnStartNextDayClicked?.Invoke();
             });
@@ -69,6 +81,7 @@ namespace _Project.Scripts.Ui
             if (btnUpgradeShop != null)
                 btnUpgradeShop.onClick.AddListener(() => OnUpgradeShopClicked?.Invoke());
         }
+        
 
         private void Start()
         {
@@ -127,7 +140,7 @@ namespace _Project.Scripts.Ui
 
             PopulateHistory(previousDaysHistory);
 
-            gameObject.SetActive(true);
+            SetVisibility(true);
         }
 
         private void PopulateHistory(List<DayHistoryRecord> history)
@@ -153,7 +166,7 @@ namespace _Project.Scripts.Ui
 
         public void Close()
         {
-            gameObject.SetActive(false);
+            SetVisibility(false);
         }
         
         private void HandleDayEnded(GameEvent.DayEndedEvent e)
@@ -185,7 +198,21 @@ namespace _Project.Scripts.Ui
             PopulateHistory(null);
             
             // Bật sáng bảng tổng kết lên màn hình
-            gameObject.SetActive(true);
+            SetVisibility(true);
+        }
+        
+        private void SetVisibility(bool isVisible)
+        {
+            if (canvasGroup != null)
+            {
+                canvasGroup.alpha = isVisible ? 1f : 0f;
+                canvasGroup.interactable = isVisible;
+                canvasGroup.blocksRaycasts = isVisible;
+            }
+            else
+            {
+                gameObject.SetActive(isVisible);
+            }
         }
     }
 }
