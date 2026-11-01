@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using _Project.Scripts.Managers;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
@@ -41,7 +42,7 @@ namespace _Project.Scripts.Ui
 
         private void OnDestroy()
         {
-            // Yêu cầu 4: Dọn dẹp sự kiện để tránh rò rỉ bộ nhớ
+            // Dọn dẹp sự kiện để tránh rò rỉ bộ nhớ
             if (btnClose != null)
             {
                 btnClose.onClick.RemoveListener(CloseShop);
@@ -52,7 +53,7 @@ namespace _Project.Scripts.Ui
         {
             UpdateGoldUI();
             OpenShop();
-            GenerateMockCards();
+            GenerateUpgradeCards();
         }
 
         public void OpenShop()
@@ -81,75 +82,50 @@ namespace _Project.Scripts.Ui
         }
 
         /// <summary>
-        /// Tạo danh sách thẻ nâng cấp mẫu ban đầu
+        /// Sinh cac the nang cap tu danh muc co san trong UpgradeManager
         /// </summary>
-        private void GenerateMockCards()
+        private void GenerateUpgradeCards()
         {
             ClearCards();
 
-            // Thẻ 1: Đủ tiền mua ($150)
-            CreateCardMockInstance(
-                "Mở rộng thùng xe",
-                "Tăng thêm 1 cột ô chứa đồ trong thùng hàng.",
-                150,
-                null,
-                false
-            );
+            if (UpgradeManager.Instance == null || upgradeCardPrefab == null || cardContainer == null)
+            {
+                return;
+            }
 
-            // Thẻ 2: Đủ tiền mua ($100)
-            CreateCardMockInstance(
-                "Tăng tốc độ di chuyển",
-                "Tốc độ di chuyển xe tải tăng thêm 15%.",
-                100,
-                null,
-                false
-            );
-
-            // Thẻ 3: THIẾU TIỀN ($500 > Vàng hiện có $200)
-            CreateCardMockInstance(
-                "Bảo hiểm hàng hóa",
-                "Giảm 50% thiệt hại tiền phạt khi làm hỏng đồ.",
-                500,
-                null,
-                false
-            );
-
-            // Thẻ 4: ĐÃ ĐẠT CẤP TỐI ĐA (Test Max Level)
-            CreateCardMockInstance(
-                "Bình xăng phụ",
-                "Đã nâng cấp đến cấp độ tối đa.",
-                0,
-                null,
-                true
-            );
-
+            //Duyet toan bo danh muc nang cap co trong game
+            foreach (var card in UpgradeManager.Instance.AvailableUpgrades)
+            {
+                if (card == null) return;
+                
+                //Tao card
+                UpgradeCardUI cardInstance = Instantiate(upgradeCardPrefab, cardContainer);
+                
+                //Setup card va gan callback
+                cardInstance.SetupCard(card, playerGoldMock, () =>
+                {
+                    //Goi thang vao Upgrade Manager de mua
+                    if (UpgradeManager.Instance.TryPurchaseUpgrade(card.UpgradeID, ref playerGoldMock))
+                    {
+                        UpdateGoldUI();
+                        RefreshAllCardsState();
+                    }
+                });
+                
+                spawnedCards.Add(cardInstance);
+                
+            }
+            
             // Cập nhật lại Layout cho ScrollView
             if (cardContainer is RectTransform rectTransform)
             {
                 LayoutRebuilder.ForceRebuildLayoutImmediate(rectTransform);
             }
         }
-
-        private void CreateCardMockInstance(string title, string description, int price, Sprite icon, bool isMaxLevel = false)
-        {
-            if (upgradeCardPrefab == null || cardContainer == null) return;
-
-            UpgradeCardUI cardInstance = Instantiate(upgradeCardPrefab, cardContainer);
-            cardInstance.SetupCardMock(title, description, price, icon, playerGoldMock, isMaxLevel, () =>
-            {
-                if (playerGoldMock >= price && !isMaxLevel)
-                {
-                    playerGoldMock -= price;
-                    UpdateGoldUI();
-                    RefreshAllCardsState();
-                }
-            });
-
-            spawnedCards.Add(cardInstance);
-        }
+        
 
         /// <summary>
-        /// Yêu cầu 1: Duyệt danh sách thẻ đã khởi tạo để cập nhật trạng thái, KHÔNG tạo lại (Destroy/Instantiate)
+        /// Duyệt danh sách thẻ đã khởi tạo để cập nhật trạng thái, KHÔNG tạo lại (Destroy/Instantiate)
         /// </summary>
         private void RefreshAllCardsState()
         {
@@ -157,13 +133,14 @@ namespace _Project.Scripts.Ui
             {
                 if (card != null)
                 {
-                    card.UpdateAffordability(playerGoldMock);
+                    card.UpdateCardVisual(playerGoldMock);
                 }
             }
         }
 
         private void ClearCards()
         {
+			if (cardContainer == null) return;
             foreach (Transform child in cardContainer)
             {
                 Destroy(child.gameObject);
