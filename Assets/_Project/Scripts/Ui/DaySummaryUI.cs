@@ -141,6 +141,7 @@ namespace _Project.Scripts.Ui
             PopulateHistory(previousDaysHistory);
 
             SetVisibility(true);
+            transform.SetAsLastSibling();
         }
 
         private void PopulateHistory(List<DayHistoryRecord> history)
@@ -199,6 +200,7 @@ namespace _Project.Scripts.Ui
             
             // Bật sáng bảng tổng kết lên màn hình
             SetVisibility(true);
+            transform.SetAsLastSibling();
         }
         
         private void SetVisibility(bool isVisible)
