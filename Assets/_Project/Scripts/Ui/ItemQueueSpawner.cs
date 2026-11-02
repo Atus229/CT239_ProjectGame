@@ -51,6 +51,11 @@ namespace _Project.Scripts.Ui
             }
         }
 
+        private void OnDestroy()
+        {
+            ClearQueue();
+        }
+        
         private void OnJobSelected(GameEvent.JobSelectedEvent evt)
         {
             if (evt.SelectedJob != null)
@@ -79,15 +84,13 @@ namespace _Project.Scripts.Ui
                 RectTransform itemRect = itemInstance.GetComponent<RectTransform>();
                 itemRect.pivot = Vector2.zero;
 
-                LayoutElement layout = itemInstance.GetComponent<LayoutElement>();
-                if (layout == null)
+                if (itemInstance.TryGetComponent<LayoutElement>(out var layout))
                 {
-                    layout = itemInstance.gameObject.AddComponent<LayoutElement>();
+                    layout.preferredWidth = itemRect.sizeDelta.x;
+                    layout.preferredHeight = itemRect.sizeDelta.y;
+                    layout.flexibleWidth = 0;
+                    layout.flexibleHeight = 0;
                 }
-                layout.preferredWidth = itemRect.sizeDelta.x;
-                layout.preferredHeight = itemRect.sizeDelta.y;
-                layout.flexibleWidth = 0;
-                layout.flexibleHeight = 0;
 
                 itemInstance.SetupItem(itemData);
                 spawnedItems.Add(itemInstance);

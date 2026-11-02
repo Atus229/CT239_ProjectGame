@@ -9,6 +9,7 @@ using UnityEngine.InputSystem;
 namespace _Project.Scripts.Ui
 {
     [RequireComponent(typeof(CanvasGroup))]
+    [RequireComponent(typeof(LayoutElement))]
     public class ItemView : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
     {
         [Header("UI Component References")]
@@ -30,11 +31,19 @@ namespace _Project.Scripts.Ui
             set
             {
                 isPlacedOnGrid = value;
-                if (isPlacedOnGrid && dragPlaceholder != null)
+                if (isPlacedOnGrid)
                 {
-                    Destroy(dragPlaceholder);
-                    dragPlaceholder = null;
+                    HidePlaceHolder();
                 }
+            }
+        }
+
+        private void HidePlaceHolder()
+        {
+            if (sharedPlaceholder != null)
+            {
+                sharedPlaceholder.SetActive(false);
+                sharedPlaceholder.transform.SetParent(null, false);
             }
         }
 
@@ -52,7 +61,10 @@ namespace _Project.Scripts.Ui
         private int originalSiblingIndex;
         private Vector3 initialTrayPosition;
         private Vector2 defaultCardSize;
-        private GameObject dragPlaceholder;
+        
+        //Dùng chung 1 placeholder tĩnh duy nhất cho toàn bộ itemview
+        private static GameObject sharedPlaceholder;
+        private static LayoutElement  sharedLayoutElement;
 
         private bool isDragging = false;
         private Vector2 localPointerOffset;
@@ -95,10 +107,7 @@ namespace _Project.Scripts.Ui
 
         private void OnDestroy()
         {
-            if (dragPlaceholder != null)
-            {
-                Destroy(dragPlaceholder);
-            }
+            HidePlaceHolder();
         }
 
         public Vector2 GetGridSize()
@@ -157,16 +166,21 @@ namespace _Project.Scripts.Ui
                 originalParent = transform.parent;
                 originalSiblingIndex = transform.GetSiblingIndex();
 
-                // Tạo placeholder tạm thời để giữ khoảng trống trong khay cuộn khi đang kéo
-                dragPlaceholder = new GameObject("Card_Placeholder", typeof(RectTransform), typeof(LayoutElement));
-                dragPlaceholder.transform.SetParent(originalParent, false);
-                dragPlaceholder.transform.SetSiblingIndex(originalSiblingIndex);
-
-                LayoutElement phLayout = dragPlaceholder.GetComponent<LayoutElement>();
-                phLayout.preferredWidth = defaultCardSize.x;
-                phLayout.preferredHeight = defaultCardSize.y;
-                phLayout.flexibleWidth = 0;
-                phLayout.flexibleHeight = 0;
+                // Tái sử dụng placeholder tĩnh, chỉ khởi tạo đúng 1 lần đầu tiên trong suốt cả game
+                if (sharedPlaceholder == null)
+                {
+                    sharedPlaceholder = new GameObject("Shared_Card_Placeholder", typeof(RectTransform), typeof(LayoutElement));
+                    sharedLayoutElement = sharedPlaceholder.GetComponent<LayoutElement>();
+                    sharedLayoutElement.flexibleWidth = 0;
+                    sharedLayoutElement.flexibleHeight = 0;
+                }
+                // Đặt placeholder vào vị trí của món đồ đang bốc đi để giữ chỗ
+                sharedPlaceholder.transform.SetParent(originalParent, false);
+                sharedPlaceholder.transform.SetSiblingIndex(originalSiblingIndex);
+                sharedLayoutElement.preferredWidth = defaultCardSize.x;
+                sharedLayoutElement.preferredHeight = defaultCardSize.y;
+                sharedPlaceholder.SetActive(true);
+                
             }
 
             if (isPlacedOnGrid)
@@ -273,16 +287,21 @@ namespace _Project.Scripts.Ui
 
         public void ReturnToTrayPosition()
         {
-            if (dragPlaceholder != null)
-            {
-                Destroy(dragPlaceholder);
-                dragPlaceholder = null;
-            }
+            HidePlaceHolder();
 
             if (originalParent != null)
             {
                 transform.SetParent(originalParent, false);
-                transform.SetSiblingIndex(originalSiblingIndex);
+    
+                // Nếu index cũ còn hợp lệ thì xếp vào chỗ cũ, ngược lại thì đưa xuống cuối danh sách khay
+                if (originalSiblingIndex >= 0 && originalSiblingIndex < originalParent.childCount)
+                {
+                    transform.SetSiblingIndex(originalSiblingIndex);
+                }
+                else
+                {
+                    transform.SetAsLastSibling();
+                }
                 transform.localPosition = Vector3.zero;
                 transform.localScale = Vector3.one;
             }
