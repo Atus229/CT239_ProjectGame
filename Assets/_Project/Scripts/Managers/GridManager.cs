@@ -152,6 +152,18 @@ namespace _Project.Scripts.Core
             }
         }
 
+        public void CleanGrid()
+        {
+            if (grid == null) return;
+            for (int x = 0; x < columns; x++)
+            {
+                for (int y = 0; y < rows; y++)
+                {
+                    grid[x, y] = null;
+                }
+            }
+        }
+
         private void OnDrawGizmos()
         {
             if (cellSize <= 0f) cellSize = 100f;
@@ -182,12 +194,15 @@ namespace _Project.Scripts.Core
         {
             EventBus.Subscribe<GameEvent.ItemDroppedEvent>(OnItemDropped);
             EventBus.Subscribe<GameEvent.ItemRemovedEvent>(OnItemRemoved);
+            EventBus.Subscribe<GameEvent.ContinueFromJobResultEvent>(OnContinueFromResult);
         }
+        
 
         private void OnDisable()
         {
             EventBus.Unsubscribe<GameEvent.ItemDroppedEvent>(OnItemDropped);
             EventBus.Unsubscribe<GameEvent.ItemRemovedEvent>(OnItemRemoved);
+            EventBus.Unsubscribe<GameEvent.ContinueFromJobResultEvent>(OnContinueFromResult);
         }
 
         private void OnItemDropped(GameEvent.ItemDroppedEvent e)
@@ -222,6 +237,9 @@ namespace _Project.Scripts.Core
             }
         }
 
-        
+        private void OnContinueFromResult(GameEvent.ContinueFromJobResultEvent e)
+        {
+            CleanGrid();
+        }
     }
 }

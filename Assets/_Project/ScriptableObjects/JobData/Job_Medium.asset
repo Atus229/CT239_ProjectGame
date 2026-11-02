@@ -12,9 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e5775a22a68ee34429f6bddc7ecf59d7, type: 3}
   m_Name: Job_Medium
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.Data.JobData
-  jobID: Job_Medium
-  customerName: 
-  timeMin: 1
-  timeMax: 1
-  itemQueue: []
+  jobID: JOB_MEDIUM
+  customerName: "Ch\u1ECB Lan (Chuy\u1EC3n c\u0103n h\u1ED9 mini)"
+  timeMin: 60
+  timeMax: 85
+  itemQueue:
+  - {fileID: 11400000, guid: 760274081a63891469e98a8d74e4d89f, type: 2}
+  - {fileID: 11400000, guid: 52a29acae6272f54e84e9c9a8e0a063c, type: 2}
+  - {fileID: 11400000, guid: 5dc1caf5f219fb748a4a987a832f5b52, type: 2}
+  - {fileID: 11400000, guid: 9743a88f04f40234aa61cbf676e02478, type: 2}
+  - {fileID: 11400000, guid: 05ba0a20d544abf438bf3bbd0fd4945f, type: 2}
   rewardMultiplier: 1

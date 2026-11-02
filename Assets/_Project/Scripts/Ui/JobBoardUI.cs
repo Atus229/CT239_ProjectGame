@@ -32,16 +32,25 @@ namespace _Project.Scripts.Ui
 
         private void OnEnable()
         {
+            EventBus.Subscribe<GameEvent.DayStartedEvent>(OnDayStarted);
+            
             EventBus.Subscribe<GameEvent.DayTimeUpdatedEvent>(OnDayTimeUpdated);
             EventBus.Subscribe<GameEvent.JobSelectedEvent>(OnJobSelected);
             EventBus.Subscribe<GameEvent.ContinueFromJobResultEvent>(OnContinueFromJobResult);
+            
+            EventBus.Subscribe<GameEvent.DayEndedEvent>(OndayEnded);
         }
+        
 
         private void OnDisable()
         {
+            EventBus.Unsubscribe<GameEvent.DayStartedEvent>(OnDayStarted);
+            
             EventBus.Unsubscribe<GameEvent.DayTimeUpdatedEvent>(OnDayTimeUpdated);
             EventBus.Unsubscribe<GameEvent.JobSelectedEvent>(OnJobSelected);
             EventBus.Unsubscribe<GameEvent.ContinueFromJobResultEvent>(OnContinueFromJobResult);
+            
+            EventBus.Unsubscribe<GameEvent.DayEndedEvent>(OndayEnded);
         }
 
         /// <summary>
@@ -108,14 +117,28 @@ namespace _Project.Scripts.Ui
         /// </summary>
         private void OnContinueFromJobResult(GameEvent.ContinueFromJobResultEvent evt)
         {
-            SetVisibility(true);
 
             if (evt.CompletedJob != null)
             {
                 currentDailyJobs.Remove(evt.CompletedJob);
             }
 
-            PopulateJobs(currentDailyJobs, evt.RemainingTime);
+            bool hasValidJob = false;
+            foreach (var job in currentDailyJobs)
+            {
+                if (job != null && evt.RemainingTime >= job.TimeMin)
+                {
+                    hasValidJob = true;
+                    break;
+                }
+            }
+
+            if (hasValidJob)
+            {
+                SetVisibility(true);
+                PopulateJobs(currentDailyJobs, evt.RemainingTime);
+            }
+            else SetVisibility(false);
         }
         
         /// <summary>
@@ -135,6 +158,33 @@ namespace _Project.Scripts.Ui
                 //du phong
                 gameObject.SetActive(visibility);
             }
+        }
+        
+        /// <summary>
+        /// Tự động chạy khi DayManager xác nhận kết thúc ngày (hết giờ / không còn đơn nào đủ điều kiện)
+        /// </summary>
+        private void OndayEnded(GameEvent.DayEndedEvent obj)
+        {
+            SetVisibility(false);
+        }
+
+        /// <summary>
+        /// Tự động chạy khi DayManager phát lệnh bắt đầu ngày mới (Ngày 1 hoặc bấm "Bắt đầu ngày mới")
+        /// </summary>
+        private void OnDayStarted(GameEvent.DayStartedEvent e)
+        {
+            //hien thi bang viec
+            SetVisibility(true);
+
+            List<JobData> jobs = e.dailyJobs;
+            //Neu trong goi tin chua co -> tu sang DayManager lay du lieu
+            if (jobs == null && DayManager.Instance.activeJobsOnBoard!=null)
+            {
+                jobs = DayManager.Instance.activeJobsOnBoard;
+            }
+            
+            PopulateJobs(jobs, e.dayTimeBudget);
+            
         }
     }
 }

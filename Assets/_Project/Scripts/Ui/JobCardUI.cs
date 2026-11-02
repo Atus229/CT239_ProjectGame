@@ -168,7 +168,7 @@ namespace _Project.Scripts.Ui
                  if (isLocked)
                  {
                      canvasGroup.alpha = 0.5f;
-                     canvasGroup.interactable = false; // Vô hiệu hoá tương tác nút con (btnAccept)
+                     canvasGroup.interactable = true; // Vô hiệu hoá tương tác nút con (btnAccept)
                      canvasGroup.blocksRaycasts = true; // Vẫn cho phép raycast để mở/xem Accordion
                  }
                  else
@@ -206,7 +206,6 @@ namespace _Project.Scripts.Ui
         // Mở rộng thẻ này (TỰ ĐỘNG ĐÓNG THẺ KHÁC NẾU ĐANG MỞ)
         public void Expand()
         {
-            if (isLocked) return;
 
             // Nếu đang có thẻ khác mở -> bắt thẻ đó đóng lại!
             if (currentlyExpandedCard != null && currentlyExpandedCard != this)
