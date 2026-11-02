@@ -1,6 +1,7 @@
 using System;
 using _Project.Scripts.Core;
 using _Project.Scripts.Data;
+using _Project.Scripts.Managers;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
@@ -123,6 +124,9 @@ namespace _Project.Scripts.Ui
             float dayTimeRemaining, 
             string reviewQuote)
         {
+            // Phát âm thanh tiếng leng keng đồng xu rơi khi nhận tiền
+            AudioManager.Instance?.PlaySFX(AudioManager.Instance.sfxRewardCoins);
+
             if (starRating != null) 
                 starRating.SetStars(stars);
 
@@ -154,6 +158,9 @@ namespace _Project.Scripts.Ui
         
         private void HandleJobSubmitted(GameEvent.JobSubmittedEvent evt)
         {
+            // Phát âm thanh tiếng leng keng đồng xu rơi khi nhận kết quả
+            AudioManager.Instance?.PlaySFX(AudioManager.Instance.sfxRewardCoins);
+
             int stars = evt.JobResult.Stars;
             int earnedGold = evt.JobResult.EarnedGold;
             float totalJobTime = evt.JobResult.TotalJobTime;
@@ -187,6 +194,8 @@ namespace _Project.Scripts.Ui
         
         private void OnContinueButtonPressed()
         {
+            AudioManager.Instance?.PlaySFX(AudioManager.Instance.sfxButtonClick);
+
             //An bang ket qua
             SetVisibility(false);
             

@@ -1,11 +1,7 @@
 using UnityEngine;
 
-namespace _Project.Scripts.Core
+namespace _Project.Scripts.Managers
 {
-    /// <summary>
-    /// Quản lý âm thanh tập trung (BGM & SFX) xuyên suốt toàn bộ trò chơi (DontDestroyOnLoad).
-    /// Hỗ trợ lưu trữ cấu hình âm lượng tự động qua PlayerPrefs.
-    /// </summary>
     [DefaultExecutionOrder(-90)]
     public class AudioManager : MonoBehaviour
     {
@@ -13,8 +9,17 @@ namespace _Project.Scripts.Core
 
         private const string PrefKeyBgmVolume = "AudioManager_BGM_Volume";
         private const string PrefKeySfxVolume = "AudioManager_SFX_Volume";
-
         private const float DefaultVolume = 0.75f;
+
+        [Header("BGM Clips")]
+        public AudioClip bgmGameplay;
+
+        [Header("Gameplay SFX Clips")]
+        public AudioClip sfxPlaceSuccess;
+        public AudioClip sfxPlaceFail;
+        public AudioClip sfxButtonClick;
+        public AudioClip sfxRewardCoins;
+        public AudioClip sfxTruckHorn;
 
         [Header("Audio Sources")]
         [SerializeField] private AudioSource bgmSource;
@@ -42,9 +47,14 @@ namespace _Project.Scripts.Core
             }
         }
 
-        /// <summary>
-        /// Khởi tạo và kiểm tra các AudioSource nếu chưa được gán thủ công qua Inspector.
-        /// </summary>
+        private void Start()
+        {
+            if (bgmGameplay != null && bgmSource != null && !bgmSource.isPlaying)
+            {
+                PlayBGM(bgmGameplay, true);
+            }
+        }
+
         private void InitializeAudioSources()
         {
             if (bgmSource == null)
@@ -62,9 +72,6 @@ namespace _Project.Scripts.Core
             }
         }
 
-        /// <summary>
-        /// Tải cài đặt âm lượng đã lưu từ PlayerPrefs.
-        /// </summary>
         private void LoadSavedVolumes()
         {
             bgmVolume = PlayerPrefs.GetFloat(PrefKeyBgmVolume, DefaultVolume);
@@ -73,9 +80,6 @@ namespace _Project.Scripts.Core
             ApplyVolumes();
         }
 
-        /// <summary>
-        /// Áp dụng mức âm lượng thực tế vào các AudioSource.
-        /// </summary>
         private void ApplyVolumes()
         {
             if (bgmSource != null)
@@ -91,10 +95,6 @@ namespace _Project.Scripts.Core
 
         #region Volume Control APIs
 
-        /// <summary>
-        /// Điều chỉnh âm lượng Nhạc nền (BGM) và lưu vào PlayerPrefs.
-        /// </summary>
-        /// <param name="volume">Mức âm lượng từ 0.0f đến 1.0f</param>
         public void SetBGMVolume(float volume)
         {
             bgmVolume = Mathf.Clamp01(volume);
@@ -106,10 +106,6 @@ namespace _Project.Scripts.Core
             PlayerPrefs.Save();
         }
 
-        /// <summary>
-        /// Điều chỉnh âm lượng Hiệu ứng âm thanh (SFX) và lưu vào PlayerPrefs.
-        /// </summary>
-        /// <param name="volume">Mức âm lượng từ 0.0f đến 1.0f</param>
         public void SetSFXVolume(float volume)
         {
             sfxVolume = Mathf.Clamp01(volume);
@@ -125,9 +121,6 @@ namespace _Project.Scripts.Core
 
         #region BGM Playback APIs
 
-        /// <summary>
-        /// Phát bài nhạc nền mới. Nếu bài nhạc đã đang phát thì không khởi động lại từ đầu.
-        /// </summary>
         public void PlayBGM(AudioClip clip, bool loop = true)
         {
             if (clip == null || bgmSource == null) return;
@@ -140,57 +133,31 @@ namespace _Project.Scripts.Core
             bgmSource.Play();
         }
 
-        /// <summary>
-        /// Dừng hẳn bài nhạc nền.
-        /// </summary>
         public void StopBGM()
         {
-            if (bgmSource != null)
-            {
-                bgmSource.Stop();
-            }
+            if (bgmSource != null) bgmSource.Stop();
         }
 
-        /// <summary>
-        /// Tạm dừng nhạc nền (phù hợp khi mở menu Pause).
-        /// </summary>
         public void PauseBGM()
         {
-            if (bgmSource != null && bgmSource.isPlaying)
-            {
-                bgmSource.Pause();
-            }
+            if (bgmSource != null && bgmSource.isPlaying) bgmSource.Pause();
         }
 
-        /// <summary>
-        /// Tiếp tục phát nhạc nền đã tạm dừng (phù hợp khi ấn Resume).
-        /// </summary>
         public void ResumeBGM()
         {
-            if (bgmSource != null && !bgmSource.isPlaying && bgmSource.clip != null)
-            {
-                bgmSource.UnPause();
-            }
+            if (bgmSource != null && !bgmSource.isPlaying && bgmSource.clip != null) bgmSource.UnPause();
         }
 
         #endregion
 
-        #region SFX Playback APIs
+        #region SFX Playback APIs (Generic)
 
-        /// <summary>
-        /// Phát một hiệu ứng âm thanh (SFX) dạng One-Shot.
-        /// </summary>
         public void PlaySFX(AudioClip clip)
         {
             if (clip == null || sfxSource == null) return;
-
             sfxSource.PlayOneShot(clip, sfxVolume);
         }
 
-        /// <summary>
-        /// Phát một hiệu ứng âm thanh với tuỳ chỉnh độ cao tần số âm (pitch).
-        /// Hữu ích cho các hiệu ứng bấm phím hoặc tương tác lặp lại nhiều lần.
-        /// </summary>
         public void PlaySFX(AudioClip clip, float pitch)
         {
             if (clip == null || sfxSource == null) return;
@@ -199,6 +166,35 @@ namespace _Project.Scripts.Core
             sfxSource.pitch = pitch;
             sfxSource.PlayOneShot(clip, sfxVolume);
             sfxSource.pitch = originalPitch;
+        }
+
+        #endregion
+
+        #region Gameplay Semantic SFX Helpers
+
+        public void PlayPlaceSuccess()
+        {
+            PlaySFX(sfxPlaceSuccess);
+        }
+
+        public void PlayPlaceFail()
+        {
+            PlaySFX(sfxPlaceFail);
+        }
+         
+        public void PlayButtonClick()
+        {
+            PlaySFX(sfxButtonClick);
+        }
+        
+        public void PlayRewardCoins()
+        {
+            PlaySFX(sfxRewardCoins);
+        }
+
+        public void PlayTruckHorn()
+        {
+            PlaySFX(sfxTruckHorn);
         }
 
         #endregion

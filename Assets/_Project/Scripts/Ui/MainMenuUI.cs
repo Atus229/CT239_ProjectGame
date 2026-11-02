@@ -1,3 +1,4 @@
+using _Project.Scripts.Managers;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
@@ -41,12 +42,14 @@ namespace _Project.Scripts.Ui
 
         private void OnStartClicked()
         {
+            AudioManager.Instance?.PlayButtonClick();
             if (startButton != null) startButton.interactable = false;
             SceneManager.LoadScene(targetSceneName);
         }
 
         private void OnSettingsClicked()
         {
+            AudioManager.Instance?.PlayButtonClick();
             if (settingsPopup != null)
             {
                 settingsPopup.Open();
@@ -59,6 +62,7 @@ namespace _Project.Scripts.Ui
 
         private void OnExitClicked()
         {
+            AudioManager.Instance?.PlayButtonClick();
             Debug.Log("[MainMenuUI] Đang thoát trò chơi...");
 
             #if UNITY_EDITOR

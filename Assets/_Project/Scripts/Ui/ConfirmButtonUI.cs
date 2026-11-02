@@ -1,5 +1,6 @@
 using System;
 using _Project.Scripts.Core;
+using _Project.Scripts.Managers;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -46,6 +47,8 @@ namespace _Project.Scripts.Ui
                 Debug.Log("[ConfirmButtonUI] Không tìm thấy JobEconomyManager trong Scene!");
                 return;
             }
+
+            AudioManager.Instance?.PlaySFX(AudioManager.Instance.sfxTruckHorn);
 
             confirmButton.interactable = false;
             

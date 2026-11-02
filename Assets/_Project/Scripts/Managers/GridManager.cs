@@ -1,5 +1,6 @@
 using System;
 using _Project.Scripts.Data;
+using _Project.Scripts.Managers;
 using UnityEngine;
 using _Project.Scripts.Ui;
 
@@ -124,6 +125,10 @@ namespace _Project.Scripts.Core
 
             Vector3 dropPosition = GridToWorldPosition(startPos);
             EventBus.Publish(new GameEvent.ItemPlacedEvent(item, startPos ,dropPosition));
+
+            // Phát âm thanh 'cộp' gỗ khi đặt đồ vào xe thành công
+            AudioManager.Instance?.PlaySFX(AudioManager.Instance.sfxPlaceSuccess);
+
             Debug.Log($"[GridManager] Đã xếp '{item.ItemName}' vào ô {startPos}");
         }
 
@@ -224,6 +229,8 @@ namespace _Project.Scripts.Core
             }
             else
             {
+                // Phát âm thanh 'tẹt' nhẹ khi đặt sai vị trí bay về khay
+                AudioManager.Instance?.PlaySFX(AudioManager.Instance.sfxPlaceFail);
                 e.SourceView.ReturnToTrayPosition();
             }
         }
