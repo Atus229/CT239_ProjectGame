@@ -1,5 +1,6 @@
 using System;
 using _Project.Scripts.Data;
+using _Project.Scripts.Managers;
 using UnityEngine;
 using _Project.Scripts.Ui;
 
@@ -17,6 +18,7 @@ namespace _Project.Scripts.Core
 
         public int Columns => columns;
         public int Rows => rows;
+        public float CellSize => cellSize;
         public int TotalCellCount => columns * rows;
         
         private const int MAX_COLUMNS = 8; // Giới hạn tối đa chiều ngang thùng xe
@@ -127,6 +129,10 @@ namespace _Project.Scripts.Core
 
             Vector3 dropPosition = GridToWorldPosition(startPos);
             EventBus.Publish(new GameEvent.ItemPlacedEvent(item, startPos ,dropPosition));
+
+            // Phát âm thanh 'cộp' gỗ khi đặt đồ vào xe thành công
+            AudioManager.Instance?.PlayPlaceSuccess();
+
             Debug.Log($"[GridManager] Đã xếp '{item.ItemName}' vào ô {startPos}");
         }
 
@@ -223,10 +229,12 @@ namespace _Project.Scripts.Core
                 PlaceItem(gridCoord, e.ItemPlaced, shape);
                 // Hít tâm ItemView vào chính giữa cụm ô đã chiếm
                 e.SourceView.transform.position = GridToWorldPosition(gridCoord, shapeWidth, shapeHeight);
-                e.SourceView.isPlaceOnGrid = true;
+                e.SourceView.IsPlacedOnGrid = true;
             }
             else
             {
+                // Phát âm thanh 'tẹt' nhẹ khi đặt sai vị trí bay về khay
+                AudioManager.Instance?.PlayPlaceFail();
                 e.SourceView.ReturnToTrayPosition();
             }
         }

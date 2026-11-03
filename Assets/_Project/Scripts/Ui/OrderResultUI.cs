@@ -1,6 +1,7 @@
 using System;
 using _Project.Scripts.Core;
 using _Project.Scripts.Data;
+using _Project.Scripts.Managers;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
@@ -123,6 +124,9 @@ namespace _Project.Scripts.Ui
             float dayTimeRemaining, 
             string reviewQuote)
         {
+            // Phát âm thanh tiếng leng keng đồng xu rơi khi nhận tiền
+            AudioManager.Instance?.PlayRewardCoins();
+
             if (starRating != null) 
                 starRating.SetStars(stars);
 
@@ -145,6 +149,7 @@ namespace _Project.Scripts.Ui
                 txtReviewQuote.text = $"\"{reviewQuote}\"";
 
             gameObject.SetActive(true);
+            transform.SetAsLastSibling(); // Luôn nổi lên trên cùng của Canvas khi hiển thị kết quả
         }
 
         public void Close()
@@ -154,6 +159,9 @@ namespace _Project.Scripts.Ui
         
         private void HandleJobSubmitted(GameEvent.JobSubmittedEvent evt)
         {
+            // Phát âm thanh tiếng leng keng đồng xu rơi khi nhận kết quả
+            AudioManager.Instance?.PlayRewardCoins();
+
             int stars = evt.JobResult.Stars;
             int earnedGold = evt.JobResult.EarnedGold;
             float totalJobTime = evt.JobResult.TotalJobTime;
@@ -183,10 +191,14 @@ namespace _Project.Scripts.Ui
                 txtTimeRemaining.text = $"{dayTimeRemaining:0}s";
             
             SetVisibility(true);
+            transform.SetAsLastSibling(); // Luôn nổi lên trên cùng của Canvas khi hiển thị kết quả
+            
         }
         
         private void OnContinueButtonPressed()
         {
+            AudioManager.Instance?.PlayButtonClick();
+
             //An bang ket qua
             SetVisibility(false);
             
