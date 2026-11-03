@@ -125,7 +125,7 @@ namespace _Project.Scripts.Ui
             string reviewQuote)
         {
             // Phát âm thanh tiếng leng keng đồng xu rơi khi nhận tiền
-            AudioManager.Instance?.PlaySFX(AudioManager.Instance.sfxRewardCoins);
+            AudioManager.Instance?.PlayRewardCoins();
 
             if (starRating != null) 
                 starRating.SetStars(stars);
@@ -159,7 +159,7 @@ namespace _Project.Scripts.Ui
         private void HandleJobSubmitted(GameEvent.JobSubmittedEvent evt)
         {
             // Phát âm thanh tiếng leng keng đồng xu rơi khi nhận kết quả
-            AudioManager.Instance?.PlaySFX(AudioManager.Instance.sfxRewardCoins);
+            AudioManager.Instance?.PlayRewardCoins();
 
             int stars = evt.JobResult.Stars;
             int earnedGold = evt.JobResult.EarnedGold;
@@ -194,7 +194,7 @@ namespace _Project.Scripts.Ui
         
         private void OnContinueButtonPressed()
         {
-            AudioManager.Instance?.PlaySFX(AudioManager.Instance.sfxButtonClick);
+            AudioManager.Instance?.PlayButtonClick();
 
             //An bang ket qua
             SetVisibility(false);

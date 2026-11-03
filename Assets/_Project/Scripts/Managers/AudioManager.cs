@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 namespace _Project.Scripts.Managers
@@ -12,14 +13,14 @@ namespace _Project.Scripts.Managers
         private const float DefaultVolume = 0.75f;
 
         [Header("BGM Clips")]
-        public AudioClip bgmGameplay;
+        [SerializeField] private AudioClip bgmGameplay;
 
         [Header("Gameplay SFX Clips")]
-        public AudioClip sfxPlaceSuccess;
-        public AudioClip sfxPlaceFail;
-        public AudioClip sfxButtonClick;
-        public AudioClip sfxRewardCoins;
-        public AudioClip sfxTruckHorn;
+        [SerializeField] private AudioClip sfxPlaceSuccess;
+        [SerializeField] private AudioClip sfxPlaceFail;
+        [SerializeField] private AudioClip sfxButtonClick;
+        [SerializeField] private AudioClip sfxRewardCoins;
+        [SerializeField] private AudioClip sfxTruckHorn;
 
         [Header("Audio Sources")]
         [SerializeField] private AudioSource bgmSource;
@@ -103,7 +104,7 @@ namespace _Project.Scripts.Managers
                 bgmSource.volume = bgmVolume;
             }
             PlayerPrefs.SetFloat(PrefKeyBgmVolume, bgmVolume);
-            PlayerPrefs.Save();
+            //PlayerPrefs.Save();
         }
 
         public void SetSFXVolume(float volume)
@@ -114,6 +115,11 @@ namespace _Project.Scripts.Managers
                 sfxSource.volume = sfxVolume;
             }
             PlayerPrefs.SetFloat(PrefKeySfxVolume, sfxVolume);
+            //PlayerPrefs.Save();
+        }
+
+        private void OnApplicationQuit()
+        {
             PlayerPrefs.Save();
         }
 

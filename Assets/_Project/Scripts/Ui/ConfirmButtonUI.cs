@@ -48,7 +48,7 @@ namespace _Project.Scripts.Ui
                 return;
             }
 
-            AudioManager.Instance?.PlaySFX(AudioManager.Instance.sfxTruckHorn);
+            AudioManager.Instance?.PlayTruckHorn();
 
             confirmButton.interactable = false;
             

@@ -91,6 +91,7 @@ namespace _Project.Scripts.Ui
 
         public void Close()
         {
+            PlayerPrefs.Save(); //Lưu khi đóng bảng cài đặt
             gameObject.SetActive(false);
         }
 

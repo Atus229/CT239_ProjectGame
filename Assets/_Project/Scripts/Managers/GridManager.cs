@@ -127,7 +127,7 @@ namespace _Project.Scripts.Core
             EventBus.Publish(new GameEvent.ItemPlacedEvent(item, startPos ,dropPosition));
 
             // Phát âm thanh 'cộp' gỗ khi đặt đồ vào xe thành công
-            AudioManager.Instance?.PlaySFX(AudioManager.Instance.sfxPlaceSuccess);
+            AudioManager.Instance?.PlayPlaceSuccess();
 
             Debug.Log($"[GridManager] Đã xếp '{item.ItemName}' vào ô {startPos}");
         }
@@ -230,7 +230,7 @@ namespace _Project.Scripts.Core
             else
             {
                 // Phát âm thanh 'tẹt' nhẹ khi đặt sai vị trí bay về khay
-                AudioManager.Instance?.PlaySFX(AudioManager.Instance.sfxPlaceFail);
+                AudioManager.Instance?.PlayPlaceFail();
                 e.SourceView.ReturnToTrayPosition();
             }
         }
