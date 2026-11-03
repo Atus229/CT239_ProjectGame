@@ -182,5 +182,18 @@ namespace _Project.Scripts.Core
                 this.UpgradeType = upgradeType;
             }
         }
+        
+        // Sự kiện phát ra khi kích thước lưới khoang xe thay đổi (Nâng cấp xe)
+        public struct GridSizeChangedEvent
+        {
+            public int Columns;
+            public int Rows;
+
+            public GridSizeChangedEvent(int columns, int rows)
+            {
+                this.Columns = columns;
+                this.Rows = rows;
+            }
+        }
     }
 }
