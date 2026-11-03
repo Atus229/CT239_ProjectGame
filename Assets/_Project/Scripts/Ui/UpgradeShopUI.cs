@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using _Project.Scripts.Core;
 using _Project.Scripts.Managers;
 using UnityEngine;
 using UnityEngine.UI;
@@ -22,16 +23,23 @@ namespace _Project.Scripts.Ui
         [Header("Buttons")]
         [SerializeField] private Button btnClose;
 
-        [Header("Mock Data Test Settings")]
-        [SerializeField] private int playerGoldMock = 200; // Tiền giả lập để test
+        [Header("Test & Mock Data Settings")]
+        [Tooltip("Nếu tick, Shop sẽ tự mở khi nhấn Play (dùng cho Scene Test). Khi vào Game thật, hãy bỏ tick.")]
+        [SerializeField] private bool openOnStart = false;
+        [SerializeField] private int playerGoldMock = 200; // Tiền giả lập để test khi không có DayManager
 
-        private List<UpgradeCardUI> spawnedCards = new List<UpgradeCardUI>();
+        private int currentGold;
+        private readonly List<UpgradeCardUI> spawnedCards = new List<UpgradeCardUI>();
 
         private void Awake()
         {
             if (canvasGroup == null)
             {
                 canvasGroup = GetComponent<CanvasGroup>();
+            }
+            if (canvasGroup == null)
+            {
+                canvasGroup = gameObject.AddComponent<CanvasGroup>();
             }
 
             if (btnClose != null)
@@ -51,19 +59,65 @@ namespace _Project.Scripts.Ui
 
         private void Start()
         {
-            UpdateGoldUI();
-            OpenShop();
-            GenerateUpgradeCards();
+            // Mặc định đóng Shop để không che màn hình khi vào Scene chơi game
+            if (openOnStart)
+            {
+                OpenShop();
+            }
+            else
+            {
+                CloseShop();
+            }
         }
 
+        /// <summary>
+        /// Mở Cửa hàng Nâng cấp, tự động đồng bộ số vàng thực tế từ DayManager
+        /// Đảm bảo luôn nằm đè lên trên bảng Summary Day (Last Sibling của Canvas)
+        /// </summary>
         public void OpenShop()
         {
-            if (canvasGroup == null) return;
+            if (!gameObject.activeSelf)
+            {
+                gameObject.SetActive(true);
+            }
+
+            if (canvasGroup == null)
+            {
+                canvasGroup = GetComponent<CanvasGroup>();
+            }
+            if (canvasGroup == null)
+            {
+                canvasGroup = gameObject.AddComponent<CanvasGroup>();
+            }
+
+            // 1. Lấy số vàng thực tế từ DayManager (hoặc fallback về mock data khi test độc lập)
+            currentGold = GetCurrentGold();
+
+            // 2. Cập nhật giao diện tiền
+            UpdateGoldUI();
+
+            // 3. Khởi tạo danh sách thẻ hoặc làm mới trạng thái
+            if (spawnedCards.Count == 0)
+            {
+                GenerateUpgradeCards();
+            }
+            else
+            {
+                RefreshAllCardsState();
+            }
+
+            // 4. Bật hiển thị giao diện và đưa lên trên cùng Canvas (nằm đè lên DaySummary)
             canvasGroup.alpha = 1f;
             canvasGroup.blocksRaycasts = true;
             canvasGroup.interactable = true;
+            transform.SetAsLastSibling();
+
+            Debug.Log($"<color=cyan>[UpgradeShopUI]</color> Đã mở Cửa hàng Nâng cấp. Vàng khả dụng: ${currentGold}");
         }
 
+        /// <summary>
+        /// Đóng Cửa hàng Nâng cấp và ẩn khỏi màn hình
+        /// </summary>
         public void CloseShop()
         {
             if (canvasGroup == null) return;
@@ -77,12 +131,12 @@ namespace _Project.Scripts.Ui
         {
             if (txtGold != null)
             {
-                txtGold.text = $"Vàng hiện có: ${playerGoldMock}";
+                txtGold.text = $"Vàng hiện có: ${currentGold}";
             }
         }
 
         /// <summary>
-        /// Sinh cac the nang cap tu danh muc co san trong UpgradeManager
+        /// Sinh các thẻ nâng cấp từ danh mục có sẵn trong UpgradeManager
         /// </summary>
         private void GenerateUpgradeCards()
         {
@@ -93,27 +147,27 @@ namespace _Project.Scripts.Ui
                 return;
             }
 
-            //Duyet toan bo danh muc nang cap co trong game
+            // Duyệt toàn bộ danh mục nâng cấp có trong game
             foreach (var card in UpgradeManager.Instance.AvailableUpgrades)
             {
-                if (card == null) return;
+                if (card == null) continue;
                 
-                //Tao card
+                // Tạo card
                 UpgradeCardUI cardInstance = Instantiate(upgradeCardPrefab, cardContainer);
                 
-                //Setup card va gan callback
-                cardInstance.SetupCard(card, playerGoldMock, () =>
+                // Setup card và gán callback
+                cardInstance.SetupCard(card, currentGold, () =>
                 {
-                    //Goi thang vao Upgrade Manager de mua
-                    if (UpgradeManager.Instance.TryPurchaseUpgrade(card.UpgradeID, ref playerGoldMock))
+                    // Gọi thẳng vào UpgradeManager để mua
+                    if (UpgradeManager.Instance.TryPurchaseUpgrade(card.UpgradeID, ref currentGold))
                     {
+                        SaveCurrentGold(currentGold);
                         UpdateGoldUI();
                         RefreshAllCardsState();
                     }
                 });
                 
                 spawnedCards.Add(cardInstance);
-                
             }
             
             // Cập nhật lại Layout cho ScrollView
@@ -122,7 +176,6 @@ namespace _Project.Scripts.Ui
                 LayoutRebuilder.ForceRebuildLayoutImmediate(rectTransform);
             }
         }
-        
 
         /// <summary>
         /// Duyệt danh sách thẻ đã khởi tạo để cập nhật trạng thái, KHÔNG tạo lại (Destroy/Instantiate)
@@ -133,19 +186,47 @@ namespace _Project.Scripts.Ui
             {
                 if (card != null)
                 {
-                    card.UpdateCardVisual(playerGoldMock);
+                    card.UpdateCardVisual(currentGold);
                 }
             }
         }
 
         private void ClearCards()
         {
-			if (cardContainer == null) return;
+            if (cardContainer == null) return;
             foreach (Transform child in cardContainer)
             {
                 Destroy(child.gameObject);
             }
             spawnedCards.Clear();
+        }
+
+        /// <summary>
+        /// Lấy số vàng thực tế từ DayManager nếu có, hoặc dùng mock data
+        /// </summary>
+        private int GetCurrentGold()
+        {
+            if (DayManager.Instance != null)
+            {
+                return DayManager.Instance.PlayerGold;
+            }
+            return playerGoldMock;
+        }
+
+        /// <summary>
+        /// Lưu lại số vàng sau khi mua nâng cấp vào DayManager hoặc mock data
+        /// </summary>
+        private void SaveCurrentGold(int newGold)
+        {
+            currentGold = newGold;
+            if (DayManager.Instance != null)
+            {
+                DayManager.Instance.PlayerGold = newGold;
+            }
+            else
+            {
+                playerGoldMock = newGold;
+            }
         }
     }
 }

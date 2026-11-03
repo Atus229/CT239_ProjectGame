@@ -13,11 +13,12 @@ MonoBehaviour:
   m_Name: SO_Upgrade_2_VehicleCapacity
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.Data.UpgradeData
   upgradeID: 2
-  upgradeName: 
+  upgradeName: "M\u1EDF r\u1ED9ng th\xF9ng xe (+1 h\xE0ng)"
   upgradeType: VehicleCapacity
   baseCost: 150
   costGrowth: 2.333
   maxLevel: 3
   baseEffectValue: 1
-  description: 
+  description: "M\u1EDF r\u1ED9ng th\xF9ng xe th\xEAm 1 h\xE0ng \xF4 \u0111\u1EC3
+    ch\u1EDF \u0111\u01B0\u1EE3c nhi\u1EC1u \u0111\u1ED3 h\u01A1n."
   icon: {fileID: 0}

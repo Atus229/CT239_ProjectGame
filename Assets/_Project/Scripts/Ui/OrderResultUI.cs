@@ -73,7 +73,7 @@ namespace _Project.Scripts.Ui
 
         private void Awake()
         {
-            if(canvasGroup==null)
+            if (canvasGroup == null)
             {
                 canvasGroup = GetComponent<CanvasGroup>();
             }
@@ -99,7 +99,6 @@ namespace _Project.Scripts.Ui
             }
         }
 
-
         private void OnEnable()
         {
             EventBus.Subscribe<GameEvent.JobSubmittedEvent>(HandleJobSubmitted);
@@ -110,9 +109,7 @@ namespace _Project.Scripts.Ui
             EventBus.Unsubscribe<GameEvent.JobSubmittedEvent>(HandleJobSubmitted);
         }
 
-        
-
-        //Nạp toàn bộ dữ liệu kết quả đơn hàng vào giao diện
+        // Nạp toàn bộ dữ liệu kết quả đơn hàng vào giao diện
         public void DisplayResult(
             int stars, 
             float totalJobTime, 
@@ -124,6 +121,11 @@ namespace _Project.Scripts.Ui
             float dayTimeRemaining, 
             string reviewQuote)
         {
+            if (canvasGroup == null)
+            {
+                canvasGroup = GetComponent<CanvasGroup>();
+            }
+
             // Phát âm thanh tiếng leng keng đồng xu rơi khi nhận tiền
             AudioManager.Instance?.PlayRewardCoins();
 
@@ -149,6 +151,7 @@ namespace _Project.Scripts.Ui
                 txtReviewQuote.text = $"\"{reviewQuote}\"";
 
             gameObject.SetActive(true);
+            SetVisibility(true);
             transform.SetAsLastSibling(); // Luôn nổi lên trên cùng của Canvas khi hiển thị kết quả
         }
 
@@ -168,7 +171,7 @@ namespace _Project.Scripts.Ui
             float timeMin = evt.Job != null ? evt.Job.TimeMin : 0f;
             float timeMax = evt.Job != null ? evt.Job.TimeMax : 0f;
             
-            //tinh quy thoi gian con lai trong ngay
+            // Tính quỹ thời gian còn lại trong ngày
             float dayTimeRemaining = 0f;
             if (DayManager.Instance != null)
             {
@@ -180,7 +183,7 @@ namespace _Project.Scripts.Ui
                 starRating.SetStars(stars);
             }
             
-            //Dien du lieu vao nhan
+            // Điền dữ liệu vào nhãn
             if (txtTotalJobTime != null)
                 txtTotalJobTime.text = $"{totalJobTime:0}s";
             if (txtTargetWindow != null)
@@ -190,25 +193,29 @@ namespace _Project.Scripts.Ui
             if (txtTimeRemaining != null)
                 txtTimeRemaining.text = $"{dayTimeRemaining:0}s";
             
+            if (canvasGroup == null)
+            {
+                canvasGroup = GetComponent<CanvasGroup>();
+            }
+
             SetVisibility(true);
             transform.SetAsLastSibling(); // Luôn nổi lên trên cùng của Canvas khi hiển thị kết quả
-            
         }
         
         private void OnContinueButtonPressed()
         {
             AudioManager.Instance?.PlayButtonClick();
 
-            //An bang ket qua
+            // Ẩn bảng kết quả
             SetVisibility(false);
             
             JobData currentJob = JobEconomyManager.Instance != null ? JobEconomyManager.Instance.CurrentJobData : null;
             float timeRemaining = DayManager.Instance != null ? DayManager.Instance.TimeRemaining : 0f;
             
-            //Phat tin hieu len eventbus cho daymanager va jobboardui nhan dien
-            EventBus.Publish(new GameEvent.ContinueFromJobResultEvent(currentJob, timeRemaining));
-            
-        }
+            OnContinueClicked?.Invoke();
 
+            // Phát tín hiệu lên eventbus cho daymanager và jobboardui nhận diện
+            EventBus.Publish(new GameEvent.ContinueFromJobResultEvent(currentJob, timeRemaining));
+        }
     }
 }

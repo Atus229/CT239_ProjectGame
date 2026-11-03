@@ -1,4 +1,3 @@
-
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -33,23 +32,18 @@ namespace _Project.Scripts.Ui
         private void OnEnable()
         {
             EventBus.Subscribe<GameEvent.DayStartedEvent>(OnDayStarted);
-            
             EventBus.Subscribe<GameEvent.DayTimeUpdatedEvent>(OnDayTimeUpdated);
             EventBus.Subscribe<GameEvent.JobSelectedEvent>(OnJobSelected);
             EventBus.Subscribe<GameEvent.ContinueFromJobResultEvent>(OnContinueFromJobResult);
-            
             EventBus.Subscribe<GameEvent.DayEndedEvent>(OndayEnded);
         }
-        
 
         private void OnDisable()
         {
             EventBus.Unsubscribe<GameEvent.DayStartedEvent>(OnDayStarted);
-            
             EventBus.Unsubscribe<GameEvent.DayTimeUpdatedEvent>(OnDayTimeUpdated);
             EventBus.Unsubscribe<GameEvent.JobSelectedEvent>(OnJobSelected);
             EventBus.Unsubscribe<GameEvent.ContinueFromJobResultEvent>(OnContinueFromJobResult);
-            
             EventBus.Unsubscribe<GameEvent.DayEndedEvent>(OndayEnded);
         }
 
@@ -94,7 +88,6 @@ namespace _Project.Scripts.Ui
         {
             currentDayTimeRemaining = evt.RemainingTime;
 
-            // Chỉ gọi hàm cập nhật lock state theo thời gian, không nạp lại text hay tính lại tiền
             foreach (var card in activeCardList)
             {
                 if (card != null)
@@ -117,7 +110,6 @@ namespace _Project.Scripts.Ui
         /// </summary>
         private void OnContinueFromJobResult(GameEvent.ContinueFromJobResultEvent evt)
         {
-
             if (evt.CompletedJob != null)
             {
                 currentDailyJobs.Remove(evt.CompletedJob);
@@ -138,7 +130,10 @@ namespace _Project.Scripts.Ui
                 SetVisibility(true);
                 PopulateJobs(currentDailyJobs, evt.RemainingTime);
             }
-            else SetVisibility(false);
+            else
+            {
+                SetVisibility(false);
+            }
         }
         
         /// <summary>
@@ -146,17 +141,20 @@ namespace _Project.Scripts.Ui
         /// </summary>
         public void SetVisibility(bool visibility)
         {
-            if(canvasGroup != null)
+            if (canvasGroup != null)
             {
                 canvasGroup.alpha = visibility ? 1 : 0;
                 canvasGroup.interactable = visibility;
                 canvasGroup.blocksRaycasts = visibility;
             }
-
             else
             {
-                //du phong
                 gameObject.SetActive(visibility);
+            }
+
+            if (visibility)
+            {
+                transform.SetAsLastSibling(); // Luôn nổi lên trên cùng của Canvas khi hiển thị Bảng việc
             }
         }
         
@@ -173,18 +171,15 @@ namespace _Project.Scripts.Ui
         /// </summary>
         private void OnDayStarted(GameEvent.DayStartedEvent e)
         {
-            //hien thi bang viec
             SetVisibility(true);
 
             List<JobData> jobs = e.dailyJobs;
-            //Neu trong goi tin chua co -> tu sang DayManager lay du lieu
-            if (jobs == null && DayManager.Instance.activeJobsOnBoard!=null)
+            if (jobs == null && DayManager.Instance != null && DayManager.Instance.activeJobsOnBoard != null)
             {
                 jobs = DayManager.Instance.activeJobsOnBoard;
             }
             
             PopulateJobs(jobs, e.dayTimeBudget);
-            
         }
     }
 }

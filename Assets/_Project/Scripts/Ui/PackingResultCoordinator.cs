@@ -18,6 +18,8 @@ namespace _Project.Scripts.Ui
         [Tooltip("Tự động kết thúc ngày khi quỹ thời gian còn lại không đủ nhận thêm đơn (TimeRemaining < Tmin)")]
         [SerializeField] private bool autoEndDayWhenNoTime = true;
 
+        [SerializeField] private UpgradeShopUI upgradeShopUI;
+        
         private JobResult lastJobResult;
         private JobData lastJobData;
 
@@ -50,7 +52,9 @@ namespace _Project.Scripts.Ui
             if (daySummaryUI != null)
             {
                 daySummaryUI.OnStartNextDayClicked += HandleStartNextDay;
+                daySummaryUI.OnUpgradeShopClicked += HandleOpenUpgradeShop;
             }
+            
         }
 
         private void OnDisable()
@@ -66,6 +70,7 @@ namespace _Project.Scripts.Ui
             if (daySummaryUI != null)
             {
                 daySummaryUI.OnStartNextDayClicked -= HandleStartNextDay;
+                daySummaryUI.OnUpgradeShopClicked -= HandleOpenUpgradeShop;
             }
         }
 
@@ -195,13 +200,6 @@ namespace _Project.Scripts.Ui
             }
 
             Debug.Log("[PackingResultCoordinator] Bắt đầu ngày mới!");
-            if (DayManager.Instance != null)
-            {
-                DayData nextDay = ScriptableObject.CreateInstance<DayData>();
-                nextDay.DayIndex = DayManager.Instance.CurrentDayIndex + 1;
-                nextDay.DayTimeBudget = DayManager.Instance.TimeBudget > 0 ? DayManager.Instance.TimeBudget : 180f;
-                DayManager.Instance.StartNewDay(nextDay);
-            }
         }
 
         private void TriggerEndDay()
@@ -251,6 +249,14 @@ namespace _Project.Scripts.Ui
             }
 
             return "Quá trễ hẹn! Rất không hài lòng về thời gian giao hàng.";
+        }
+        
+        private void HandleOpenUpgradeShop()
+        {
+            if (upgradeShopUI != null)
+            {
+                upgradeShopUI.OpenShop();
+            }
         }
     }
 }

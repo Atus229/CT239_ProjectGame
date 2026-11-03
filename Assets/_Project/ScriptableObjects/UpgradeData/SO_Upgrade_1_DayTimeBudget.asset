@@ -13,11 +13,12 @@ MonoBehaviour:
   m_Name: SO_Upgrade_1_DayTimeBudget
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.Data.UpgradeData
   upgradeID: 1
-  upgradeName: Upgrade
+  upgradeName: "Th\xEAm gi\u1EDD l\xE0m (+30s)"
   upgradeType: DayTimeBudget
   baseCost: 100
   costGrowth: 2.5
   maxLevel: 3
   baseEffectValue: 30
-  description: 
+  description: "C\u1ED9ng th\xEAm 30 gi\xE2y v\xE0o qu\u1EF9 th\u1EDDi gian l\xE0m
+    vi\u1EC7c trong ng\xE0y."
   icon: {fileID: 0}

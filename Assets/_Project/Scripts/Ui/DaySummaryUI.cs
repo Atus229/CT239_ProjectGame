@@ -36,13 +36,11 @@ namespace _Project.Scripts.Ui
         [SerializeField] private float testRating = 4.2f;
         [SerializeField] [Range(0f, 1f)] private float testUsedTimeNormalized = 0.85f;
 
-        [SerializeField] CanvasGroup  canvasGroup;
+        [SerializeField] CanvasGroup canvasGroup;
         
         public event Action OnStartNextDayClicked;
         public event Action OnBusinessReportClicked;
         public event Action OnUpgradeShopClicked;
-        
-        
 
         public bool TestInPlayMode
         {
@@ -66,7 +64,6 @@ namespace _Project.Scripts.Ui
 
             SetVisibility(false);
             
-            
             if (btnStartNextDay != null)
                 btnStartNextDay.onClick.AddListener(()=>
             {
@@ -81,7 +78,6 @@ namespace _Project.Scripts.Ui
             if (btnUpgradeShop != null)
                 btnUpgradeShop.onClick.AddListener(() => OnUpgradeShopClicked?.Invoke());
         }
-        
 
         private void Start()
         {
@@ -205,6 +201,16 @@ namespace _Project.Scripts.Ui
         
         private void SetVisibility(bool isVisible)
         {
+            if (isVisible && !gameObject.activeSelf)
+            {
+                gameObject.SetActive(true);
+            }
+
+            if (canvasGroup == null)
+            {
+                canvasGroup = GetComponent<CanvasGroup>();
+            }
+
             if (canvasGroup != null)
             {
                 canvasGroup.alpha = isVisible ? 1f : 0f;
@@ -214,6 +220,11 @@ namespace _Project.Scripts.Ui
             else
             {
                 gameObject.SetActive(isVisible);
+            }
+
+            if (isVisible)
+            {
+                transform.SetAsLastSibling();
             }
         }
     }

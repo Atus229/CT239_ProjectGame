@@ -27,10 +27,10 @@ namespace _Project.Scripts.Data
         [Header("Danh sach don hang trong ngay")] [SerializeField]
         private List<JobData> dailyJobs = new List<JobData>();
 
-        public List<JobData> DailyJobs => dailyJobs;
-        
-        
-
+        public List<JobData> DailyJobs
+        {
+            get => dailyJobs;
+            set => dailyJobs = value;
+        }
     }
-    
 }

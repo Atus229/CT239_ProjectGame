@@ -12,6 +12,7 @@ namespace _Project.Scripts.Core
 
         [Header("Day Config & Runtime Data")] [SerializeField]
         private DayData currentDayData;
+        private List<JobData> templateJobs = new List<JobData>(); // Lưu lại mẫu danh sách đơn ban đầu
 
         private float dayTimeBudget; // Quỹ thời gian tổng của ngày
         private float dayTimeRemaining; // Quỹ thời gian còn lại
@@ -21,6 +22,9 @@ namespace _Project.Scripts.Core
         private int completedJobsCount;
         private int totalEarnedInDay;
         private int totalStarsInDay;
+
+        [Header("Player Economy")]
+        [SerializeField] private int playerGold = 0; // Ví tiền tích luỹ của người chơi
         
         private float bonusTimeBudgetFromUpgrade = 0f; // Lưu trữ số giây nâng cấp tích lũy
         private bool isDayActive = false;              // Kiểm tra xem ngày có đang diễn ra hay đã kết thúc
@@ -28,6 +32,13 @@ namespace _Project.Scripts.Core
         public float TimeRemaining => dayTimeRemaining; 
         public float TimeBudget => dayTimeBudget; 
         public int CurrentDayIndex => currentDayIndex;
+        public int TotalEarnedInDay => totalEarnedInDay;
+        public DayData CurrentDayData => currentDayData;
+        public int PlayerGold
+        {
+            get => playerGold;
+            set => playerGold = Mathf.Max(0, value);
+        }
 
         private JobData currentActiveJob;
         private JobResult lastJobResult;
@@ -50,6 +61,10 @@ namespace _Project.Scripts.Core
         {
             if (currentDayData != null)
             {
+                if (currentDayData.DailyJobs != null)
+                {
+                    templateJobs = new List<JobData>(currentDayData.DailyJobs);
+                }
                 StartNewDay(currentDayData);
             }
             else
@@ -67,8 +82,8 @@ namespace _Project.Scripts.Core
             EventBus.Subscribe<GameEvent.JobSubmittedEvent>(HandleJobSubmitted);
             EventBus.Subscribe<GameEvent.ContinueFromJobResultEvent>(HandleContinueFromJobResult);
             EventBus.Subscribe<GameEvent.NextDayRequestedEvent>(HandleNextDayRequested);
+            EventBus.Subscribe<GameEvent.UpgradePurchasedEvent>(HandleUpgradePurchased);
         }
-        
 
         private void OnDisable()
         {
@@ -76,6 +91,7 @@ namespace _Project.Scripts.Core
             EventBus.Unsubscribe<GameEvent.JobSubmittedEvent>(HandleJobSubmitted);
             EventBus.Unsubscribe<GameEvent.ContinueFromJobResultEvent>(HandleContinueFromJobResult);
             EventBus.Unsubscribe<GameEvent.NextDayRequestedEvent>(HandleNextDayRequested);
+            EventBus.Unsubscribe<GameEvent.UpgradePurchasedEvent>(HandleUpgradePurchased);
         }
         
         /// <summary>
@@ -88,7 +104,16 @@ namespace _Project.Scripts.Core
             
             dayTimeBudget = dayData.DayTimeBudget + bonusTimeBudgetFromUpgrade; 
             dayTimeRemaining = dayTimeBudget;
-            activeJobsOnBoard = new List<JobData>(dayData.DailyJobs);
+
+            // Nếu dayData chưa có đơn hàng, nạp từ templateJobs ban đầu để người chơi luôn có đơn chơi ngày mới
+            if (dayData.DailyJobs == null || dayData.DailyJobs.Count == 0)
+            {
+                activeJobsOnBoard = new List<JobData>(templateJobs);
+            }
+            else
+            {
+                activeJobsOnBoard = new List<JobData>(dayData.DailyJobs);
+            }
 
             completedJobsCount = 0;
             totalEarnedInDay = 0;
@@ -118,6 +143,7 @@ namespace _Project.Scripts.Core
 
             completedJobsCount++;
             totalEarnedInDay += earnedMoney;
+            playerGold += earnedMoney; // Tích lũy tiền vào ví người chơi
             totalStarsInDay += stars;
             
             EventBus.Publish(new GameEvent.DayTimeUpdatedEvent(dayTimeRemaining, dayTimeBudget));
@@ -133,7 +159,6 @@ namespace _Project.Scripts.Core
                 EndDay(isManual:false);
                 return;
             }
-            
             
             bool hasValidJob = false;
             foreach (var job in activeJobsOnBoard)
@@ -174,39 +199,44 @@ namespace _Project.Scripts.Core
                 usedTime = dayTimeBudget - Mathf.Max(0, dayTimeRemaining)
             };
 
-            //Phát tin sự kiện kết thúc ngày
+            // Phát tin sự kiện kết thúc ngày
             EventBus.Publish(new GameEvent.DayEndedEvent(record));
         }
         
         private void HandleJobSubmitted(GameEvent.JobSubmittedEvent e)
         {
-            DeductTimeAndRecordJob(e.JobResult.TotalJobTime,e.JobResult.EarnedGold, e.JobResult.Stars);
+            DeductTimeAndRecordJob(e.JobResult.TotalJobTime, e.JobResult.EarnedGold, e.JobResult.Stars);
         }
         
         private void HandleNextDayRequested(GameEvent.NextDayRequestedEvent obj)
         {
-            //Gia su co cau hinh du lieu ngay tiep theo hoac nap lai currenDayData
-            if (currentDayData != null)
-            {
-                StartNewDay(currentDayData);
-            }
+            // Tăng chỉ số ngày và bắt đầu ngày mới với danh sách đơn hàng mẫu
+            DayData nextDay = ScriptableObject.CreateInstance<DayData>();
+            nextDay.DayIndex = currentDayIndex + 1;
+            nextDay.DayTimeBudget = 180f; // Quỹ cơ bản (sẽ được tự động cộng thêm bonusTimeBudgetFromUpgrade trong StartNewDay)
+            nextDay.DailyJobs = new List<JobData>(templateJobs);
+            StartNewDay(nextDay);
         }
 
-        
         private void HandleContinueFromJobResult(GameEvent.ContinueFromJobResultEvent obj)
         {
-           //Đã trừ ở handlejobsubmitted rồi
-           //DeductTimeAndRecordJob(lastJobResult.TotalJobTime, lastJobResult.EarnedGold, lastJobResult.Stars);
-           
-           //Xoa don ra khoi bang viec
-           if (currentActiveJob != null)
-           {
-               activeJobsOnBoard.Remove(currentActiveJob);
-               currentActiveJob = null;
-           }
-           
-           //Kiem tra dieu kien ket thuc ngay
-           CheckAutoEndDayCondition(activeJobsOnBoard);
+            // Xóa đơn ra khỏi bảng việc
+            if (currentActiveJob != null)
+            {
+                activeJobsOnBoard.Remove(currentActiveJob);
+                currentActiveJob = null;
+            }
+            
+            // Kiểm tra điều kiện kết thúc ngày
+            CheckAutoEndDayCondition(activeJobsOnBoard);
+        }
+
+        private void HandleUpgradePurchased(GameEvent.UpgradePurchasedEvent e)
+        {
+            if (e.UpgradeType == UpgradeData.TypeDayTimeBudget)
+            {
+                IncreaseDayBudget(30f);
+            }
         }
 
         private void HandleJobSelected(GameEvent.JobSelectedEvent e)
@@ -238,6 +268,7 @@ namespace _Project.Scripts.Core
                 EventBus.Publish(new GameEvent.DayTimeUpdatedEvent(dayTimeRemaining, dayTimeBudget));
             }
 
-            Debug.Log($"[DayManager] Đã cộng +{extraSeconds}s nâng cấp. Quỹ hiện tại: {dayTimeBudget}s (Bonus tích luỹ: +{bonusTimeBudgetFromUpgrade}s).");        }
+            Debug.Log($"[DayManager] Đã cộng +{extraSeconds}s nâng cấp. Quỹ hiện tại: {dayTimeBudget}s (Bonus tích luỹ: +{bonusTimeBudgetFromUpgrade}s).");
+        }
     }
 }
