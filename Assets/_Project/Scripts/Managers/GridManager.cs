@@ -18,6 +18,7 @@ namespace _Project.Scripts.Core
 
         public int Columns => columns;
         public int Rows => rows;
+        public float CellSize => cellSize;
         public int TotalCellCount => columns * rows;
 
         /// <summary>
@@ -225,7 +226,7 @@ namespace _Project.Scripts.Core
                 PlaceItem(gridCoord, e.ItemPlaced, shape);
                 // Hít tâm ItemView vào chính giữa cụm ô đã chiếm
                 e.SourceView.transform.position = GridToWorldPosition(gridCoord, shapeWidth, shapeHeight);
-                e.SourceView.isPlaceOnGrid = true;
+                e.SourceView.IsPlacedOnGrid = true;
             }
             else
             {
