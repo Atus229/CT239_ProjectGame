@@ -20,6 +20,9 @@ namespace _Project.Scripts.Core
         public int Rows => rows;
         public float CellSize => cellSize;
         public int TotalCellCount => columns * rows;
+        
+        private const int MAX_COLUMNS = 8; // Giới hạn tối đa chiều ngang thùng xe
+        private const int MAX_ROWS = 8;    // Giới hạn tối đa chiều dọc thùng xe
 
         /// <summary>
         /// Số ô hiện đang chứa hàng hoá trên xe
@@ -247,6 +250,56 @@ namespace _Project.Scripts.Core
         private void OnContinueFromResult(GameEvent.ContinueFromJobResultEvent e)
         {
             CleanGrid();
+        }
+        
+        [ContextMenu("TEST: Mở Rộng 4x4 lên 4x5")]
+        public void TestExpand() => ExpandGrid(0, 1);
+
+        /// <summary>
+        /// Mở rộng kích thước khoang xe bằng cách cộng thêm số cột và số hàng.
+        /// Giữ nguyên các hàng hóa hiện có trên lưới ô[cite: 2].
+        /// API dành cho Leader gọi từ UpgradeManager hoặc Save/Load Manager[cite: 4, 8].
+        /// </summary>
+        /// <param name="extraCols">Số cột muốn tăng thêm (ví dụ: 0 nếu giữ nguyên cột)</param>
+        /// <param name="extraRows">Số hàng muốn tăng thêm (ví dụ: 1 để mở rộng 4x4 thành 4x5)</param>
+        public void ExpandGrid(int extraCols, int extraRows)
+        {
+            if (extraCols <= 0 && extraRows <= 0) return;
+
+            int oldCols = columns;
+            int oldRows = rows;
+            
+            // Kẹp trần giá trị tối đa để bảo vệ bộ nhớ và bố cục UI
+            int targetCols = Mathf.Clamp(columns + Mathf.Max(0, extraCols), 1, MAX_COLUMNS);
+            int targetRows = Mathf.Clamp(rows + Mathf.Max(0, extraRows), 1, MAX_ROWS);
+            
+            // Nếu đã chạm mức tối đa thì không cần cấp phát lại mảng
+            if (targetCols == oldCols && targetRows == oldRows)
+            {
+                Debug.LogWarning($"[GridManager] Đã đạt kích thước xe tối đa ({MAX_COLUMNS}x{MAX_ROWS}).");
+                return;
+            }
+            
+            columns = targetCols;
+            rows = targetRows;
+            ItemData[,] newGrid = new ItemData[columns, rows];
+            // Sao chép dữ liệu từ ma trận cũ sang ma trận mới
+            if (grid != null)
+            {
+                for (int x = 0; x < oldCols; x++)
+                {
+                    for (int y = 0; y < oldRows; y++)
+                    {
+                        newGrid[x, y] = grid[x, y];
+                    }
+                }
+            }
+            
+            grid  = newGrid;
+            
+            // 🔔 Bắn tin cho UI biết để vẽ thêm các ô Slot mới!
+            EventBus.Publish(new GameEvent.GridSizeChangedEvent(columns, rows));
+            Debug.Log($"[GridManager] Đã mở rộng lưới xe: {oldCols}x{oldRows} -> {columns}x{rows}.");
         }
     }
 }

@@ -21,6 +21,9 @@ namespace _Project.Scripts.Core
         private int completedJobsCount;
         private int totalEarnedInDay;
         private int totalStarsInDay;
+        
+        private float bonusTimeBudgetFromUpgrade = 0f; // Lưu trữ số giây nâng cấp tích lũy
+        private bool isDayActive = false;              // Kiểm tra xem ngày có đang diễn ra hay đã kết thúc
 
         public float TimeRemaining => dayTimeRemaining; 
         public float TimeBudget => dayTimeBudget; 
@@ -82,13 +85,15 @@ namespace _Project.Scripts.Core
         {
             currentDayData = dayData;
             currentDayIndex = dayData.DayIndex;
-            dayTimeBudget = dayData.DayTimeBudget; 
+            
+            dayTimeBudget = dayData.DayTimeBudget + bonusTimeBudgetFromUpgrade; 
             dayTimeRemaining = dayTimeBudget;
             activeJobsOnBoard = new List<JobData>(dayData.DailyJobs);
 
             completedJobsCount = 0;
             totalEarnedInDay = 0;
             totalStarsInDay = 0;
+            isDayActive = true;
             
             EventBus.Publish(new GameEvent.DayStartedEvent(currentDayIndex, dayTimeBudget, activeJobsOnBoard));
             EventBus.Publish(new GameEvent.DayTimeUpdatedEvent(dayTimeRemaining, dayTimeBudget));
@@ -156,7 +161,8 @@ namespace _Project.Scripts.Core
         /// </summary>
         public void EndDay(bool isManual = false)
         {
-
+            isDayActive = false;
+            
             float avgStars = completedJobsCount > 0 ? (float)totalStarsInDay / completedJobsCount : 0f;
 
             DayHistoryRecord record = new DayHistoryRecord
@@ -207,5 +213,31 @@ namespace _Project.Scripts.Core
         {
             currentActiveJob = e.SelectedJob;
         }
+
+        [ContextMenu("TEST: Tăng 20s Quỹ Giờ")]
+        public void TestIncreaseBudget() => IncreaseDayBudget(20f);
+        
+        /// <summary>
+        /// Cộng thêm một lượng thời gian (tính bằng giây) vào quỹ thời gian làm việc trong ngày
+        /// Tự động cập nhật TimeBudget, TimeRemaining và phát sự kiện cập nhật UI
+        /// API dành cho Leader gọi khi áp dụng Nâng cấp Quỹ thời gian
+        /// </summary>
+        /// <param name="extraSeconds">Số giây muốn cộng thêm (ví dụ: 20f để tăng từ 180s lên 200s)</param>
+        public void IncreaseDayBudget(float extraSeconds)
+        {
+            if (extraSeconds <= 0f) return;
+
+            bonusTimeBudgetFromUpgrade += extraSeconds;
+
+            if (isDayActive)
+            {
+                dayTimeBudget += extraSeconds;
+                dayTimeRemaining += extraSeconds;
+
+                // Cập nhật giao diện thanh quỹ thời gian theo thời gian thực
+                EventBus.Publish(new GameEvent.DayTimeUpdatedEvent(dayTimeRemaining, dayTimeBudget));
+            }
+
+            Debug.Log($"[DayManager] Đã cộng +{extraSeconds}s nâng cấp. Quỹ hiện tại: {dayTimeBudget}s (Bonus tích luỹ: +{bonusTimeBudgetFromUpgrade}s).");        }
     }
 }
