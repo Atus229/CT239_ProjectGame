@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using _Project.Scripts.Data;
 using _Project.Scripts.Managers;
 using UnityEngine;
@@ -13,8 +14,12 @@ namespace _Project.Scripts.Core
         [SerializeField] private int columns = 4;
         [SerializeField] private int rows = 4;
         [SerializeField] private float cellSize = 100f;
+        
+        [Header("UI Grid Visual")]
+        [SerializeField] private RectTransform truckBedGridRect; // Khung lưới TruckBedGrid trên Canvas
 
         private ItemData[,] grid;
+        private readonly List<ItemView> placedItemViews = new List<ItemView>();
 
         public int Columns => columns;
         public int Rows => rows;
@@ -57,7 +62,7 @@ namespace _Project.Scripts.Core
         }
         
         /// <summary>
-        /// Quy đổi từ vị trí thả chuột (Góc Dưới - Trái của ItemView) sang toạ độ Ô lưới (X, Y).
+        /// Quy đổi từ vị trí thả chuột (Góc Dưới - Trái của ItemView) sang toạ độ ô lưới (X, Y).
         /// </summary>
         public Vector2Int WorldToGridPosition(Vector3 worldPosition, int shapeWidth = 1, int shapeHeight = 1)
         {
@@ -81,7 +86,7 @@ namespace _Project.Scripts.Core
             return transform.TransformPoint(new Vector3(localCenterX, localCenterY, 0f));
         }
 
-        public bool CanPlace(Vector2Int startPos,  bool[,] shape)
+        public bool CanPlace(Vector2Int startPos, bool[,] shape)
         {
             if (shape == null) return false;
 
@@ -111,7 +116,7 @@ namespace _Project.Scripts.Core
 
         public void PlaceItem(Vector2Int startPos, ItemData item, bool[,] shape)
         {
-            if (item == null ||shape == null|| !CanPlace(startPos, shape)) return;
+            if (item == null || shape == null || !CanPlace(startPos, shape)) return;
 
             int shapeHeight = shape.GetLength(0);
             int shapeWidth = shape.GetLength(1);
@@ -128,19 +133,17 @@ namespace _Project.Scripts.Core
             }
 
             Vector3 dropPosition = GridToWorldPosition(startPos);
-            EventBus.Publish(new GameEvent.ItemPlacedEvent(item, startPos ,dropPosition));
+            EventBus.Publish(new GameEvent.ItemPlacedEvent(item, startPos, dropPosition));
 
             // Phát âm thanh 'cộp' gỗ khi đặt đồ vào xe thành công
             AudioManager.Instance?.PlayPlaceSuccess();
 
-            Debug.Log($"[GridManager] Đã xếp '{item.ItemName}' vào ô {startPos}");
+            Debug.Log($"[GridManager] Đã xếp '{item.ItemName}' vào ô {startPos}. Số ô đã chiếm: {OccupiedCellCount}/{TotalCellCount}");
         }
 
         public void RemoveItem(ItemData item)
         {
-            if (item == null) return;
-
-            bool hasRemoved = false;
+            if (item == null || grid == null) return;
 
             for (int x = 0; x < columns; x++)
             {
@@ -149,27 +152,34 @@ namespace _Project.Scripts.Core
                     if (grid[x, y] == item)
                     {
                         grid[x, y] = null;
-                        hasRemoved = true;
                     }
                 }
-            }
-
-            if (hasRemoved)
-            {
-                Debug.Log($"[GridManager] Đã gỡ bỏ món '{item.ItemName}' khỏi khoang xe.");
             }
         }
 
         public void CleanGrid()
         {
-            if (grid == null) return;
-            for (int x = 0; x < columns; x++)
+            if (grid != null)
             {
-                for (int y = 0; y < rows; y++)
+                for (int x = 0; x < columns; x++)
                 {
-                    grid[x, y] = null;
+                    for (int y = 0; y < rows; y++)
+                    {
+                        grid[x, y] = null;
+                    }
                 }
             }
+
+            // Xóa sạch toàn bộ GameObject ItemView đã xếp trên xe
+            for (int i = placedItemViews.Count - 1; i >= 0; i--)
+            {
+                if (placedItemViews[i] != null && placedItemViews[i].gameObject != null)
+                {
+                    Destroy(placedItemViews[i].gameObject);
+                }
+            }
+            placedItemViews.Clear();
+            Debug.Log("<color=green>[GridManager]</color> Đã làm sạch toàn bộ thùng xe và xóa các vật phẩm cũ.");
         }
 
         private void OnDrawGizmos()
@@ -203,14 +213,15 @@ namespace _Project.Scripts.Core
             EventBus.Subscribe<GameEvent.ItemDroppedEvent>(OnItemDropped);
             EventBus.Subscribe<GameEvent.ItemRemovedEvent>(OnItemRemoved);
             EventBus.Subscribe<GameEvent.ContinueFromJobResultEvent>(OnContinueFromResult);
+            EventBus.Subscribe<GameEvent.UpgradePurchasedEvent>(OnUpgradePurchased);
         }
-        
 
         private void OnDisable()
         {
             EventBus.Unsubscribe<GameEvent.ItemDroppedEvent>(OnItemDropped);
             EventBus.Unsubscribe<GameEvent.ItemRemovedEvent>(OnItemRemoved);
             EventBus.Unsubscribe<GameEvent.ContinueFromJobResultEvent>(OnContinueFromResult);
+            EventBus.Unsubscribe<GameEvent.UpgradePurchasedEvent>(OnUpgradePurchased);
         }
 
         private void OnItemDropped(GameEvent.ItemDroppedEvent e)
@@ -227,9 +238,13 @@ namespace _Project.Scripts.Core
             if (CanPlace(gridCoord, shape))
             {
                 PlaceItem(gridCoord, e.ItemPlaced, shape);
-                // Hít tâm ItemView vào chính giữa cụm ô đã chiếm
+                // Hút tâm ItemView vào chính giữa cụm ô đã chiếm
                 e.SourceView.transform.position = GridToWorldPosition(gridCoord, shapeWidth, shapeHeight);
                 e.SourceView.IsPlacedOnGrid = true;
+                if (!placedItemViews.Contains(e.SourceView))
+                {
+                    placedItemViews.Add(e.SourceView);
+                }
             }
             else
             {
@@ -245,6 +260,7 @@ namespace _Project.Scripts.Core
             {
                 RemoveItem(e.Item);
             }
+            placedItemViews.RemoveAll(v => v == null || (v.Data == e.Item && !v.IsPlacedOnGrid));
         }
 
         private void OnContinueFromResult(GameEvent.ContinueFromJobResultEvent e)
@@ -257,11 +273,9 @@ namespace _Project.Scripts.Core
 
         /// <summary>
         /// Mở rộng kích thước khoang xe bằng cách cộng thêm số cột và số hàng.
-        /// Giữ nguyên các hàng hóa hiện có trên lưới ô[cite: 2].
-        /// API dành cho Leader gọi từ UpgradeManager hoặc Save/Load Manager[cite: 4, 8].
+        /// Giữ nguyên các hàng hóa hiện có trên lưới ô.
+        /// API dành cho Leader gọi từ UpgradeManager hoặc Save/Load Manager.
         /// </summary>
-        /// <param name="extraCols">Số cột muốn tăng thêm (ví dụ: 0 nếu giữ nguyên cột)</param>
-        /// <param name="extraRows">Số hàng muốn tăng thêm (ví dụ: 1 để mở rộng 4x4 thành 4x5)</param>
         public void ExpandGrid(int extraCols, int extraRows)
         {
             if (extraCols <= 0 && extraRows <= 0) return;
@@ -295,11 +309,40 @@ namespace _Project.Scripts.Core
                 }
             }
             
-            grid  = newGrid;
+            grid = newGrid;
             
-            // 🔔 Bắn tin cho UI biết để vẽ thêm các ô Slot mới!
+            // Cập nhật lại kích thước khung lưới và sinh thêm các ô Slot xám trên UI
+            if (truckBedGridRect != null)
+            {
+                // Mở rộng chiều cao khung lưới tương ứng số hàng mới
+                truckBedGridRect.sizeDelta = new Vector2(columns * cellSize, rows * cellSize);
+
+                int currentSlotCount = truckBedGridRect.childCount;
+                int targetSlotCount = columns * rows;
+                if (targetSlotCount > currentSlotCount && currentSlotCount > 0)
+                {
+                    // Lấy mẫu ô slot đầu tiên để nhân bản ra các ô mới
+                    GameObject slotTemplate = truckBedGridRect.GetChild(0).gameObject;
+                    for (int i = currentSlotCount; i < targetSlotCount; i++)
+                    {
+                        Instantiate(slotTemplate, truckBedGridRect);
+                    }
+                }
+            }
+            
+            
+            // Bắn tin cho UI biết để vẽ thêm các ô Slot mới!
             EventBus.Publish(new GameEvent.GridSizeChangedEvent(columns, rows));
             Debug.Log($"[GridManager] Đã mở rộng lưới xe: {oldCols}x{oldRows} -> {columns}x{rows}.");
+        }
+        
+        private void OnUpgradePurchased(GameEvent.UpgradePurchasedEvent e)
+        {
+            if (e.UpgradeType == UpgradeData.TypeVehicleCapacity)
+            {
+                // Mở rộng thùng xe thêm 1 hàng
+                ExpandGrid(0, 1);
+            }
         }
     }
 }

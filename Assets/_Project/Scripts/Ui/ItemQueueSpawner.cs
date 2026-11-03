@@ -36,11 +36,13 @@ namespace _Project.Scripts.Ui
         private void OnEnable()
         {
             EventBus.Subscribe<GameEvent.JobSelectedEvent>(OnJobSelected);
+            EventBus.Subscribe<GameEvent.ContinueFromJobResultEvent>(OnContinueFromJobResult);
         }
 
         private void OnDisable()
         {
             EventBus.Unsubscribe<GameEvent.JobSelectedEvent>(OnJobSelected);
+            EventBus.Unsubscribe<GameEvent.ContinueFromJobResultEvent>(OnContinueFromJobResult);
         }
 
         private void Start()
@@ -62,6 +64,11 @@ namespace _Project.Scripts.Ui
             {
                 SpawnQueue(evt.SelectedJob);
             }
+        }
+
+        private void OnContinueFromJobResult(GameEvent.ContinueFromJobResultEvent evt)
+        {
+            ClearQueue();
         }
 
         public void SpawnQueue(JobData job)
@@ -101,40 +108,27 @@ namespace _Project.Scripts.Ui
 
         public void ClearQueue()
         {
-            for (int i = 0; i < spawnedItems.Count; i++)
+            foreach (var item in spawnedItems)
             {
-                if (spawnedItems[i] != null)
+                if (item != null && item.gameObject != null)
                 {
-                    // Nếu item đang nằm trên xe tải, gỡ khỏi GridManager trước khi hủy GameObject
-                    if (spawnedItems[i].IsPlacedOnGrid && GridManager.Instance != null)
-                    {
-                        GridManager.Instance.RemoveItem(spawnedItems[i].Data);
-                    }
-                    Destroy(spawnedItems[i].gameObject);
+                    Destroy(item.gameObject);
                 }
             }
-            spawnedItems.Clear();
 
             if (contentContainer != null)
             {
                 for (int i = contentContainer.childCount - 1; i >= 0; i--)
                 {
-                    Destroy(contentContainer.GetChild(i).gameObject);
+                    var child = contentContainer.GetChild(i);
+                    if (child != null && child.gameObject != null)
+                    {
+                        Destroy(child.gameObject);
+                    }
                 }
             }
-        }
 
-        [ContextMenu("Test Spawn Debug Job")]
-        public void TestSpawnDebugJob()
-        {
-            if (debugJobData != null)
-            {
-                SpawnQueue(debugJobData);
-            }
-            else
-            {
-                Debug.LogWarning("[ItemQueueSpawner] Chưa gán Debug Job Data để test!");
-            }
+            spawnedItems.Clear();
         }
     }
 }

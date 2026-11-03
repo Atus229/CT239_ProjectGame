@@ -10,27 +10,64 @@ namespace _Project.Scripts.Ui
     public class ConfirmButtonUI : MonoBehaviour
     {
         private Button confirmButton;
+        [SerializeField] private CanvasGroup canvasGroup;
 
-        void Awake()
+        private void Awake()
         {
             confirmButton = GetComponent<Button>();
-            //False: la trang thai bi xam cua nut -> chua nhan duoc
+            if (canvasGroup == null) canvasGroup = GetComponent<CanvasGroup>();
+            if (canvasGroup == null) canvasGroup = gameObject.AddComponent<CanvasGroup>();
+
+            // Trạng thái bị xám ban đầu của nút -> chưa bấm được
             confirmButton.interactable = false;
 
-            //Gan Gameobject de bat su kien click tren man hinh
-            //Thay vi phai keo thu cong tren inspector
+            // Gán listener bắt sự kiện click
             confirmButton.onClick.AddListener(OnConfirmClicked);
+
+            // Ban đầu chưa chọn đơn -> ẩn nút xác nhận
+            SetVisibility(false);
         }
 
         private void OnEnable()
         {
             EventBus.Subscribe<GameEvent.JobConfirmStateChangedEvent>(HandleConfirmStateChanged);
+            EventBus.Subscribe<GameEvent.JobSelectedEvent>(HandleJobSelected);
+            EventBus.Subscribe<GameEvent.JobSubmittedEvent>(HandleJobSubmitted);
+            EventBus.Subscribe<GameEvent.DayEndedEvent>(HandleDayEnded);
         }
-
 
         private void OnDisable()
         {
             EventBus.Unsubscribe<GameEvent.JobConfirmStateChangedEvent>(HandleConfirmStateChanged);
+            EventBus.Unsubscribe<GameEvent.JobSelectedEvent>(HandleJobSelected);
+            EventBus.Unsubscribe<GameEvent.JobSubmittedEvent>(HandleJobSubmitted);
+            EventBus.Unsubscribe<GameEvent.DayEndedEvent>(HandleDayEnded);
+        }
+
+        private void HandleJobSelected(GameEvent.JobSelectedEvent e)
+        {
+            SetVisibility(true);
+            if (confirmButton != null) confirmButton.interactable = false;
+        }
+
+        private void HandleJobSubmitted(GameEvent.JobSubmittedEvent e)
+        {
+            SetVisibility(false);
+        }
+
+        private void HandleDayEnded(GameEvent.DayEndedEvent e)
+        {
+            SetVisibility(false);
+        }
+
+        private void SetVisibility(bool isVisible)
+        {
+            if (canvasGroup != null)
+            {
+                canvasGroup.alpha = isVisible ? 1f : 0f;
+                canvasGroup.interactable = isVisible;
+                canvasGroup.blocksRaycasts = isVisible;
+            }
         }
 
         private void HandleConfirmStateChanged(GameEvent.JobConfirmStateChangedEvent e)
