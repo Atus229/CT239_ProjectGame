@@ -10,14 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e4668f5d04009764ca9b5032507f064d, type: 3}
-  m_Name: Mobile Pedestal
+  m_Name: Grand Piano
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.Data.ItemData
-  itemID: 22
-  itemName: Mobile Pedestal
-  itemIcon: {fileID: 1460359549269608550, guid: 807b1f0e26d24a0429e0a0c94b1575d6, type: 3}
-  width: 1
-  height: 2
-  shapeSerialized: 0101
-  value: 28
-  handlingTime: 6
-  isFragile: 0
+  itemID: 26
+  itemName: Grand Piano
+  itemIcon: {fileID: 3700424450898595688, guid: 52ab37631348e5d4a9613b1eb48525f5, type: 3}
+  width: 2
+  height: 3
+  shapeSerialized: 010101010100
+  value: 120
+  handlingTime: 20
+  isFragile: 1

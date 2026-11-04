@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.Data.ItemData
   itemID: 1
   itemName: L-Shaped Sectional Sofa
-  itemIcon: {fileID: 6029993011689044356, guid: 9325e32ce59a47248b2b6f0d7271cfc3, type: 3}
+  itemIcon: {fileID: -119415593151022227, guid: 50be461c624f08141bbdaed8761b5d83, type: 3}
   width: 2
   height: 2
   shapeSerialized: 01000101

@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.Data.ItemData
   itemID: 7
   itemName: 3-Seater Sofa
-  itemIcon: {fileID: 1843852163923596820, guid: 807b1f0e26d24a0429e0a0c94b1575d6, type: 3}
+  itemIcon: {fileID: 9093002539276414360, guid: 50be461c624f08141bbdaed8761b5d83, type: 3}
   width: 3
   height: 1
   shapeSerialized: 010101

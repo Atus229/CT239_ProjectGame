@@ -14,13 +14,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.Data.JobData
   jobID: JOB_LARGE
   customerName: "Anh Tu\u1EA5n"
-  timeMin: 40
-  timeMax: 65
+  timeMin: 45
+  timeMax: 75
   itemQueue:
+  - {fileID: 11400000, guid: 7180c1cfedbf4f44895b7eb32a3d22fa, type: 2}
+  - {fileID: 11400000, guid: 84d54e7f22af0934ab0176f9ecbaf0b5, type: 2}
   - {fileID: 11400000, guid: 1f2b0aadea504204693c0f01578fe665, type: 2}
-  - {fileID: 11400000, guid: 922ced7a7238f4540b50afbf26934ca1, type: 2}
-  - {fileID: 11400000, guid: 39844191c10f8934489330bc7ceca238, type: 2}
-  - {fileID: 11400000, guid: 437e6bbb0570a0c47a038a2294ac7963, type: 2}
-  - {fileID: 11400000, guid: 031bc75dd106c49469b6d42df06774d0, type: 2}
-  - {fileID: 11400000, guid: 44e4fcbb81633ef4fbefcb71b46ea8ff, type: 2}
+  - {fileID: 11400000, guid: fca5667031a256e41b670a6739ae8446, type: 2}
+  - {fileID: 11400000, guid: d0ae036ea9458dd4486c77b05829841e, type: 2}
+  - {fileID: 11400000, guid: 9b50199de9e590043893da2a90f99432, type: 2}
+  - {fileID: 11400000, guid: 28902dca2a8f1374093909ef25bed8c7, type: 2}
   rewardMultiplier: 1.2

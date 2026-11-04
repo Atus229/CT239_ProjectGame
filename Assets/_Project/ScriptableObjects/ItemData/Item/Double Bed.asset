@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.Data.ItemData
   itemID: 3
   itemName: Double Bed
-  itemIcon: {fileID: -1797691348900813575, guid: 807b1f0e26d24a0429e0a0c94b1575d6, type: 3}
+  itemIcon: {fileID: -2850532378632377837, guid: 50be461c624f08141bbdaed8761b5d83, type: 3}
   width: 2
   height: 2
   shapeSerialized: 01010101

@@ -14,12 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.Data.JobData
   jobID: JOB_MEDIUM
   customerName: "C\xF4 Lan"
-  timeMin: 28
-  timeMax: 48
+  timeMin: 35
+  timeMax: 60
   itemQueue:
+  - {fileID: 11400000, guid: c8a226a983a4bde4eb427790d62b0513, type: 2}
+  - {fileID: 11400000, guid: 922ced7a7238f4540b50afbf26934ca1, type: 2}
   - {fileID: 11400000, guid: 47e3f8c154c1426419416b4d946c2528, type: 2}
-  - {fileID: 11400000, guid: c1b14cbbd9634b542845adb2e544eb34, type: 2}
-  - {fileID: 11400000, guid: 9690816894c5f7946bbf4b202f3718c9, type: 2}
-  - {fileID: 11400000, guid: 53d51f3e6d7cafe43a04d06b8896b721, type: 2}
-  - {fileID: 11400000, guid: 28902dca2a8f1374093909ef25bed8c7, type: 2}
+  - {fileID: 11400000, guid: 54111bbf2124cda4fa00952fce09abd1, type: 2}
+  - {fileID: 11400000, guid: 341d35e858146344bbf117b39377139b, type: 2}
   rewardMultiplier: 1

@@ -10,14 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e4668f5d04009764ca9b5032507f064d, type: 3}
-  m_Name: Seat Cushion
+  m_Name: U-Shaped Sectional Sofa
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.Data.ItemData
-  itemID: 20
-  itemName: Seat Cushion
-  itemIcon: {fileID: 6464991916009814274, guid: 807b1f0e26d24a0429e0a0c94b1575d6, type: 3}
-  width: 1
-  height: 1
-  shapeSerialized: 01
-  value: 10
-  handlingTime: 3
+  itemID: 25
+  itemName: U-Shaped Sectional Sofa
+  itemIcon: {fileID: 3199442894415425639, guid: 52ab37631348e5d4a9613b1eb48525f5, type: 3}
+  width: 3
+  height: 3
+  shapeSerialized: 010001010001010101
+  value: 80
+  handlingTime: 18
   isFragile: 0

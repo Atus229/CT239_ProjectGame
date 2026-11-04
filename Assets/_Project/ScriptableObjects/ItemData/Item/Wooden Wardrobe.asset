@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.Data.ItemData
   itemID: 2
   itemName: Wooden Wardrobe
-  itemIcon: {fileID: 3663362058243735144, guid: 9325e32ce59a47248b2b6f0d7271cfc3, type: 3}
+  itemIcon: {fileID: 7075604786624175180, guid: 50be461c624f08141bbdaed8761b5d83, type: 3}
   width: 2
   height: 1
   shapeSerialized: 0101

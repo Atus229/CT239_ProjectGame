@@ -18,7 +18,7 @@ MonoBehaviour:
   timeMax: 35
   itemQueue:
   - {fileID: 11400000, guid: 595495a5f19d8554baa7b06409b432b8, type: 2}
-  - {fileID: 11400000, guid: f2e72e476a5329d429d8d0d6be2d82d9, type: 2}
-  - {fileID: 11400000, guid: f4993e4483d801649a8364cb375aa02c, type: 2}
-  - {fileID: 11400000, guid: 54111bbf2124cda4fa00952fce09abd1, type: 2}
+  - {fileID: 11400000, guid: d0ae036ea9458dd4486c77b05829841e, type: 2}
+  - {fileID: 11400000, guid: 9b50199de9e590043893da2a90f99432, type: 2}
+  - {fileID: 11400000, guid: 28902dca2a8f1374093909ef25bed8c7, type: 2}
   rewardMultiplier: 1

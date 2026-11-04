@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.Data.ItemData
   itemID: 8
   itemName: Yellow Refrigerator
-  itemIcon: {fileID: -5749928353869381646, guid: 9325e32ce59a47248b2b6f0d7271cfc3, type: 3}
+  itemIcon: {fileID: -6226224409051959077, guid: 50be461c624f08141bbdaed8761b5d83, type: 3}
   width: 1
   height: 1
   shapeSerialized: 01

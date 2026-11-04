@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.Data.ItemData
   itemID: 4
   itemName: Dining Table
-  itemIcon: {fileID: -4447002171323662922, guid: 807b1f0e26d24a0429e0a0c94b1575d6, type: 3}
+  itemIcon: {fileID: -3758624853575614147, guid: 50be461c624f08141bbdaed8761b5d83, type: 3}
   width: 2
   height: 2
   shapeSerialized: 01010101
