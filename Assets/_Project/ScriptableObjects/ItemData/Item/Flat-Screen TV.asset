@@ -10,14 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e4668f5d04009764ca9b5032507f064d, type: 3}
-  m_Name: Curved Reception Counter
+  m_Name: Flat-Screen TV
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.Data.ItemData
-  itemID: 2
-  itemName: Curved Reception Counter
-  itemIcon: {fileID: 3663362058243735144, guid: 9325e32ce59a47248b2b6f0d7271cfc3, type: 3}
-  width: 3
-  height: 2
-  shapeSerialized: 010001010101
-  value: 65
-  handlingTime: 15
-  isFragile: 0
+  itemID: 6
+  itemName: Flat-Screen TV
+  itemIcon: {fileID: -5501027991697636922, guid: 807b1f0e26d24a0429e0a0c94b1575d6, type: 3}
+  width: 2
+  height: 1
+  shapeSerialized: 0101
+  value: 45
+  handlingTime: 6
+  isFragile: 1

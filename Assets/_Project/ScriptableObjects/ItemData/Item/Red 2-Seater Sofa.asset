@@ -10,14 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e4668f5d04009764ca9b5032507f064d, type: 3}
-  m_Name: Study Desk with Drawer
+  m_Name: Red 2-Seater Sofa
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.Data.ItemData
   itemID: 5
-  itemName: Study Desk with Drawer
+  itemName: Red 2-Seater Sofa
   itemIcon: {fileID: -8229213993785221448, guid: 807b1f0e26d24a0429e0a0c94b1575d6, type: 3}
   width: 2
-  height: 2
-  shapeSerialized: 01000101
-  value: 45
-  handlingTime: 10
+  height: 1
+  shapeSerialized: 0101
+  value: 30
+  handlingTime: 7
   isFragile: 0

@@ -15,9 +15,9 @@ MonoBehaviour:
   itemID: 10
   itemName: Monstera Plant
   itemIcon: {fileID: -1509970458878145131, guid: 807b1f0e26d24a0429e0a0c94b1575d6, type: 3}
-  width: 3
-  height: 2
-  shapeSerialized: 000100010101
-  value: 35
-  handlingTime: 7
+  width: 1
+  height: 1
+  shapeSerialized: 01
+  value: 20
+  handlingTime: 4
   isFragile: 1

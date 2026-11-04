@@ -16,8 +16,8 @@ MonoBehaviour:
   itemName: 3-Seater Sofa
   itemIcon: {fileID: 1843852163923596820, guid: 807b1f0e26d24a0429e0a0c94b1575d6, type: 3}
   width: 3
-  height: 2
-  shapeSerialized: 010101010001
-  value: 50
-  handlingTime: 15
+  height: 1
+  shapeSerialized: 010101
+  value: 45
+  handlingTime: 11
   isFragile: 0

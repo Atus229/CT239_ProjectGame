@@ -10,14 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e4668f5d04009764ca9b5032507f064d, type: 3}
-  m_Name: Folding Screen
+  m_Name: Dining Table
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.Data.ItemData
-  itemID: 3
-  itemName: Folding Screen
-  itemIcon: {fileID: -1797691348900813575, guid: 807b1f0e26d24a0429e0a0c94b1575d6, type: 3}
-  width: 3
+  itemID: 4
+  itemName: Dining Table
+  itemIcon: {fileID: -4447002171323662922, guid: 807b1f0e26d24a0429e0a0c94b1575d6, type: 3}
+  width: 2
   height: 2
-  shapeSerialized: 000101010100
+  shapeSerialized: 01010101
   value: 40
-  handlingTime: 8
+  handlingTime: 10
   isFragile: 0
