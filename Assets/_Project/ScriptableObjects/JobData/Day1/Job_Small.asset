@@ -15,7 +15,7 @@ MonoBehaviour:
   jobID: JOB_SMALL
   customerName: "B\xE1c Ba"
   timeMin: 18
-  timeMax: 35
+  timeMax: 26
   itemQueue:
   - {fileID: 11400000, guid: 595495a5f19d8554baa7b06409b432b8, type: 2}
   - {fileID: 11400000, guid: d0ae036ea9458dd4486c77b05829841e, type: 2}

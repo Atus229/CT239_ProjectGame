@@ -35,6 +35,7 @@ namespace _Project.Scripts.Ui
                 {
                     HidePlaceHolder();
                 }
+                UpdateIconLayout();
             }
         }
 
@@ -77,13 +78,7 @@ namespace _Project.Scripts.Ui
 
             if (rectTransform != null)
             {
-                rectTransform.pivot = Vector2.zero;
                 defaultCardSize = rectTransform.sizeDelta;
-            }
-
-            if (itemIcon != null)
-            {
-                itemIcon.preserveAspect = true;
             }
         }
 
@@ -152,6 +147,7 @@ namespace _Project.Scripts.Ui
                 rectTransform.sizeDelta = isPlacedOnGrid ? GetGridSize() : defaultCardSize;
             }
 
+            UpdateIconLayout();
             SetTextVisible(!isPlacedOnGrid);
         }
 
@@ -202,6 +198,8 @@ namespace _Project.Scripts.Ui
             {
                 rectTransform.sizeDelta = GetGridSize();
             }
+
+            UpdateIconLayout();
 
             RectTransform parentRect = transform.parent as RectTransform;
             if (RectTransformUtility.ScreenPointToLocalPointInRectangle(
@@ -271,6 +269,8 @@ namespace _Project.Scripts.Ui
                 itemIcon.transform.Rotate(0f, 0f, -90f);
             }
 
+            UpdateIconLayout();
+
             var rotatedShape = new bool[newRows, newColumns];
             for (int row = 0; row < oldRows; row++)
             {
@@ -328,7 +328,29 @@ namespace _Project.Scripts.Ui
                 itemIcon.transform.rotation = Quaternion.identity;
             }
 
+            UpdateIconLayout();
             SetTextVisible(true);
+        }
+
+        private void UpdateIconLayout()
+        {
+            if (itemIcon == null) return;
+
+            RectTransform iconRect = itemIcon.rectTransform;
+            iconRect.anchoredPosition = Vector2.zero;
+
+            if (isDragging || isPlacedOnGrid)
+            {
+                float cellSize = GridManager.Instance != null ? GridManager.Instance.CellSize : 100f;
+                if (itemData != null)
+                {
+                    iconRect.sizeDelta = new Vector2(itemData.Width * cellSize, itemData.Height * cellSize);
+                }
+            }
+            else
+            {
+                iconRect.sizeDelta = new Vector2(Mathf.Max(10f, defaultCardSize.x - 20f), Mathf.Max(10f, defaultCardSize.y - 40f));
+            }
         }
 
         private void SetTextVisible(bool isVisible)
