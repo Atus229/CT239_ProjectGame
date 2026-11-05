@@ -12,12 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e4668f5d04009764ca9b5032507f064d, type: 3}
   m_Name: Yellow Refrigerator
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.Data.ItemData
-  itemID: 8
+  itemID: ITEM_01
   itemName: Yellow Refrigerator
-  itemIcon: {fileID: -6226224409051959077, guid: 50be461c624f08141bbdaed8761b5d83, type: 3}
+  itemIcon: {fileID: -8242567118332608799, guid: c5b6c4f580d8f2d4b8bceb5352f53015, type: 3}
   width: 1
-  height: 1
-  shapeSerialized: 01
-  value: 35
-  handlingTime: 7
+  height: 2
+  shapeSerialized: 0101
+  value: 50
+  handlingTime: 14
   isFragile: 1

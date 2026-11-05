@@ -12,12 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e4668f5d04009764ca9b5032507f064d, type: 3}
   m_Name: Monstera Plant
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.Data.ItemData
-  itemID: 10
+  itemID: ITEM_03
   itemName: Monstera Plant
-  itemIcon: {fileID: 1183143293296840045, guid: 50be461c624f08141bbdaed8761b5d83, type: 3}
+  itemIcon: {fileID: 6492654375879120793, guid: c5b6c4f580d8f2d4b8bceb5352f53015, type: 3}
   width: 1
   height: 1
   shapeSerialized: 01
-  value: 20
+  value: 15
   handlingTime: 4
   isFragile: 1

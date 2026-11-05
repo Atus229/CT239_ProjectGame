@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e4668f5d04009764ca9b5032507f064d, type: 3}
   m_Name: Step Trash Bin
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.Data.ItemData
-  itemID: 17
+  itemID: ITEM_04
   itemName: Step Trash Bin
-  itemIcon: {fileID: -8694220509386948019, guid: 807b1f0e26d24a0429e0a0c94b1575d6, type: 3}
+  itemIcon: {fileID: -461277983547654248, guid: c5b6c4f580d8f2d4b8bceb5352f53015, type: 3}
   width: 1
   height: 1
   shapeSerialized: 01

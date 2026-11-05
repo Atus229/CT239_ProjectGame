@@ -12,12 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e4668f5d04009764ca9b5032507f064d, type: 3}
   m_Name: Wooden Wardrobe
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.Data.ItemData
-  itemID: 2
+  itemID: ITEM_07
   itemName: Wooden Wardrobe
-  itemIcon: {fileID: 7075604786624175180, guid: 50be461c624f08141bbdaed8761b5d83, type: 3}
+  itemIcon: {fileID: 4619940308048575492, guid: c5b6c4f580d8f2d4b8bceb5352f53015, type: 3}
   width: 2
-  height: 1
-  shapeSerialized: 0101
-  value: 35
-  handlingTime: 8
+  height: 2
+  shapeSerialized: 01010101
+  value: 55
+  handlingTime: 12
   isFragile: 0

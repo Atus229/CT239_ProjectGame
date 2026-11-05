@@ -12,12 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e4668f5d04009764ca9b5032507f064d, type: 3}
   m_Name: Double Bed
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.Data.ItemData
-  itemID: 3
+  itemID: ITEM_12
   itemName: Double Bed
-  itemIcon: {fileID: -2850532378632377837, guid: 50be461c624f08141bbdaed8761b5d83, type: 3}
+  itemIcon: {fileID: 6825668122115480689, guid: c5b6c4f580d8f2d4b8bceb5352f53015, type: 3}
   width: 2
-  height: 2
-  shapeSerialized: 01010101
-  value: 55
-  handlingTime: 13
+  height: 3
+  shapeSerialized: 010101010101
+  value: 70
+  handlingTime: 16
   isFragile: 0

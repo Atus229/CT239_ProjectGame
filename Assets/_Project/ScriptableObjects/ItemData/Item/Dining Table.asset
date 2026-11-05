@@ -12,12 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e4668f5d04009764ca9b5032507f064d, type: 3}
   m_Name: Dining Table
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.Data.ItemData
-  itemID: 4
+  itemID: ITEM_11
   itemName: Dining Table
-  itemIcon: {fileID: -3758624853575614147, guid: 50be461c624f08141bbdaed8761b5d83, type: 3}
+  itemIcon: {fileID: 642499016186115177, guid: c5b6c4f580d8f2d4b8bceb5352f53015, type: 3}
   width: 2
   height: 2
   shapeSerialized: 01010101
-  value: 40
+  value: 45
   handlingTime: 10
   isFragile: 0

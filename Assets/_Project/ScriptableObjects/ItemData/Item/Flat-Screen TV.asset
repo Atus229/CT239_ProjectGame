@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e4668f5d04009764ca9b5032507f064d, type: 3}
   m_Name: Flat-Screen TV
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.Data.ItemData
-  itemID: 6
+  itemID: ITEM_09
   itemName: Flat-Screen TV
-  itemIcon: {fileID: -8930510456164949623, guid: 50be461c624f08141bbdaed8761b5d83, type: 3}
+  itemIcon: {fileID: -8568903442949803445, guid: c5b6c4f580d8f2d4b8bceb5352f53015, type: 3}
   width: 2
   height: 1
   shapeSerialized: 0101

@@ -1,43 +1,43 @@
 fileFormatVersion: 2
-guid: 50be461c624f08141bbdaed8761b5d83
+guid: c5b6c4f580d8f2d4b8bceb5352f53015
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 6412822603602648670
-    second: Gemini_Generated_Image_a4yfrka4yfrka4yf-Photoroom_0
+      213: -8242567118332608799
+    second: furniture_frontview_spaced_0
   - first:
-      213: -6226224409051959077
-    second: Gemini_Generated_Image_a4yfrka4yfrka4yf-Photoroom_1
+      213: 4508162696771273593
+    second: furniture_frontview_spaced_1
   - first:
-      213: 1183143293296840045
-    second: Gemini_Generated_Image_a4yfrka4yfrka4yf-Photoroom_2
+      213: 6492654375879120793
+    second: furniture_frontview_spaced_2
   - first:
-      213: -1631431769098113118
-    second: Gemini_Generated_Image_a4yfrka4yfrka4yf-Photoroom_3
+      213: -461277983547654248
+    second: furniture_frontview_spaced_3
   - first:
-      213: 9093002539276414360
-    second: Gemini_Generated_Image_a4yfrka4yfrka4yf-Photoroom_4
+      213: -5787780747190493906
+    second: furniture_frontview_spaced_4
   - first:
-      213: -4291444334679959585
-    second: Gemini_Generated_Image_a4yfrka4yfrka4yf-Photoroom_5
+      213: 9182634857937636084
+    second: furniture_frontview_spaced_5
   - first:
-      213: 7075604786624175180
-    second: Gemini_Generated_Image_a4yfrka4yfrka4yf-Photoroom_6
+      213: 4619940308048575492
+    second: furniture_frontview_spaced_6
   - first:
-      213: -6067496127307571651
-    second: Gemini_Generated_Image_a4yfrka4yfrka4yf-Photoroom_7
+      213: 6073085969324650189
+    second: furniture_frontview_spaced_7
   - first:
-      213: -8930510456164949623
-    second: Gemini_Generated_Image_a4yfrka4yfrka4yf-Photoroom_8
+      213: -8568903442949803445
+    second: furniture_frontview_spaced_8
   - first:
-      213: -3758624853575614147
-    second: Gemini_Generated_Image_a4yfrka4yfrka4yf-Photoroom_9
+      213: 4164707830771264755
+    second: furniture_frontview_spaced_9
   - first:
-      213: -2850532378632377837
-    second: Gemini_Generated_Image_a4yfrka4yfrka4yf-Photoroom_10
+      213: 642499016186115177
+    second: furniture_frontview_spaced_10
   - first:
-      213: -119415593151022227
-    second: Gemini_Generated_Image_a4yfrka4yfrka4yf-Photoroom_11
+      213: 6825668122115480689
+    second: furniture_frontview_spaced_11
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -146,13 +146,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Gemini_Generated_Image_a4yfrka4yfrka4yf-Photoroom_0
+      name: furniture_frontview_spaced_0
       rect:
         serializedVersion: 2
-        x: 115
-        y: 1248
-        width: 293
-        height: 337
+        x: 0
+        y: 847
+        width: 161
+        height: 321
       alignment: 6
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -161,250 +161,250 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: e5ed45f6e2ceef850800000000000000
-      internalID: 6412822603602648670
+      spriteID: 1ee387a70e48c9d80800000000000000
+      internalID: -8242567118332608799
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Gemini_Generated_Image_a4yfrka4yfrka4yf-Photoroom_1
+      name: furniture_frontview_spaced_1
       rect:
         serializedVersion: 2
-        x: 542
-        y: 1248
-        width: 242
-        height: 454
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 183
+        y: 1007
+        width: 162
+        height: 161
+      alignment: 6
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: bd0779e43e10899a0800000000000000
-      internalID: -6226224409051959077
+      spriteID: 97308b26616309e30800000000000000
+      internalID: 4508162696771273593
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Gemini_Generated_Image_a4yfrka4yfrka4yf-Photoroom_2
+      name: furniture_frontview_spaced_2
       rect:
         serializedVersion: 2
-        x: 903
-        y: 1253
-        width: 312
-        height: 403
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 367
+        y: 1007
+        width: 162
+        height: 161
+      alignment: 6
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: d6d08538e8e5b6010800000000000000
-      internalID: 1183143293296840045
+      spriteID: 99719ab51ca8a1a50800000000000000
+      internalID: 6492654375879120793
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Gemini_Generated_Image_a4yfrka4yfrka4yf-Photoroom_3
+      name: furniture_frontview_spaced_3
       rect:
         serializedVersion: 2
-        x: 1352
-        y: 1253
-        width: 176
-        height: 265
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 551
+        y: 1007
+        width: 162
+        height: 161
+      alignment: 6
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 2afae9f137dfb59e0800000000000000
-      internalID: -1631431769098113118
+      spriteID: 89ffeef2e163999f0800000000000000
+      internalID: -461277983547654248
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Gemini_Generated_Image_a4yfrka4yfrka4yf-Photoroom_4
+      name: furniture_frontview_spaced_4
       rect:
         serializedVersion: 2
-        x: 1659
-        y: 1248
-        width: 648
-        height: 327
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 735
+        y: 1007
+        width: 482
+        height: 161
+      alignment: 6
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 89dab47f1a5d03e70800000000000000
-      internalID: 9093002539276414360
+      spriteID: e2d9ddd431cadafa0800000000000000
+      internalID: -5787780747190493906
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Gemini_Generated_Image_a4yfrka4yfrka4yf-Photoroom_5
+      name: furniture_frontview_spaced_5
       rect:
         serializedVersion: 2
-        x: 106
-        y: 725
-        width: 498
-        height: 348
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 1239
+        y: 1007
+        width: 322
+        height: 161
+      alignment: 6
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: fd7d90a5d1ab174c0800000000000000
-      internalID: -4291444334679959585
+      spriteID: 4fa0e7960c54f6f70800000000000000
+      internalID: 9182634857937636084
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Gemini_Generated_Image_a4yfrka4yfrka4yf-Photoroom_6
+      name: furniture_frontview_spaced_6
       rect:
         serializedVersion: 2
-        x: 716
-        y: 713
-        width: 463
-        height: 458
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 1583
+        y: 847
+        width: 321
+        height: 321
+      alignment: 6
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: c4c99c5b019913260800000000000000
-      internalID: 7075604786624175180
+      spriteID: 40c7eb09b335d1040800000000000000
+      internalID: 4619940308048575492
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Gemini_Generated_Image_a4yfrka4yfrka4yf-Photoroom_7
+      name: furniture_frontview_spaced_7
       rect:
         serializedVersion: 2
-        x: 1284
-        y: 725
-        width: 476
-        height: 337
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 255
+        y: 663
+        width: 322
+        height: 162
+      alignment: 6
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: d3e16cf4b6cebcba0800000000000000
-      internalID: -6067496127307571651
+      spriteID: dce2104338fe74450800000000000000
+      internalID: 6073085969324650189
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Gemini_Generated_Image_a4yfrka4yfrka4yf-Photoroom_8
+      name: furniture_frontview_spaced_8
       rect:
         serializedVersion: 2
-        x: 1893
-        y: 790
-        width: 385
-        height: 266
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 598
+        y: 662
+        width: 322
+        height: 162
+      alignment: 6
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 98160655e04701480800000000000000
-      internalID: -8930510456164949623
+      spriteID: b42fa58f7b3251980800000000000000
+      internalID: -8568903442949803445
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Gemini_Generated_Image_a4yfrka4yfrka4yf-Photoroom_9
+      name: furniture_frontview_spaced_9
       rect:
         serializedVersion: 2
-        x: 229
-        y: 81
-        width: 434
-        height: 478
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 943
+        y: 503
+        width: 482
+        height: 322
+      alignment: 6
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: d31cba61c9ea6dbc0800000000000000
-      internalID: -3758624853575614147
+      spriteID: 3fca86ed4b30cc930800000000000000
+      internalID: 4164707830771264755
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Gemini_Generated_Image_a4yfrka4yfrka4yf-Photoroom_10
+      name: furniture_frontview_spaced_10
       rect:
         serializedVersion: 2
-        x: 953
-        y: 82
-        width: 495
-        height: 519
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 619
+        y: 159
+        width: 322
+        height: 322
+      alignment: 6
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 31a2ed687efd078d0800000000000000
-      internalID: -2850532378632377837
+      spriteID: 964bf4c737d9ae800800000000000000
+      internalID: 642499016186115177
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Gemini_Generated_Image_a4yfrka4yfrka4yf-Photoroom_11
+      name: furniture_frontview_spaced_11
       rect:
         serializedVersion: 2
-        x: 1649
-        y: 64
-        width: 654
-        height: 544
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 963
+        y: 0
+        width: 322
+        height: 481
+      alignment: 6
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: d6b37959620c75ef0800000000000000
-      internalID: -119415593151022227
+      spriteID: 17c966d3ef4a9be50800000000000000
+      internalID: 6825668122115480689
       vertices: []
       indices: 
       edges: []
@@ -413,7 +413,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: bf48e04611cf36f4880bc2d1c4e25dfd
+    spriteID: 7a8fa81e27de19144921013cfdd7c2ae
     internalID: 0
     vertices: []
     indices: 
@@ -423,18 +423,18 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Gemini_Generated_Image_a4yfrka4yfrka4yf-Photoroom_0: 6412822603602648670
-      Gemini_Generated_Image_a4yfrka4yfrka4yf-Photoroom_1: -6226224409051959077
-      Gemini_Generated_Image_a4yfrka4yfrka4yf-Photoroom_10: -2850532378632377837
-      Gemini_Generated_Image_a4yfrka4yfrka4yf-Photoroom_11: -119415593151022227
-      Gemini_Generated_Image_a4yfrka4yfrka4yf-Photoroom_2: 1183143293296840045
-      Gemini_Generated_Image_a4yfrka4yfrka4yf-Photoroom_3: -1631431769098113118
-      Gemini_Generated_Image_a4yfrka4yfrka4yf-Photoroom_4: 9093002539276414360
-      Gemini_Generated_Image_a4yfrka4yfrka4yf-Photoroom_5: -4291444334679959585
-      Gemini_Generated_Image_a4yfrka4yfrka4yf-Photoroom_6: 7075604786624175180
-      Gemini_Generated_Image_a4yfrka4yfrka4yf-Photoroom_7: -6067496127307571651
-      Gemini_Generated_Image_a4yfrka4yfrka4yf-Photoroom_8: -8930510456164949623
-      Gemini_Generated_Image_a4yfrka4yfrka4yf-Photoroom_9: -3758624853575614147
+      furniture_frontview_spaced_0: -8242567118332608799
+      furniture_frontview_spaced_1: 4508162696771273593
+      furniture_frontview_spaced_10: 642499016186115177
+      furniture_frontview_spaced_11: 6825668122115480689
+      furniture_frontview_spaced_2: 6492654375879120793
+      furniture_frontview_spaced_3: -461277983547654248
+      furniture_frontview_spaced_4: -5787780747190493906
+      furniture_frontview_spaced_5: 9182634857937636084
+      furniture_frontview_spaced_6: 4619940308048575492
+      furniture_frontview_spaced_7: 6073085969324650189
+      furniture_frontview_spaced_8: -8568903442949803445
+      furniture_frontview_spaced_9: 4164707830771264755
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

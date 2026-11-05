@@ -10,14 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e4668f5d04009764ca9b5032507f064d, type: 3}
-  m_Name: Item_Tivi
+  m_Name: Single Armchair
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.Data.ItemData
-  itemID: 02
-  itemName: Item_Tivi
-  itemIcon: {fileID: -335627050445670057, guid: bdb1cdaf964590041b209390d8342ef6, type: 3}
-  width: 2
+  itemID: ITEM_02
+  itemName: Single Armchair
+  itemIcon: {fileID: 4508162696771273593, guid: c5b6c4f580d8f2d4b8bceb5352f53015, type: 3}
+  width: 1
   height: 1
-  shapeSerialized: 0101
-  value: 60
-  handlingTime: 15
+  shapeSerialized: 01
+  value: 20
+  handlingTime: 5
   isFragile: 0
