@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Job_Small
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.Data.JobData
   jobID: JOB_SMALL
-  customerName: "B\xE1c Ba (Chuy\u1EC3n ph\xF2ng tr\u1ECD)"
+  customerName: Mr Three
   timeMin: 30
   timeMax: 50
   itemQueue:
