@@ -35,7 +35,6 @@ namespace _Project.Scripts.Ui
                 {
                     HidePlaceHolder();
                 }
-                UpdateIconLayout();
             }
         }
 
@@ -63,7 +62,6 @@ namespace _Project.Scripts.Ui
         private Vector3 initialTrayPosition;
         private Vector2 defaultCardSize;
         
-        //Dùng chung 1 placeholder tĩnh duy nhất cho toàn bộ itemview
         private static GameObject sharedPlaceholder;
         private static LayoutElement  sharedLayoutElement;
 
@@ -162,7 +160,6 @@ namespace _Project.Scripts.Ui
                 originalParent = transform.parent;
                 originalSiblingIndex = transform.GetSiblingIndex();
 
-                // Tái sử dụng placeholder tĩnh, chỉ khởi tạo đúng 1 lần đầu tiên trong suốt cả game
                 if (sharedPlaceholder == null)
                 {
                     sharedPlaceholder = new GameObject("Shared_Card_Placeholder", typeof(RectTransform), typeof(LayoutElement));
@@ -170,7 +167,6 @@ namespace _Project.Scripts.Ui
                     sharedLayoutElement.flexibleWidth = 0;
                     sharedLayoutElement.flexibleHeight = 0;
                 }
-                // Đặt placeholder vào vị trí của món đồ đang bốc đi để giữ chỗ
                 sharedPlaceholder.transform.SetParent(originalParent, false);
                 sharedPlaceholder.transform.SetSiblingIndex(originalSiblingIndex);
                 sharedLayoutElement.preferredWidth = defaultCardSize.x;
@@ -248,12 +244,12 @@ namespace _Project.Scripts.Ui
             int newColumns = oldRows;
 
             float cellSize = GridManager.Instance != null ? GridManager.Instance.CellSize : 100f;
-            float oldHeight = oldRows * cellSize;
+            float oldWidth = oldColumns * cellSize;
 
-            // Xoay 90 độ cùng chiều kim đồng hồ quanh pivot (0, 0): (x, y) -> (oldHeight - y, x)
+            // Xoay 90 độ cùng chiều kim đồng hồ quanh pivot (0, 0): (x, y) -> (y, oldWidth - x)
             // Giữ điểm con trỏ chuột cố định trên thẻ để không bị giật vị trí khi xoay
             Vector2 grabPointOnItem = -localPointerOffset;
-            Vector2 newGrabPoint = new Vector2(oldHeight - grabPointOnItem.y, grabPointOnItem.x);
+            Vector2 newGrabPoint = new Vector2(grabPointOnItem.y, oldWidth - grabPointOnItem.x);
             Vector2 mouseLocalInParent = (Vector2)rectTransform.localPosition + grabPointOnItem;
 
             localPointerOffset = -newGrabPoint;
@@ -269,15 +265,13 @@ namespace _Project.Scripts.Ui
                 itemIcon.transform.Rotate(0f, 0f, -90f);
             }
 
-            UpdateIconLayout();
-
             var rotatedShape = new bool[newRows, newColumns];
             for (int row = 0; row < oldRows; row++)
             {
                 for (int col = 0; col < oldColumns; col++)
                 {
-                    int newRow = col;
-                    int newColumn = oldRows - 1 - row;
+                    int newRow = (oldColumns - 1) - col;
+                    int newColumn = row;
                     rotatedShape[newRow, newColumn] = currentShape[row, col];
                 }
             }
@@ -293,7 +287,6 @@ namespace _Project.Scripts.Ui
             {
                 transform.SetParent(originalParent, false);
     
-                // Nếu index cũ còn hợp lệ thì xếp vào chỗ cũ, ngược lại thì đưa xuống cuối danh sách khay
                 if (originalSiblingIndex >= 0 && originalSiblingIndex < originalParent.childCount)
                 {
                     transform.SetSiblingIndex(originalSiblingIndex);
