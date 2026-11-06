@@ -723,9 +723,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.Ui.JobCardUI
   collapsedView: {fileID: 2986423203376918109}
   expandedView: {fileID: 183172409287065510}
+  canvasGroup: {fileID: 0}
   btnCollapsed: {fileID: 783420078819526480}
   btnCloseExpand: {fileID: 7812599180796613852}
   btnAccept: {fileID: 925582043558201531}
+  txtAcceptButton: {fileID: 0}
   imgCollapsedAvatar: {fileID: 2616307184880076378}
   txtCollapsedTitle: {fileID: 8187179200027082132}
   txtCollapsedTime: {fileID: 11724405177130706}
