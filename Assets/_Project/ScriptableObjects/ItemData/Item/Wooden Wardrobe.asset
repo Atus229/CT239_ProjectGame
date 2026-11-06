@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e4668f5d04009764ca9b5032507f064d, type: 3}
+  m_Name: Wooden Wardrobe
+  m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.Data.ItemData
+  itemID: ITEM_07
+  itemName: Wooden Wardrobe
+  itemIcon: {fileID: 4619940308048575492, guid: c5b6c4f580d8f2d4b8bceb5352f53015, type: 3}
+  width: 2
+  height: 2
+  shapeSerialized: 01010101
+  value: 55
+  handlingTime: 12
+  isFragile: 0

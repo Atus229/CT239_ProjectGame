@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e5775a22a68ee34429f6bddc7ecf59d7, type: 3}
+  m_Name: Job_Medium
+  m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.Data.JobData
+  jobID: JOB_MEDIUM
+  customerName: "C\xF4 Lan"
+  timeMin: 35
+  timeMax: 48
+  itemQueue:
+  - {fileID: 11400000, guid: c8a226a983a4bde4eb427790d62b0513, type: 2}
+  - {fileID: 11400000, guid: 922ced7a7238f4540b50afbf26934ca1, type: 2}
+  - {fileID: 11400000, guid: 47e3f8c154c1426419416b4d946c2528, type: 2}
+  - {fileID: 11400000, guid: 84d54e7f22af0934ab0176f9ecbaf0b5, type: 2}
+  - {fileID: 11400000, guid: 5dc1caf5f219fb748a4a987a832f5b52, type: 2}
+  - {fileID: 11400000, guid: 9b50199de9e590043893da2a90f99432, type: 2}
+  rewardMultiplier: 1

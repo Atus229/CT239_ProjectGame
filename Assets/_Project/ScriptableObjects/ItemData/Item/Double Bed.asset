@@ -10,14 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e4668f5d04009764ca9b5032507f064d, type: 3}
-  m_Name: Item_SofaDon
+  m_Name: Double Bed
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.Data.ItemData
-  itemID: 03
-  itemName: Item_SofaDon
-  itemIcon: {fileID: -8205118346090645010, guid: 602f6f49a1516c5408e423959019aabe, type: 3}
-  width: 1
-  height: 1
-  shapeSerialized: 01
-  value: 25
-  handlingTime: 8
+  itemID: ITEM_12
+  itemName: Double Bed
+  itemIcon: {fileID: 6825668122115480689, guid: c5b6c4f580d8f2d4b8bceb5352f53015, type: 3}
+  width: 2
+  height: 3
+  shapeSerialized: 010101010101
+  value: 70
+  handlingTime: 16
   isFragile: 0

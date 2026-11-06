@@ -10,14 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e4668f5d04009764ca9b5032507f064d, type: 3}
-  m_Name: Item_BanKinh
+  m_Name: Dining Table
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.Data.ItemData
-  itemID: 01
-  itemName: Item_BanKinh
-  itemIcon: {fileID: -583729871172992416, guid: 7e9eec800036ca246bddc9b311e1b1e7, type: 3}
+  itemID: ITEM_11
+  itemName: Dining Table
+  itemIcon: {fileID: 642499016186115177, guid: c5b6c4f580d8f2d4b8bceb5352f53015, type: 3}
   width: 2
   height: 2
   shapeSerialized: 01010101
-  value: 70
-  handlingTime: 22
+  value: 45
+  handlingTime: 10
   isFragile: 0

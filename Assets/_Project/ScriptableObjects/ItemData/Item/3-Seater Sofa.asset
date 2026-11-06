@@ -10,14 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e4668f5d04009764ca9b5032507f064d, type: 3}
-  m_Name: Item_Tivi
+  m_Name: 3-Seater Sofa
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.Data.ItemData
-  itemID: 02
-  itemName: Item_Tivi
-  itemIcon: {fileID: -335627050445670057, guid: bdb1cdaf964590041b209390d8342ef6, type: 3}
-  width: 2
+  itemID: ITEM_05
+  itemName: 3-Seater Sofa
+  itemIcon: {fileID: -5787780747190493906, guid: c5b6c4f580d8f2d4b8bceb5352f53015, type: 3}
+  width: 3
   height: 1
-  shapeSerialized: 0101
-  value: 60
-  handlingTime: 15
+  shapeSerialized: 010101
+  value: 50
+  handlingTime: 12
   isFragile: 0

@@ -1842,6 +1842,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f79ec343001683a42891cdc6822315a1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.Core.AudioManager
+  bgmGameplay: {fileID: 8300000, guid: 3c2d59c6ff6dd4c4c84882564e90064d, type: 3}
+  sfxPlaceSuccess: {fileID: 8300000, guid: 50b23852cb675d547aa139501341b5a7, type: 3}
+  sfxPlaceFail: {fileID: 8300000, guid: ab9caa31c80553c4ab1fd99c6b764dfb, type: 3}
+  sfxButtonClick: {fileID: 8300000, guid: 7c4e547c17baef547b4523746d681e2f, type: 3}
+  sfxRewardCoins: {fileID: 8300000, guid: 9e0a978d0bd15ba4c9823cd70aad193d, type: 3}
+  sfxTruckHorn: {fileID: 8300000, guid: 3e0852fc3533e844cbd3a88a83050772, type: 3}
   bgmSource: {fileID: 0}
   sfxSource: {fileID: 0}
   bgmVolume: 0.75

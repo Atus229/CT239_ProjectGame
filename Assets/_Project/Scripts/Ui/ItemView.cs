@@ -62,7 +62,6 @@ namespace _Project.Scripts.Ui
         private Vector3 initialTrayPosition;
         private Vector2 defaultCardSize;
         
-        //Dùng chung 1 placeholder tĩnh duy nhất cho toàn bộ itemview
         private static GameObject sharedPlaceholder;
         private static LayoutElement  sharedLayoutElement;
 
@@ -77,13 +76,7 @@ namespace _Project.Scripts.Ui
 
             if (rectTransform != null)
             {
-                rectTransform.pivot = Vector2.zero;
                 defaultCardSize = rectTransform.sizeDelta;
-            }
-
-            if (itemIcon != null)
-            {
-                itemIcon.preserveAspect = true;
             }
         }
 
@@ -152,6 +145,7 @@ namespace _Project.Scripts.Ui
                 rectTransform.sizeDelta = isPlacedOnGrid ? GetGridSize() : defaultCardSize;
             }
 
+            UpdateIconLayout();
             SetTextVisible(!isPlacedOnGrid);
         }
 
@@ -166,7 +160,6 @@ namespace _Project.Scripts.Ui
                 originalParent = transform.parent;
                 originalSiblingIndex = transform.GetSiblingIndex();
 
-                // Tái sử dụng placeholder tĩnh, chỉ khởi tạo đúng 1 lần đầu tiên trong suốt cả game
                 if (sharedPlaceholder == null)
                 {
                     sharedPlaceholder = new GameObject("Shared_Card_Placeholder", typeof(RectTransform), typeof(LayoutElement));
@@ -174,7 +167,6 @@ namespace _Project.Scripts.Ui
                     sharedLayoutElement.flexibleWidth = 0;
                     sharedLayoutElement.flexibleHeight = 0;
                 }
-                // Đặt placeholder vào vị trí của món đồ đang bốc đi để giữ chỗ
                 sharedPlaceholder.transform.SetParent(originalParent, false);
                 sharedPlaceholder.transform.SetSiblingIndex(originalSiblingIndex);
                 sharedLayoutElement.preferredWidth = defaultCardSize.x;
@@ -202,6 +194,8 @@ namespace _Project.Scripts.Ui
             {
                 rectTransform.sizeDelta = GetGridSize();
             }
+
+            UpdateIconLayout();
 
             RectTransform parentRect = transform.parent as RectTransform;
             if (RectTransformUtility.ScreenPointToLocalPointInRectangle(
@@ -250,12 +244,12 @@ namespace _Project.Scripts.Ui
             int newColumns = oldRows;
 
             float cellSize = GridManager.Instance != null ? GridManager.Instance.CellSize : 100f;
-            float oldHeight = oldRows * cellSize;
+            float oldWidth = oldColumns * cellSize;
 
-            // Xoay 90 độ cùng chiều kim đồng hồ quanh pivot (0, 0): (x, y) -> (oldHeight - y, x)
+            // Xoay 90 độ cùng chiều kim đồng hồ quanh pivot (0, 0): (x, y) -> (y, oldWidth - x)
             // Giữ điểm con trỏ chuột cố định trên thẻ để không bị giật vị trí khi xoay
             Vector2 grabPointOnItem = -localPointerOffset;
-            Vector2 newGrabPoint = new Vector2(oldHeight - grabPointOnItem.y, grabPointOnItem.x);
+            Vector2 newGrabPoint = new Vector2(grabPointOnItem.y, oldWidth - grabPointOnItem.x);
             Vector2 mouseLocalInParent = (Vector2)rectTransform.localPosition + grabPointOnItem;
 
             localPointerOffset = -newGrabPoint;
@@ -276,8 +270,8 @@ namespace _Project.Scripts.Ui
             {
                 for (int col = 0; col < oldColumns; col++)
                 {
-                    int newRow = col;
-                    int newColumn = oldRows - 1 - row;
+                    int newRow = (oldColumns - 1) - col;
+                    int newColumn = row;
                     rotatedShape[newRow, newColumn] = currentShape[row, col];
                 }
             }
@@ -293,7 +287,6 @@ namespace _Project.Scripts.Ui
             {
                 transform.SetParent(originalParent, false);
     
-                // Nếu index cũ còn hợp lệ thì xếp vào chỗ cũ, ngược lại thì đưa xuống cuối danh sách khay
                 if (originalSiblingIndex >= 0 && originalSiblingIndex < originalParent.childCount)
                 {
                     transform.SetSiblingIndex(originalSiblingIndex);
@@ -328,7 +321,29 @@ namespace _Project.Scripts.Ui
                 itemIcon.transform.rotation = Quaternion.identity;
             }
 
+            UpdateIconLayout();
             SetTextVisible(true);
+        }
+
+        private void UpdateIconLayout()
+        {
+            if (itemIcon == null) return;
+
+            RectTransform iconRect = itemIcon.rectTransform;
+            iconRect.anchoredPosition = Vector2.zero;
+
+            if (isDragging || isPlacedOnGrid)
+            {
+                float cellSize = GridManager.Instance != null ? GridManager.Instance.CellSize : 100f;
+                if (itemData != null)
+                {
+                    iconRect.sizeDelta = new Vector2(itemData.Width * cellSize, itemData.Height * cellSize);
+                }
+            }
+            else
+            {
+                iconRect.sizeDelta = new Vector2(Mathf.Max(10f, defaultCardSize.x - 20f), Mathf.Max(10f, defaultCardSize.y - 40f));
+            }
         }
 
         private void SetTextVisible(bool isVisible)

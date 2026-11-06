@@ -10,14 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e4668f5d04009764ca9b5032507f064d, type: 3}
-  m_Name: Item_Shape_I
+  m_Name: Step Trash Bin
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.Data.ItemData
-  itemID: ITEM_I_01
-  itemName: "Th\xF9ng D\xE0i (I)"
-  itemIcon: {fileID: 1847396364811023608, guid: 34bc44eafb19ee0439f575602572bbbb, type: 3}
+  itemID: ITEM_04
+  itemName: Step Trash Bin
+  itemIcon: {fileID: -461277983547654248, guid: c5b6c4f580d8f2d4b8bceb5352f53015, type: 3}
   width: 1
-  height: 3
-  shapeSerialized: 010101
-  value: 20
-  handlingTime: 10
+  height: 1
+  shapeSerialized: 01
+  value: 10
+  handlingTime: 2
   isFragile: 0

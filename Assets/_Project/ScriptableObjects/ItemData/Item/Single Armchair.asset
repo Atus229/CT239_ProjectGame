@@ -10,14 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e4668f5d04009764ca9b5032507f064d, type: 3}
-  m_Name: Item_HopSach
+  m_Name: Single Armchair
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.Data.ItemData
-  itemID: 04
-  itemName: Hop sach
-  itemIcon: {fileID: -3163888196901254331, guid: bc485102f6d016942a29eb1785e5b8eb, type: 3}
+  itemID: ITEM_02
+  itemName: Single Armchair
+  itemIcon: {fileID: 4508162696771273593, guid: c5b6c4f580d8f2d4b8bceb5352f53015, type: 3}
   width: 1
   height: 1
   shapeSerialized: 01
-  value: 15
+  value: 20
   handlingTime: 5
   isFragile: 0

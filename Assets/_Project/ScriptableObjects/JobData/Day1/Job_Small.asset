@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e5775a22a68ee34429f6bddc7ecf59d7, type: 3}
+  m_Name: Job_Small
+  m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.Data.JobData
+  jobID: JOB_SMALL
+  customerName: "B\xE1c Ba"
+  timeMin: 18
+  timeMax: 26
+  itemQueue:
+  - {fileID: 11400000, guid: 595495a5f19d8554baa7b06409b432b8, type: 2}
+  - {fileID: 11400000, guid: d0ae036ea9458dd4486c77b05829841e, type: 2}
+  - {fileID: 11400000, guid: 9b50199de9e590043893da2a90f99432, type: 2}
+  - {fileID: 11400000, guid: 28902dca2a8f1374093909ef25bed8c7, type: 2}
+  rewardMultiplier: 1
