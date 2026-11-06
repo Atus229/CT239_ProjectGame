@@ -1,0 +1,338 @@
+fileFormatVersion: 2
+guid: 84f72f99da4384a4281ff650ae40b2ca
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -350294680003927309
+    second: "B\u1ED9 thanh giao di\u1EC7n pixel retro_0"
+  - first:
+      213: -249434626820170114
+    second: "B\u1ED9 thanh giao di\u1EC7n pixel retro_1"
+  - first:
+      213: -6100334595788763581
+    second: "B\u1ED9 thanh giao di\u1EC7n pixel retro_2"
+  - first:
+      213: -2406157102797183881
+    second: "B\u1ED9 thanh giao di\u1EC7n pixel retro_3"
+  - first:
+      213: -5218721837576527398
+    second: "B\u1ED9 thanh giao di\u1EC7n pixel retro_4"
+  - first:
+      213: -4761274475963169583
+    second: "B\u1ED9 thanh giao di\u1EC7n pixel retro_5"
+  - first:
+      213: 8656212091935160419
+    second: "B\u1ED9 thanh giao di\u1EC7n pixel retro_6"
+  - first:
+      213: 1740073932662198743
+    second: "B\u1ED9 thanh giao di\u1EC7n pixel retro_7"
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: "B\u1ED9 thanh giao di\u1EC7n pixel retro_0"
+      rect:
+        serializedVersion: 2
+        x: 77
+        y: 504
+        width: 2014
+        height: 160
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3f228af28d0832bf0800000000000000
+      internalID: -350294680003927309
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: "B\u1ED9 thanh giao di\u1EC7n pixel retro_1"
+      rect:
+        serializedVersion: 2
+        x: 93
+        y: 291
+        width: 1998
+        height: 163
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e7e93b94784d98cf0800000000000000
+      internalID: -249434626820170114
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: "B\u1ED9 thanh giao di\u1EC7n pixel retro_2"
+      rect:
+        serializedVersion: 2
+        x: 77
+        y: 82
+        width: 1548
+        height: 172
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 34e0cfe8102475ba0800000000000000
+      internalID: -6100334595788763581
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: "B\u1ED9 thanh giao di\u1EC7n pixel retro_3"
+      rect:
+        serializedVersion: 2
+        x: 1697
+        y: 69
+        width: 59
+        height: 215
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 774adf50ddc9b9ed0800000000000000
+      internalID: -2406157102797183881
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: "B\u1ED9 thanh giao di\u1EC7n pixel retro_4"
+      rect:
+        serializedVersion: 2
+        x: 1828
+        y: 65
+        width: 63
+        height: 220
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ad16da183206397b0800000000000000
+      internalID: -5218721837576527398
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: "B\u1ED9 thanh giao di\u1EC7n pixel retro_5"
+      rect:
+        serializedVersion: 2
+        x: 1889
+        y: 201
+        width: 6
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1d4c416271e8cedb0800000000000000
+      internalID: -4761274475963169583
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: "B\u1ED9 thanh giao di\u1EC7n pixel retro_6"
+      rect:
+        serializedVersion: 2
+        x: 1961
+        y: 144
+        width: 100
+        height: 101
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3687c38f80b012870800000000000000
+      internalID: 8656212091935160419
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: "B\u1ED9 thanh giao di\u1EC7n pixel retro_7"
+      rect:
+        serializedVersion: 2
+        x: 2069
+        y: 108
+        width: 73
+        height: 73
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7d15f3fb50cf52810800000000000000
+      internalID: 1740073932662198743
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      "B\u1ED9 thanh giao di\u1EC7n pixel retro_0": -350294680003927309
+      "B\u1ED9 thanh giao di\u1EC7n pixel retro_1": -249434626820170114
+      "B\u1ED9 thanh giao di\u1EC7n pixel retro_2": -6100334595788763581
+      "B\u1ED9 thanh giao di\u1EC7n pixel retro_3": -2406157102797183881
+      "B\u1ED9 thanh giao di\u1EC7n pixel retro_4": -5218721837576527398
+      "B\u1ED9 thanh giao di\u1EC7n pixel retro_5": -4761274475963169583
+      "B\u1ED9 thanh giao di\u1EC7n pixel retro_6": 8656212091935160419
+      "B\u1ED9 thanh giao di\u1EC7n pixel retro_7": 1740073932662198743
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
