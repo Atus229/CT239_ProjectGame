@@ -25,7 +25,7 @@ namespace _Project.Scripts.Ui
             confirmButton.onClick.AddListener(OnConfirmClicked);
 
             // Ban đầu chưa chọn đơn -> ẩn nút xác nhận
-            SetVisibility(false);
+            //SetVisibility(false);
         }
 
         private void OnEnable()
