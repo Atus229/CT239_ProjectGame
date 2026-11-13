@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using _Project.Scripts.Data;
+using _Project.Scripts.Managers;
 using UnityEngine;
 
 namespace _Project.Scripts.Core
@@ -32,6 +33,7 @@ namespace _Project.Scripts.Core
         public float TimeRemaining => dayTimeRemaining; 
         public float TimeBudget => dayTimeBudget; 
         public int CurrentDayIndex => currentDayIndex;
+        public bool CanSaveProgress => currentDayIndex > 0 && !isDayActive;
         public int TotalEarnedInDay => totalEarnedInDay;
         public DayData CurrentDayData => currentDayData;
         public int PlayerGold
@@ -49,7 +51,7 @@ namespace _Project.Scripts.Core
             if (Instance == null)
             {
                 Instance = this;
-                DontDestroyOnLoad(gameObject);
+                // This manager shares the scene object with managers that reference the Packing UI.
             }
             else
             {
@@ -59,21 +61,41 @@ namespace _Project.Scripts.Core
         
         private void Start()
         {
-            if (currentDayData != null)
+            if (currentDayData != null && currentDayData.DailyJobs != null)
+                templateJobs = new List<JobData>(currentDayData.DailyJobs);
+
+            var saves = SaveLoadManager.Instance;
+            if (saves != null)
             {
-                if (currentDayData.DailyJobs != null)
-                {
-                    templateJobs = new List<JobData>(currentDayData.DailyJobs);
-                }
-                StartNewDay(currentDayData);
+                if (saves.LoadGame()) return;
+                UpgradeManager.Instance?.ResetAllUpgrades();
             }
-            else
-            {
-                DayData defaultDay = ScriptableObject.CreateInstance<DayData>();
-                defaultDay.DayIndex = 1;
-                defaultDay.DayTimeBudget = 180f;
-                StartNewDay(defaultDay);
-            }
+
+            if (currentDayData != null) StartNewDay(currentDayData);
+            else StartNewDay(CreateDay(1));
+        }
+
+        private void OnDestroy()
+        {
+            if (Instance == this) Instance = null;
+        }
+
+        internal void RestoreProgress(int dayIndex, int gold)
+        {
+            PlayerGold = gold;
+            bonusTimeBudgetFromUpgrade = UpgradeManager.Instance.GetBonusDayTimeBudget();
+            StartNewDay(currentDayData != null && currentDayData.DayIndex == dayIndex
+                ? currentDayData
+                : CreateDay(dayIndex));
+        }
+
+        private DayData CreateDay(int index)
+        {
+            DayData day = ScriptableObject.CreateInstance<DayData>();
+            day.DayIndex = index;
+            day.DayTimeBudget = 180f;
+            day.DailyJobs = new List<JobData>(templateJobs);
+            return day;
         }
         
         private void OnEnable()
@@ -115,6 +137,7 @@ namespace _Project.Scripts.Core
                 activeJobsOnBoard = new List<JobData>(dayData.DailyJobs);
             }
 
+            currentActiveJob = null;
             completedJobsCount = 0;
             totalEarnedInDay = 0;
             totalStarsInDay = 0;
@@ -186,6 +209,7 @@ namespace _Project.Scripts.Core
         /// </summary>
         public void EndDay(bool isManual = false)
         {
+            if (!isDayActive) return;
             isDayActive = false;
             
             float avgStars = completedJobsCount > 0 ? (float)totalStarsInDay / completedJobsCount : 0f;
@@ -201,6 +225,7 @@ namespace _Project.Scripts.Core
 
             // Phát tin sự kiện kết thúc ngày
             EventBus.Publish(new GameEvent.DayEndedEvent(record));
+            SaveLoadManager.Instance?.SaveGame();
         }
         
         private void HandleJobSubmitted(GameEvent.JobSubmittedEvent e)
@@ -211,11 +236,8 @@ namespace _Project.Scripts.Core
         private void HandleNextDayRequested(GameEvent.NextDayRequestedEvent obj)
         {
             // Tăng chỉ số ngày và bắt đầu ngày mới với danh sách đơn hàng mẫu
-            DayData nextDay = ScriptableObject.CreateInstance<DayData>();
-            nextDay.DayIndex = currentDayIndex + 1;
-            nextDay.DayTimeBudget = 180f; // Quỹ cơ bản (sẽ được tự động cộng thêm bonusTimeBudgetFromUpgrade trong StartNewDay)
-            nextDay.DailyJobs = new List<JobData>(templateJobs);
-            StartNewDay(nextDay);
+            if (!CanSaveProgress) return;
+            StartNewDay(CreateDay(currentDayIndex + 1));
         }
 
         private void HandleContinueFromJobResult(GameEvent.ContinueFromJobResultEvent obj)
@@ -235,7 +257,14 @@ namespace _Project.Scripts.Core
         {
             if (e.UpgradeType == UpgradeData.TypeDayTimeBudget)
             {
-                IncreaseDayBudget(30f);
+                var upgrades = UpgradeManager.Instance;
+                var definition = upgrades?.GetUpgradeData(e.UpgradeID);
+                if (definition != null)
+                {
+                    float addedTime = definition.GetEffectValue(e.NewLevel) -
+                                      definition.GetEffectValue(e.NewLevel - 1);
+                    IncreaseDayBudget(addedTime);
+                }
             }
         }
 
