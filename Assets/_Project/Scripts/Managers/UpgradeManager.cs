@@ -72,7 +72,9 @@ namespace _Project.Scripts.Managers
                 }
             }
 
-            int nextPlayerUpgradeId = playerUpgrades.Count + 1;
+            int nextPlayerUpgradeId = 1;
+            foreach (var record in playerUpgradeMap.Values)
+                nextPlayerUpgradeId = Math.Max(nextPlayerUpgradeId, record.PlayerUpgradeID + 1);
             foreach (var upg in availableUpgrades)
             {
                 if (upg != null && !playerUpgradeMap.ContainsKey(upg.UpgradeID))
@@ -153,6 +155,11 @@ namespace _Project.Scripts.Managers
 
         public bool TryPurchaseUpgrade(int upgradeId, ref int currentMoney)
         {
+            return TryPurchaseUpgrade(upgradeId, ref currentMoney, null);
+        }
+
+        internal bool TryPurchaseUpgrade(int upgradeId, ref int currentMoney, Func<int, bool> savePurchase)
+        {
             if (!CanUpgrade(upgradeId, currentMoney))
             {
                 return false;
@@ -170,6 +177,13 @@ namespace _Project.Scripts.Managers
 
             currentMoney -= cost;
             record.CurrentLevel = targetLevel;
+
+            if (savePurchase != null && !savePurchase(currentMoney))
+            {
+                currentMoney += cost;
+                record.CurrentLevel = targetLevel - 1;
+                return false;
+            }
 
             EventBus.Publish(new GameEvent.UpgradePurchasedEvent(
                 record.PlayerUpgradeID,

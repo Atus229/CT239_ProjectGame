@@ -158,13 +158,40 @@ namespace _Project.Scripts.Ui
                 // Setup card và gán callback
                 cardInstance.SetupCard(card, currentGold, () =>
                 {
-                    // Gọi thẳng vào UpgradeManager để mua
-                    if (UpgradeManager.Instance.TryPurchaseUpgrade(card.UpgradeID, ref currentGold))
+                    var saves = SaveLoadManager.Instance;
+                    var day = DayManager.Instance;
+                    currentGold = GetCurrentGold();
+                    bool saveFailed = false;
+
+                    bool CommitPurchase(int newGold)
                     {
-                        SaveCurrentGold(currentGold);
-                        UpdateGoldUI();
-                        RefreshAllCardsState();
+                        int previousGold = day.PlayerGold;
+                        day.PlayerGold = newGold;
+                        if (saves.SaveGame()) return true;
+
+                        day.PlayerGold = previousGold;
+                        saveFailed = true;
+                        return false;
                     }
+
+                    System.Func<int, bool> commit = null;
+                    if (saves != null && day != null)
+                    {
+                        if (!day.CanSaveProgress)
+                        {
+                            RefreshAllCardsState();
+                            return;
+                        }
+
+                        commit = CommitPurchase;
+                    }
+
+                    bool purchased = UpgradeManager.Instance.TryPurchaseUpgrade(card.UpgradeID, ref currentGold, commit);
+                    if (purchased && commit == null) SaveCurrentGold(currentGold);
+                    UpdateGoldUI();
+                    RefreshAllCardsState();
+                    if (saveFailed && txtGold != null)
+                        txtGold.text += " — Không thể lưu giao dịch";
                 });
                 
                 spawnedCards.Add(cardInstance);
