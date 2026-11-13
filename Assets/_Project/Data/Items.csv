@@ -1,0 +1,13 @@
+﻿rowType,itemID,itemName,width,height,shape,value,handlingTime,isFragile,jobAssetPath,requiredMinGold,requiredItemID
+Item,ITEM_01,Yellow Refrigerator,1,2,1|1,50,14,1,,,
+Item,ITEM_02,Single Armchair,1,1,1,20,5,0,,,
+Item,ITEM_03,Monstera Plant,1,1,1,15,4,1,,,
+Item,ITEM_04,Step Trash Bin,1,1,1,10,2,0,,,
+Item,ITEM_05,3-Seater Sofa,3,1,1|1|1,50,12,0,,,
+Item,ITEM_06,Red 2-Seater Sofa,2,1,1|1,30,7,0,,,
+Item,ITEM_07,Wooden Wardrobe,2,2,1|1|1|1,55,12,0,,,
+Item,ITEM_08,Bathtub,2,1,1|1,40,8,1,,,
+Item,ITEM_09,Flat-Screen TV,2,1,1|1,45,6,1,,,
+Item,ITEM_10,L-Shaped Sectional Sofa,3,2,1|0|0|1|1|1,60,14,0,,,
+Item,ITEM_11,Dining Table,2,2,1|1|1|1,45,10,0,,,
+Item,ITEM_12,Double Bed,2,3,1|1|1|1|1|1,70,16,0,,,
