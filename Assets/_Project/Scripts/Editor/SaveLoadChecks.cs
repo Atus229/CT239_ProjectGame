@@ -11,10 +11,10 @@ namespace _Project.Scripts.Editor
 {
     public static class SaveLoadChecks
     {
-        [MenuItem("Tools/Cargo Fit/Check Save and Load")]
+        [MenuItem("Tools/Mini Moving/Check Save and Load")]
         public static void Run()
         {
-            string directory = Path.Combine(Path.GetTempPath(), "CargoFit-save-check-" + Guid.NewGuid().ToString("N"));
+            string directory = Path.Combine(Path.GetTempPath(), "MiniMoving-save-check-" + Guid.NewGuid().ToString("N"));
             Directory.CreateDirectory(directory);
             try
             {
