@@ -39,6 +39,21 @@ namespace _Project.Scripts.Ui
         [SerializeField] private TextMeshProUGUI txtTimeWindow;
         [SerializeField] private TextMeshProUGUI txtItemCount;
 
+        [Header("Yêu cầu đặc biệt - Expanded View")]
+        [SerializeField] private GameObject specialRequirementsContainer;
+        [Space(4)]
+        [SerializeField] private GameObject rowReqMinGold;
+        [SerializeField] private Image imgReqMinGoldIcon;
+        [SerializeField] private TextMeshProUGUI txtReqMinGold;
+        [Space(4)]
+        [SerializeField] private GameObject rowReqItem;
+        [SerializeField] private Image imgReqItemIcon;
+        [SerializeField] private TextMeshProUGUI txtReqItem;
+        [Space(4)]
+        [SerializeField] private GameObject rowFragileWarning;
+        [SerializeField] private Image imgFragileIcon;
+        [SerializeField] private TextMeshProUGUI txtFragileWarning;
+
         [Header("Dữ liệu Test thử (Chỉnh trực tiếp trên Inspector)")]
         [SerializeField] private bool testInPlayMode = true;
         [SerializeField] private string customerName = "Khách A";
@@ -47,6 +62,10 @@ namespace _Project.Scripts.Ui
         [SerializeField] private float timeMax = 60f;
         [SerializeField] private int reward = 120;
         [SerializeField] private bool isLocked = false;
+        [Space(4)]
+        [SerializeField] private int testRequiredMinGold = 100;
+        [SerializeField] private ItemData testRequiredItem = null;
+        [SerializeField] private bool testHasFragile = true;
         
         
         private JobData currentJob;
@@ -77,6 +96,7 @@ namespace _Project.Scripts.Ui
             if (txtAcceptButton == null && btnAccept != null)
             {
                 txtAcceptButton = btnAccept.GetComponentInChildren<TextMeshProUGUI>();
+                
             }
         }
 
@@ -85,6 +105,7 @@ namespace _Project.Scripts.Ui
             if (testInPlayMode && currentJob == null)
             {
                 ApplyData(customerName, itemCount, timeMin, timeMax, reward, isLocked);
+                ApplySpecialRequirements(testRequiredMinGold, testRequiredItem, testHasFragile);
             }
 
             SetExpandedState(false);
@@ -110,13 +131,20 @@ namespace _Project.Scripts.Ui
                 float tMin = jobData.TimeMin;
                 float tMax = jobData.TimeMax;
 
-                // Tính tiền thưởng ước tính từ tổng giá trị các item trong JobData
+                // Tính tiền thưởng ước tính từ tổng giá trị các item trong JobData 
                 int rew = 0;
+                bool hasFragile = false;
                 if (jobData.ItemQueue != null)
                 {
                     foreach (var item in jobData.ItemQueue)
                     {
-                        if (item != null) rew += item.Value;
+                        if (item != null) {
+                            rew += item.Value;
+                            if (item.IsFragile)
+                            {
+                                hasFragile = true;
+                            }
+                        }
                     }
                 }
 
@@ -124,10 +152,12 @@ namespace _Project.Scripts.Ui
                 bool locked = dayTimeRemaining < tMin;
 
                 ApplyData(custName, items, tMin, tMax, rew, locked);
+                ApplySpecialRequirements(jobData.RequiredMinGold, jobData.RequiredItem, hasFragile);
             }
             else
             {
                 ApplyData(customerName, itemCount, timeMin, timeMax, reward, dayTimeRemaining < timeMin);
+                ApplySpecialRequirements(testRequiredMinGold, testRequiredItem, testHasFragile);
             }
         }
 
@@ -154,6 +184,61 @@ namespace _Project.Scripts.Ui
 
             // 3. Khóa tương tác nếu bị khóa
             UpdateLockState(isLocked);
+        }
+
+        /// Nạp dữ liệu yêu cầu đặc biệt (nếu có) vào Expanded View
+        public void ApplySpecialRequirements(int minGold, ItemData reqItem, bool hasFragile)
+        {
+            bool showMinGold = minGold > 0;
+            bool showReqItem = reqItem != null;
+
+            // 1. Yêu cầu tiền tối thiểu (RequiredMinGold > 0)
+            if (rowReqMinGold != null)
+            {
+                rowReqMinGold.SetActive(showMinGold);
+                if (showMinGold && txtReqMinGold != null)
+                {
+                    txtReqMinGold.text = $"Yêu cầu giá trị: Tối thiểu ${minGold}";
+                }
+            }
+
+            // 2. Món đồ bắt buộc (RequiredItem != null)
+            if (rowReqItem != null)
+            {
+                rowReqItem.SetActive(showReqItem);
+                if (showReqItem)
+                {
+                    string displayItemName = !string.IsNullOrEmpty(reqItem.ItemName) ? reqItem.ItemName : reqItem.name;
+                    if (txtReqItem != null)
+                    {
+                        txtReqItem.text = $"Bắt buộc: {displayItemName}";
+                    }
+
+                    if (imgReqItemIcon != null)
+                    {
+                        imgReqItemIcon.sprite = reqItem.ItemIcon;
+                        imgReqItemIcon.gameObject.SetActive(reqItem.ItemIcon != null);
+                    }
+                }
+            }
+
+            // 3. Cảnh báo hàng dễ vỡ (IsFragile)
+            if (rowFragileWarning != null)
+            {
+                rowFragileWarning.SetActive(hasFragile);
+                if (hasFragile && txtFragileWarning != null)
+                {
+                    txtFragileWarning.text = "Chú ý: Có hàng dễ vỡ!";
+                    txtFragileWarning.color = new Color32(211, 47, 47, 255);
+                }
+            }
+
+            if (specialRequirementsContainer != null)
+            {
+                specialRequirementsContainer.SetActive(showMinGold || showReqItem || hasFragile);
+            }
+
+            RebuildLayout();
         }
         
         /// <summary>
@@ -258,6 +343,17 @@ namespace _Project.Scripts.Ui
         //Ép parent layout tính toán lại kích thước ScrollView ngay lập tức
         private void RebuildLayout()
         {
+            // Ép layout của Expanded View (nếu đang mở) để cập nhật kích thước nội dung
+            if (expandedView != null && expandedView.transform is RectTransform expandedRect)
+            {
+                LayoutRebuilder.ForceRebuildLayoutImmediate(expandedRect);
+            }
+            // Ép layout của chính thẻ JobCardUI để cập nhật kích thước Accordion
+            if (transform is RectTransform selfRect)
+            {
+                LayoutRebuilder.ForceRebuildLayoutImmediate(selfRect);
+            }
+            // Ép layout của parent (ScrollView Content) để cập nhật kích thước ScrollView
             if (transform.parent is RectTransform parentRect)
             {
                 LayoutRebuilder.ForceRebuildLayoutImmediate(parentRect);
@@ -277,6 +373,5 @@ namespace _Project.Scripts.Ui
                 EventBus.Publish(new GameEvent.JobSelectedEvent(currentJob));
             }
         }
-        
     }
 }
