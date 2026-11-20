@@ -24,3 +24,5 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 5dc1caf5f219fb748a4a987a832f5b52, type: 2}
   - {fileID: 11400000, guid: 9b50199de9e590043893da2a90f99432, type: 2}
   rewardMultiplier: 1
+  requiredMinGold: 50
+  requiredItem: {fileID: 11400000, guid: 5dc1caf5f219fb748a4a987a832f5b52, type: 2}

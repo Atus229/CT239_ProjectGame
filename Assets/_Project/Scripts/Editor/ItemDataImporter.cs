@@ -157,8 +157,15 @@ namespace _Project.Scripts.Editor
             if (!Regex.IsMatch(id, @"\A[A-Za-z0-9_-]+\z") || fields[2].Length == 0)
                 throw Error(line, "an item needs a valid itemID and a name.");
             assets.TryGetValue(id, out var asset);
+            
+            // Tự động kiểm tra và tạo thư mục lưu trữ nếu chưa tồn tại
+            if (!Directory.Exists(ItemFolder))
+            {
+                Directory.CreateDirectory(ItemFolder);
+                AssetDatabase.Refresh();
+            }
             var path = $"{ItemFolder}/{id}.asset";
-            if (asset == null && (!AssetDatabase.IsValidFolder(ItemFolder) ||
+            if (asset == null && (
                 AssetDatabase.AssetPathToGUID(path, AssetPathToGUIDOptions.OnlyExistingAssets).Length > 0 ||
                 File.Exists(path) || File.Exists(path + ".meta") || Directory.Exists(path)))
                 throw Error(line, $"cannot create an item at '{path}'.");

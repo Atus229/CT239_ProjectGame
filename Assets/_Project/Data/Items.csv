@@ -11,3 +11,6 @@ Item,ITEM_09,Flat-Screen TV,2,1,1|1,45,6,1,,,
 Item,ITEM_10,L-Shaped Sectional Sofa,3,2,1|0|0|1|1|1,60,14,0,,,
 Item,ITEM_11,Dining Table,2,2,1|1|1|1,45,10,0,,,
 Item,ITEM_12,Double Bed,2,3,1|1|1|1|1|1,70,16,0,,,
+JobCondition,,,,,,,,,Day1/Job_Small.asset,0,
+JobCondition,,,,,,,,,Day1/Job_Medium.asset,50,ITEM_02
+JobCondition,,,,,,,,,Day1/Job_Large.asset,100,ITEM_01
