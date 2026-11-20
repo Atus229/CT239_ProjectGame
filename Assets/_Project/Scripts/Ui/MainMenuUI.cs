@@ -9,12 +9,15 @@ namespace _Project.Scripts.Ui
     {
         [Header("Menu Buttons")] [SerializeField]
         private Button startButton;
-
+        [SerializeField] private Button btnHowToPlay;
         [SerializeField] private Button settingsButton;
         [SerializeField] private Button exitButton;
 
         [Header("Popups")] [Tooltip("Kéo Component SettingsPopupUI vào đây")] [SerializeField]
         private SettingsPopupUI settingsPopup;
+
+        [Tooltip("Kéo Component TutorialUI vào đây")]
+        [SerializeField] private TutorialUI tutorialPopup;
 
         [Header("Scene Transition")] [SerializeField]
         private string targetSceneName = "PackingScene";
@@ -29,13 +32,16 @@ namespace _Project.Scripts.Ui
             #endif
 
             if (startButton != null) startButton.onClick.AddListener(OnStartClicked);
+            if (btnHowToPlay != null) btnHowToPlay.onClick.AddListener(OnHowToPlayClicked);
             if (settingsButton != null) settingsButton.onClick.AddListener(OnSettingsClicked);
             if (exitButton != null) exitButton.onClick.AddListener(OnExitClicked);
+
         }
 
         private void OnDestroy()
         {
             if (startButton != null) startButton.onClick.RemoveListener(OnStartClicked);
+            if (btnHowToPlay != null) btnHowToPlay.onClick.RemoveListener(OnHowToPlayClicked);
             if (settingsButton != null) settingsButton.onClick.RemoveListener(OnSettingsClicked);
             if (exitButton != null) exitButton.onClick.RemoveListener(OnExitClicked);
         }
@@ -45,6 +51,19 @@ namespace _Project.Scripts.Ui
             AudioManager.Instance?.PlayButtonClick();
             if (startButton != null) startButton.interactable = false;
             SceneManager.LoadScene(targetSceneName);
+        }
+
+        private void OnHowToPlayClicked()
+        {
+            AudioManager.Instance?.PlayButtonClick();
+            if (tutorialPopup != null)
+            {
+                tutorialPopup.OpenPopup();
+            }
+            else
+            {
+                Debug.LogWarning("[MainMenuUI] Chưa gán TutorialUI vào Inspector!");
+            }
         }
 
         private void OnSettingsClicked()
