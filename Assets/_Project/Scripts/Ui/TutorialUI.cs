@@ -143,8 +143,19 @@ namespace _Project.Scripts.Ui
             for (int i = 0; i < pageDots.Count; i++)
             {
                 if (pageDots[i] != null)
-                    pageDots[i].color = (i == currentPageIndex) ? activeDotColor : inactiveDotColor;
+                {
+                    // Nếu index của chấm vượt quá số trang hiện có -> Ẩn chấm đó đi
+                    bool shouldShowDot = (i < pages.Count);
+                    pageDots[i].gameObject.SetActive(shouldShowDot);
+
+                    if (shouldShowDot)
+                    {
+                        pageDots[i].color = (i == currentPageIndex) ? activeDotColor : inactiveDotColor;
+                    }
+                }
+                    
             }
+                
         }
     }
 
