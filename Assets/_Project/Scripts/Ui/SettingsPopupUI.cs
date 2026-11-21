@@ -159,6 +159,10 @@ namespace _Project.Scripts.Ui
             AudioManager.Instance?.PlayButtonClick();
             Debug.Log("[SettingsPopupUI] Đang xóa toàn bộ dữ liệu lưu (Reset Game về Ngày 1)...");
 
+            _Project.Scripts.Managers.SaveLoadManager.DeleteSaveData();
+            
+            _Project.Scripts.Managers.UpgradeManager.Instance?.ResetAllUpgrades();
+            
             // Lưu lại mức âm lượng hiện tại trước khi xóa PlayerPrefs
             float currentBgm = AudioManager.Instance != null ? AudioManager.Instance.BGMVolume : 0.75f;
             float currentSfx = AudioManager.Instance != null ? AudioManager.Instance.SFXVolume : 0.75f;

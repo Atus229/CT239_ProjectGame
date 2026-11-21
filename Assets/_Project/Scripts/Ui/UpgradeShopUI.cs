@@ -191,7 +191,7 @@ namespace _Project.Scripts.Ui
                     UpdateGoldUI();
                     RefreshAllCardsState();
                     if (saveFailed && txtGold != null)
-                        txtGold.text += " — Không thể lưu giao dịch";
+                        txtGold.text = $"{currentGold} G (Lỗi lưu file!)";
                 });
                 
                 spawnedCards.Add(cardInstance);

@@ -97,6 +97,23 @@ namespace _Project.Scripts.Managers
             day.RestoreProgress(snapshot.currentDayIndex, snapshot.playerGold);
             return true;
         }
+        
+        // Thêm vào trong class SaveLoadManager
+        public static void DeleteSaveData()
+        {
+            try
+            {
+                if (File.Exists(SavePath))
+                {
+                    File.Delete(SavePath);
+                    Debug.Log("[SaveLoadManager] Đã xóa file savegame.json thành công.");
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.LogWarning($"[SaveLoadManager] Không thể xóa file save: {e.Message}");
+            }
+        }
 
         private static GameSaveData ReadSnapshot(string path)
         {
@@ -139,8 +156,23 @@ namespace _Project.Scripts.Managers
             try
             {
                 File.WriteAllText(temporaryPath, JsonUtility.ToJson(snapshot, true));
-                if (File.Exists(path)) File.Replace(temporaryPath, path, null);
-                else File.Move(temporaryPath, path);
+                if (File.Exists(path))
+                {
+                    try
+                    {
+                        File.Replace(temporaryPath, path, null);
+                    }
+                    catch
+                    {
+                        // Fallback an toàn nếu File.Replace bị hệ điều hành từ chối:
+                        File.Delete(path);
+                        File.Move(temporaryPath, path);
+                    }
+                }
+                else
+                {
+                    File.Move(temporaryPath, path);
+                }
             }
             finally
             {
