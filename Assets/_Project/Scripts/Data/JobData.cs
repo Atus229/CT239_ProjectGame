@@ -48,6 +48,13 @@ public class JobData : ScriptableObject
         get { return rewardMultiplier; } 
     }
 
+    [Header("Dieu kien don hang")]
+    [SerializeField] [Min(0)] private int requiredMinGold = 0;
+    public int RequiredMinGold => requiredMinGold;
+
+    [SerializeField] private ItemData requiredItem = null;
+    public ItemData RequiredItem => requiredItem;
+
     private void OnValidate()
     {
         if (timeMax < timeMin)
