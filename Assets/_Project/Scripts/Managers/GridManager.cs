@@ -49,6 +49,14 @@ namespace _Project.Scripts.Core
             }
         }
 
+        private int baseRows;
+
+        internal void RestoreVehicleCapacity(int bonusRows)
+        {
+            int targetRows = Mathf.Clamp(baseRows + bonusRows, 1, MAX_ROWS);
+            if (targetRows > rows) ExpandGrid(0, targetRows - rows);
+        }
+
         private void Awake()
         {
             if (Instance != null && Instance != this)
@@ -58,6 +66,7 @@ namespace _Project.Scripts.Core
             }
             Instance = this;
 
+            baseRows = rows;
             grid = new ItemData[columns, rows];
         }
         

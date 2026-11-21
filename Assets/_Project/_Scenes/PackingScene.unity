@@ -517,6 +517,7 @@ GameObject:
   - component: {fileID: 182536494}
   - component: {fileID: 182536493}
   - component: {fileID: 182536495}
+  - component: {fileID: 182536496}
   m_Layer: 0
   m_Name: Managers
   m_TagString: Untagged
@@ -591,6 +592,18 @@ MonoBehaviour:
   activeJobsOnBoard:
   - {fileID: 0}
   - {fileID: 0}
+--- !u!114 &182536496
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 182536491}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c40887917e3a412d8681c011e2a96075, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.Managers.SaveLoadManager
 --- !u!224 &194562108 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 8730516543539680085, guid: 5607fbd56f7682349aac24ea55c55a98, type: 3}
