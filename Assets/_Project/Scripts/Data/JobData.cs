@@ -62,9 +62,5 @@ public class JobData : ScriptableObject
             timeMax = timeMin;
         }
     }
-
-    [Header("Yêu cầu đặc biệt")]
-    public int RequiredMinGold = 0;
-    public ItemData RequiredItem = null;
 }
 }

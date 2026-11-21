@@ -335,11 +335,6 @@ namespace _Project.Scripts.Ui
             if (expandedView != null) expandedView.SetActive(isExpanded);
         }
 
-        // private void OnAcceptClicked()
-        // {
-        //     Debug.Log($"<color=green>[JobCard] ĐÃ NHẬN ĐƠN:</color> <b>{customerName}</b> | Thưởng: <b>${reward}</b> | Khung giờ: <b>[{timeMin}s - {timeMax}s]</b>");
-        // }
-
         //Ép parent layout tính toán lại kích thước ScrollView ngay lập tức
         private void RebuildLayout()
         {
@@ -365,7 +360,7 @@ namespace _Project.Scripts.Ui
         {
             if (isLocked) return;
 
-            Debug.Log($"<color=green>[JobCard] ĐÃ NHẬN ĐƠN:</color> <b>{customerName}</b> | Thưởng: <b>${reward}</b> | Khung giờ: <b>[{timeMin}s - {timeMax}s]</b>");
+            if (btnAccept != null) btnAccept.interactable = false;
 
             // Phát sự kiện nhận việc qua EventBus
             if (currentJob != null)
