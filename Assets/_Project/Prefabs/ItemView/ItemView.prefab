@@ -143,6 +143,8 @@ MonoBehaviour:
   itemIcon: {fileID: 7823102433458403865}
   itemNameText: {fileID: 0}
   itemInfoText: {fileID: 0}
+  trayIconScale: 0.65
+  gridIconScale: 0.9
   itemData: {fileID: 0}
 --- !u!222 &3048202042537728821
 CanvasRenderer:
