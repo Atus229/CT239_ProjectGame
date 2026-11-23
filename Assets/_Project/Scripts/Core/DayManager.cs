@@ -13,6 +13,7 @@ namespace _Project.Scripts.Core
 
         [Header("Day Config & Runtime Data")] [SerializeField]
         private DayData currentDayData;
+        [SerializeField] private List<DayData> scheduledDays = new List<DayData>();
         private List<JobData> templateJobs = new List<JobData>(); // Lưu lại mẫu danh sách đơn ban đầu
 
         private float dayTimeBudget; // Quỹ thời gian tổng của ngày
@@ -23,6 +24,10 @@ namespace _Project.Scripts.Core
         private int completedJobsCount;
         private int totalEarnedInDay;
         private int totalStarsInDay;
+        
+        [Header("Reputation Economy (BR-05)")]
+        private int totalReputationStars = 0;
+        public int TotalReputationStars => totalReputationStars;
 
         [Header("Player Economy")]
         [SerializeField] private int playerGold = 0; // Ví tiền tích luỹ của người chơi
@@ -45,6 +50,10 @@ namespace _Project.Scripts.Core
         private JobData currentActiveJob;
         private JobResult lastJobResult;
         public List<JobData> activeJobsOnBoard = new List<JobData>();
+        
+        //Danh sách lưu lịch sử các ngày
+        private readonly List<DayHistoryRecord> allDaysHistory = new List<DayHistoryRecord>();
+        public List<DayHistoryRecord> AllDaysHistory => allDaysHistory;
 
         private void Awake()
         {
@@ -72,7 +81,19 @@ namespace _Project.Scripts.Core
             }
 
             if (currentDayData != null) StartNewDay(currentDayData);
+            else if (scheduledDays != null && scheduledDays.Count > 0 && scheduledDays[0] != null) StartNewDay(scheduledDays[0]);
             else StartNewDay(CreateDay(1));
+        }
+
+        private void Update()
+        {
+            // Dùng chuẩn New Input System (không dùng UnityEngine.Input nữa)
+            if (UnityEngine.InputSystem.Keyboard.current != null && 
+                UnityEngine.InputSystem.Keyboard.current.f3Key.wasPressedThisFrame)
+            {
+                Debug.Log("<color=yellow>[CHEAT F3] Tua hết ngày ngay lập tức!</color>");
+                EndDay(isManual: true);
+            }
         }
 
         private void OnDestroy()
@@ -84,9 +105,10 @@ namespace _Project.Scripts.Core
         {
             PlayerGold = gold;
             bonusTimeBudgetFromUpgrade = UpgradeManager.Instance.GetBonusDayTimeBudget();
-            StartNewDay(currentDayData != null && currentDayData.DayIndex == dayIndex
-                ? currentDayData
-                : CreateDay(dayIndex));
+            DayData targetDay = (scheduledDays != null && dayIndex <= scheduledDays.Count && dayIndex > 0)
+                ? scheduledDays[dayIndex - 1]
+                : (currentDayData != null && currentDayData.DayIndex == dayIndex ? currentDayData : CreateDay(dayIndex));
+            StartNewDay(targetDay);
         }
 
         private DayData CreateDay(int index)
@@ -121,6 +143,8 @@ namespace _Project.Scripts.Core
         /// </summary>
         public void StartNewDay(DayData dayData)
         {
+            if (dayData == null) dayData = CreateDay(currentDayIndex > 0 ? currentDayIndex : 1);
+            
             currentDayData = dayData;
             currentDayIndex = dayData.DayIndex;
             
@@ -154,7 +178,9 @@ namespace _Project.Scripts.Core
         public bool CanAcceptJob(JobData job)
         {
             if (job == null) return false;
-            return dayTimeRemaining >= job.TimeMin; 
+            bool hasTime = dayTimeRemaining >= job.TimeMin;
+            bool hasStars = totalReputationStars >= job.RequiredStars; 
+            return hasTime && hasStars; 
         }
 
         /// <summary>
@@ -168,6 +194,7 @@ namespace _Project.Scripts.Core
             totalEarnedInDay += earnedMoney;
             playerGold += earnedMoney; // Tích lũy tiền vào ví người chơi
             totalStarsInDay += stars;
+            totalReputationStars += stars;
             
             EventBus.Publish(new GameEvent.DayTimeUpdatedEvent(dayTimeRemaining, dayTimeBudget));
         }
@@ -223,6 +250,8 @@ namespace _Project.Scripts.Core
                 usedTime = dayTimeBudget - Mathf.Max(0, dayTimeRemaining)
             };
 
+            allDaysHistory.Add(record);
+            
             // Phát tin sự kiện kết thúc ngày
             EventBus.Publish(new GameEvent.DayEndedEvent(record));
             SaveLoadManager.Instance?.SaveGame();
@@ -237,7 +266,18 @@ namespace _Project.Scripts.Core
         {
             // Tăng chỉ số ngày và bắt đầu ngày mới với danh sách đơn hàng mẫu
             if (!CanSaveProgress) return;
-            StartNewDay(CreateDay(currentDayIndex + 1));
+            int nextDayIndex = currentDayIndex + 1;
+            DayData nextDay = (scheduledDays != null && nextDayIndex <= scheduledDays.Count && nextDayIndex > 0)
+                ? scheduledDays[nextDayIndex - 1]
+                : CreateDay(nextDayIndex);
+            
+            // Nếu slot bị null thì tự động fallback tạo ngày mẫu, tránh văng crash
+            if (nextDay == null)
+            {
+                nextDay = CreateDay(nextDayIndex);
+            }
+            
+            StartNewDay(nextDay);
         }
 
         private void HandleContinueFromJobResult(GameEvent.ContinueFromJobResultEvent obj)
@@ -298,6 +338,45 @@ namespace _Project.Scripts.Core
             }
 
             Debug.Log($"[DayManager] Đã cộng +{extraSeconds}s nâng cấp. Quỹ hiện tại: {dayTimeBudget}s (Bonus tích luỹ: +{bonusTimeBudgetFromUpgrade}s).");
+            
+        }
+        
+        // ========== CÔNG CỤ TEST NHANH NGÀY 3, 5, 7 ==========
+
+        [ContextMenu("TEST: Nhảy tới Ngày 3 (600$, 10 Sao)")]
+        public void TestJumpToDay3()
+        {
+            playerGold = 600;
+            totalReputationStars = 10;
+            if (scheduledDays != null && scheduledDays.Count >= 3)
+            {
+                StartNewDay(scheduledDays[2]); // Ngày 3
+            }
+            Debug.Log("<color=cyan><b>[TEST] ĐÃ NHẢY TỚI NGÀY 3: Có 600$, 10⭐. Đơn VIP đã mở!</b></color>");
+        }
+
+        [ContextMenu("TEST: Nhảy tới Ngày 5 (1500$, 20 Sao)")]
+        public void TestJumpToDay5()
+        {
+            playerGold = 1500;
+            totalReputationStars = 20;
+            if (scheduledDays != null && scheduledDays.Count >= 5)
+            {
+                StartNewDay(scheduledDays[4]); // Ngày 5
+            }
+            Debug.Log("<color=cyan><b>[TEST] ĐÃ NHẢY TỚI NGÀY 5: Có 1500$, 20⭐. Xe mở rộng!</b></color>");
+        }
+
+        [ContextMenu("TEST: Nhảy tới Ngày 7 (3500$, 28 Sao)")]
+        public void TestJumpToDay7()
+        {
+            playerGold = 3500;
+            totalReputationStars = 28;
+            if (scheduledDays != null && scheduledDays.Count >= 7)
+            {
+                StartNewDay(scheduledDays[6]); // Ngày 7
+            }
+            Debug.Log("<color=cyan><b>[TEST] ĐÃ NHẢY TỚI NGÀY 7: Có 3500$, 28⭐. Sẵn sàng Siêu VIP trả nợ 5000$!</b></color>");
         }
     }
 }

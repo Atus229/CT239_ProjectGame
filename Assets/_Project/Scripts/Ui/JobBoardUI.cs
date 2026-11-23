@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 using _Project.Scripts.Data;
 using _Project.Scripts.Core;
 
@@ -20,6 +21,14 @@ namespace _Project.Scripts.Ui
 
         [Header("Visibility Controller")]
         [SerializeField] private CanvasGroup canvasGroup;
+        
+        [Header("Nút xem Báo Cáo")]
+        [SerializeField] private Button btnBusinessReport;
+
+        [Header("Thông tin Ngày & Tiến trình")]
+        [SerializeField] private TextMeshProUGUI txt_DayInfo;
+        [SerializeField] private TextMeshProUGUI txtProgressGold;
+        [SerializeField] private TextMeshProUGUI txtTotalStars;
 
         private void Awake()
         {
@@ -27,7 +36,24 @@ namespace _Project.Scripts.Ui
             {
                 canvasGroup = GetComponent<CanvasGroup>();
             }
+            
+            // Tự tìm nút và text nếu chưa kịp kéo vào Inspector
+            if (btnBusinessReport == null)
+            {
+                btnBusinessReport = transform.Find("Btn_BusinessReport")?.GetComponent<Button>();
+            }
+
+            if (txt_DayInfo == null)
+            {
+                txt_DayInfo = transform.Find("txt_DayInfo")?.GetComponent<TextMeshProUGUI>();
+            }
+
+            if (btnBusinessReport != null)
+            {
+                btnBusinessReport.onClick.AddListener(OnBusinessReportButtonClicked);
+            }
         }
+        
 
         private void OnEnable()
         {
@@ -110,6 +136,8 @@ namespace _Project.Scripts.Ui
         /// </summary>
         private void OnContinueFromJobResult(GameEvent.ContinueFromJobResultEvent evt)
         {
+            UpdateProgressDisplay();
+
             if (evt.CompletedJob != null)
             {
                 currentDailyJobs.Remove(evt.CompletedJob);
@@ -155,6 +183,7 @@ namespace _Project.Scripts.Ui
             if (visibility)
             {
                 transform.SetAsLastSibling(); // Luôn nổi lên trên cùng của Canvas khi hiển thị Bảng việc
+                UpdateProgressDisplay();
             }
         }
         
@@ -172,6 +201,7 @@ namespace _Project.Scripts.Ui
         private void OnDayStarted(GameEvent.DayStartedEvent e)
         {
             SetVisibility(true);
+            UpdateProgressDisplay();
 
             List<JobData> jobs = e.dailyJobs;
             if (jobs == null && DayManager.Instance != null && DayManager.Instance.activeJobsOnBoard != null)
@@ -180,6 +210,46 @@ namespace _Project.Scripts.Ui
             }
             
             PopulateJobs(jobs, e.dayTimeBudget);
+        }
+        
+        /// <summary>
+        /// Cập nhật hiển thị Ngày, số Sao tích luỹ và Tiến trình tiền chuộc xe ($ / $5000)
+        /// </summary>
+        public void UpdateProgressDisplay()
+        {
+            int currentDay = (DayManager.Instance != null && DayManager.Instance.CurrentDayIndex > 0)
+                ? DayManager.Instance.CurrentDayIndex
+                : 1;
+
+            if (txt_DayInfo != null)
+            {
+                txt_DayInfo.text = $"Ngày {currentDay} / 7";
+            }
+
+            if (DayManager.Instance != null)
+            {
+                if (txtProgressGold != null)
+                {
+                    txtProgressGold.text = $"${DayManager.Instance.PlayerGold} / $5000";
+                }
+
+                if (txtTotalStars != null)
+                {
+                    txtTotalStars.text = $"{DayManager.Instance.TotalReputationStars}";
+                }
+            }
+        }
+        
+        private void OnBusinessReportButtonClicked()
+        {
+            if (DaySummaryUI.Instance != null)
+            {
+                DaySummaryUI.Instance.OpenAsReportOnly();
+            }
+            else
+            {
+                Debug.LogWarning("[JobBoardUI] Không tìm thấy DaySummaryUI trong Scene!");
+            }
         }
     }
 }

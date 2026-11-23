@@ -62,5 +62,9 @@ public class JobData : ScriptableObject
             timeMax = timeMin;
         }
     }
+    
+    [Header("Dieu kien Sao VIP (BR-05)")]
+    [SerializeField] [Min(0)] private int requiredStars = 0;
+    public int RequiredStars => requiredStars;
 }
 }

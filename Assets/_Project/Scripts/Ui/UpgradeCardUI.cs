@@ -21,6 +21,8 @@ namespace _Project.Scripts.Ui
         private int cardPrice;
         private bool isMaxLevel;
         private UpgradeData currentData;        
+        private Color originalTextColor = Color.white;
+        private bool hasCachedColor = false;
 
         private void Awake()
         {
@@ -32,6 +34,23 @@ namespace _Project.Scripts.Ui
             if (txtBuyButton == null && btnBuy != null)
             {
                 txtBuyButton = btnBuy.GetComponentInChildren<TextMeshProUGUI>();
+            }
+
+            CacheOriginalColor();
+        }
+
+        private void CacheOriginalColor()
+        {
+            if (hasCachedColor) return;
+            if (txtBuyButton != null)
+            {
+                originalTextColor = txtBuyButton.color;
+                hasCachedColor = true;
+            }
+            else if (txtPrice != null)
+            {
+                originalTextColor = txtPrice.color;
+                hasCachedColor = true;
             }
         }
 
@@ -79,11 +98,12 @@ namespace _Project.Scripts.Ui
         public void UpdateCardVisual(int currentGold)
         {
             if(currentData == null || UpgradeManager.Instance == null) return;
+            CacheOriginalColor();
 
             int currentLevel = UpgradeManager.Instance.GetUpgradeLevel(currentData.UpgradeID);
             bool isMax = currentData.IsMaxLevel(currentLevel);
             
-            //Cap nhat ten kem cap do
+            // Cập nhật tên kèm cấp độ
             if (txtName != null)
             {
                 txtName.text = $"{currentData.UpgradeName} (Lv.{currentLevel + 1})";
@@ -94,17 +114,27 @@ namespace _Project.Scripts.Ui
             {
                 if (txtPrice != null) txtPrice.text = "MAX";
                 if (btnBuy != null) btnBuy.interactable = false;
-                if (txtBuyButton != null) txtBuyButton.text = "Đã tối đa";
+                if (txtBuyButton != null)
+                {
+                    txtBuyButton.text = "MAX";
+                    txtBuyButton.color = originalTextColor;
+                }
                 return;
             }
 
-            //Van con nang cap duoc
+            // Vẫn còn nâng cấp được
             int nextCost = UpgradeManager.Instance.GetNextUpgradeCost(currentData.UpgradeID);
-            if (txtPrice != null) txtPrice.text = $"${nextCost}";
+            string priceStr = $"${nextCost}";
 
-            bool canAfford = currentGold >=  nextCost;
+            if (txtPrice != null) txtPrice.text = priceStr;
+            if (txtBuyButton != null) txtBuyButton.text = priceStr;
+
+            bool canAfford = currentGold >= nextCost;
             if (btnBuy != null) btnBuy.interactable = canAfford;
-            if (txtBuyButton != null) txtBuyButton.text = canAfford ? "Mua" : "Không đủ tiền";
+
+            // Luôn giữ nguyên màu chữ gốc 100% rõ nét, không làm mờ/chìm chữ dù nút bị xám
+            if (txtBuyButton != null) txtBuyButton.color = originalTextColor;
+            if (txtPrice != null && txtPrice != txtBuyButton) txtPrice.color = originalTextColor;
         }
 
         private void OnBuyButtonClicked()

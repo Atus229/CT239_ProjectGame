@@ -206,6 +206,11 @@ namespace _Project.Scripts.Ui
             {
                 localPointerOffset = (Vector2)rectTransform.localPosition - mouseLocalInParent;
             }
+
+            if (GridManager.Instance != null && currentShape != null)
+            {
+                GridManager.Instance.ShowPlacementPreview(transform.position, currentShape);
+            }
         }
 
         public void OnDrag(PointerEventData eventData)
@@ -219,12 +224,21 @@ namespace _Project.Scripts.Ui
             {
                 rectTransform.localPosition = mouseLocalInParent + localPointerOffset;
             }
+            
+            // BẬT MÀU PREVIEW: Đủ -> Xanh, Thiếu -> Đỏ
+            if (GridManager.Instance != null && currentShape != null)
+            {
+                GridManager.Instance.ShowPlacementPreview(transform.position, currentShape);
+            }
         }
 
         public void OnEndDrag(PointerEventData eventData)
         {
             isDragging = false;
             canvasGroup.blocksRaycasts = true;
+            
+            // TẮT MÀU XANH/ĐỎ KHI NHẢ CHUỘT
+            GridManager.Instance?.ClearPlacementPreview();
 
             if (itemData != null)
             {
@@ -277,6 +291,11 @@ namespace _Project.Scripts.Ui
             }
 
             currentShape = rotatedShape;
+            
+            if (isDragging && GridManager.Instance != null)
+            {
+                GridManager.Instance.ShowPlacementPreview(transform.position, currentShape);
+            }
         }
 
         public void ReturnToTrayPosition()

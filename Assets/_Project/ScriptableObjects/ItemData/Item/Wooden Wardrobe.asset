@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Wooden Wardrobe
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.Data.ItemData
   itemID: ITEM_07
-  itemName: Wooden Wardrobe
+  itemName: Tu quan ao go
   itemIcon: {fileID: 4619940308048575492, guid: c5b6c4f580d8f2d4b8bceb5352f53015, type: 3}
   width: 2
   height: 2

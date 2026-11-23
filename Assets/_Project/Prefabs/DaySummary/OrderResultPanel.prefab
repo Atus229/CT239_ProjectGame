@@ -65,7 +65,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Performance Summary
+  m_text: "T\xF3m t\u1EAFt"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: f649335287bca004d8201d1ffa6819f9, type: 2}
   m_sharedMaterial: {fileID: 7898703776508787868, guid: f649335287bca004d8201d1ffa6819f9, type: 2}
@@ -301,7 +301,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 750.3, y: 40.53}
+  m_SizeDelta: {x: 635.64, y: 40.53}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1564099675035590484
 CanvasRenderer:
@@ -368,7 +368,7 @@ MonoBehaviour:
   m_fontSizeMax: 72
   m_fontStyle: 2
   m_HorizontalAlignment: 1
-  m_VerticalAlignment: 512
+  m_VerticalAlignment: 256
   m_textAlignment: 65535
   m_characterSpacing: 0
   m_characterHorizontalScale: 1
@@ -399,7 +399,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: 0, w: 0}
+  m_margin: {x: -10.441986, y: 0, z: 7.1515503, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -813,7 +813,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Customer Review
+  m_text: "\u0110\xE1nh gi\xE1 kh\xE1ch h\xE0ng"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: f649335287bca004d8201d1ffa6819f9, type: 2}
   m_sharedMaterial: {fileID: 7898703776508787868, guid: f649335287bca004d8201d1ffa6819f9, type: 2}
@@ -1608,8 +1608,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 450, y: -1240.1113}
-  m_SizeDelta: {x: 686.6396, y: 150.7226}
+  m_AnchoredPosition: {x: 450, y: -1251.1113}
+  m_SizeDelta: {x: 686.6396, y: 172.7226}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2225934367448877517
 CanvasRenderer:
@@ -1740,7 +1740,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Cargo bed capacity
+  m_text: "Ch\u1ED7 \u0111\xE3 chi\u1EBFm"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: f649335287bca004d8201d1ffa6819f9, type: 2}
   m_sharedMaterial: {fileID: 7898703776508787868, guid: f649335287bca004d8201d1ffa6819f9, type: 2}
@@ -1914,7 +1914,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Target timeframe
+  m_text: "Th\u1EDDi gian m\u1EE5c ti\xEAu"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: f649335287bca004d8201d1ffa6819f9, type: 2}
   m_sharedMaterial: {fileID: 7898703776508787868, guid: f649335287bca004d8201d1ffa6819f9, type: 2}
@@ -2052,7 +2052,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_Sprite: {fileID: -6100334595788763581, guid: 84f72f99da4384a4281ff650ae40b2ca, type: 3}
-  m_Type: 0
+  m_Type: 3
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 0
@@ -2163,7 +2163,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Money earned
+  m_text: "S\u1ED1 ti\u1EC1n ki\u1EBFm \u0111\u01B0\u1EE3c"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: f649335287bca004d8201d1ffa6819f9, type: 2}
   m_sharedMaterial: {fileID: 7898703776508787868, guid: f649335287bca004d8201d1ffa6819f9, type: 2}
@@ -2329,7 +2329,7 @@ MonoBehaviour:
   capacityBar: {fileID: 7655391862988287970}
   txtTotalJobTime: {fileID: 122405928590849187}
   txtTargetWindow: {fileID: 9204981715813567596}
-  txtMoneyEarned: {fileID: 0}
+  txtMoneyEarned: {fileID: 3932791277047294207}
   txtTimeRemaining: {fileID: 8110669645387418416}
   txtReviewQuote: {fileID: 5194461242992145594}
   btnContinue: {fileID: 4614272348479871079}
@@ -2853,7 +2853,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Remaining time in the day
+  m_text: "Th\u1EDDi gian ng\xE0y c\xF2n l\u1EA1i"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: f649335287bca004d8201d1ffa6819f9, type: 2}
   m_sharedMaterial: {fileID: 7898703776508787868, guid: f649335287bca004d8201d1ffa6819f9, type: 2}
@@ -2990,7 +2990,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Total Job Time
+  m_text: "Th\u1EDDi gian th\u1EF1c hi\u1EC7n"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: f649335287bca004d8201d1ffa6819f9, type: 2}
   m_sharedMaterial: {fileID: 7898703776508787868, guid: f649335287bca004d8201d1ffa6819f9, type: 2}

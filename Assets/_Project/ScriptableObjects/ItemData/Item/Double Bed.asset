@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Double Bed
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.Data.ItemData
   itemID: ITEM_12
-  itemName: Double Bed
+  itemName: Giuong ngu doi
   itemIcon: {fileID: 6825668122115480689, guid: c5b6c4f580d8f2d4b8bceb5352f53015, type: 3}
   width: 2
   height: 3

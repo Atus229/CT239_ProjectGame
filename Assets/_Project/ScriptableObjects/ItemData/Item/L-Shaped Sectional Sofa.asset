@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: L-Shaped Sectional Sofa
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.Data.ItemData
   itemID: ITEM_10
-  itemName: L-Shaped Sectional Sofa
+  itemName: Sofa goc chu L
   itemIcon: {fileID: 4164707830771264755, guid: c5b6c4f580d8f2d4b8bceb5352f53015, type: 3}
   width: 3
   height: 2

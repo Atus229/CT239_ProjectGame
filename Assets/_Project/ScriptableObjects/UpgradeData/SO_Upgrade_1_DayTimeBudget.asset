@@ -16,7 +16,7 @@ MonoBehaviour:
   upgradeName: "Th\xEAm gi\u1EDD l\xE0m (+30s)"
   upgradeType: DayTimeBudget
   baseCost: 100
-  costGrowth: 2.5
+  costGrowth: 2
   maxLevel: 3
   baseEffectValue: 30
   description: "C\u1ED9ng th\xEAm 30 gi\xE2y v\xE0o qu\u1EF9 th\u1EDDi gian l\xE0m

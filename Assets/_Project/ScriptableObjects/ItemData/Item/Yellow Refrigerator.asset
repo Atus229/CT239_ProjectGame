@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Yellow Refrigerator
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.Data.ItemData
   itemID: ITEM_01
-  itemName: Yellow Refrigerator
+  itemName: Tu lanh vang
   itemIcon: {fileID: -8242567118332608799, guid: c5b6c4f580d8f2d4b8bceb5352f53015, type: 3}
   width: 1
   height: 2

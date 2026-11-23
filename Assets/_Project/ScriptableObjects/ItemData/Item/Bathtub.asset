@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Bathtub
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.Data.ItemData
   itemID: ITEM_08
-  itemName: Bathtub
+  itemName: Bon tam su
   itemIcon: {fileID: 6073085969324650189, guid: c5b6c4f580d8f2d4b8bceb5352f53015, type: 3}
   width: 2
   height: 1

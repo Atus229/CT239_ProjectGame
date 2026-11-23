@@ -14,7 +14,7 @@ namespace _Project.Scripts.Ui
 
         public void SetData(DayHistoryRecord record)
         {
-            if (txtDay != null) txtDay.text = $"Day {record.dayIndex}";
+            if (txtDay != null) txtDay.text = $"Ngày {record.dayIndex}";
             if (txtJobs != null) txtJobs.text = record.jobsCompleted.ToString();
             if (txtRevenue != null) txtRevenue.text = $"${record.revenue}";
             if (txtRating != null) txtRating.text = record.averageRating.ToString("0.0");

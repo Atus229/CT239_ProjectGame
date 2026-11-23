@@ -1,16 +1,42 @@
 ﻿rowType,itemID,itemName,width,height,shape,value,handlingTime,isFragile,jobAssetPath,requiredMinGold,requiredItemID
-Item,ITEM_01,Yellow Refrigerator,1,2,1|1,50,14,1,,,
-Item,ITEM_02,Single Armchair,1,1,1,20,5,0,,,
-Item,ITEM_03,Monstera Plant,1,1,1,15,4,1,,,
-Item,ITEM_04,Step Trash Bin,1,1,1,10,2,0,,,
-Item,ITEM_05,3-Seater Sofa,3,1,1|1|1,50,12,0,,,
-Item,ITEM_06,Red 2-Seater Sofa,2,1,1|1,30,7,0,,,
-Item,ITEM_07,Wooden Wardrobe,2,2,1|1|1|1,55,12,0,,,
-Item,ITEM_08,Bathtub,2,1,1|1,40,8,1,,,
-Item,ITEM_09,Flat-Screen TV,2,1,1|1,45,6,1,,,
-Item,ITEM_10,L-Shaped Sectional Sofa,3,2,1|0|0|1|1|1,60,14,0,,,
-Item,ITEM_11,Dining Table,2,2,1|1|1|1,45,10,0,,,
-Item,ITEM_12,Double Bed,2,3,1|1|1|1|1|1,70,16,0,,,
+Item,ITEM_01,Tu lanh vang,1,2,1|1,50,14,1,,,
+Item,ITEM_02,Ghe banh don,1,1,1,20,5,0,,,
+Item,ITEM_03,Cay trau ba,1,1,1,15,4,1,,,
+Item,ITEM_04,Thung rac dap chan,1,1,1,10,2,0,,,
+Item,ITEM_05,Sofa dai 3 cho,3,1,1|1|1,50,12,0,,,
+Item,ITEM_06,Sofa doi mau do,2,1,1|1,30,7,0,,,
+Item,ITEM_07,Tu quan ao go,2,2,1|1|1|1,55,12,0,,,
+Item,ITEM_08,Bon tam su,2,1,1|1,40,8,1,,,
+Item,ITEM_09,Tivi man hinh phang,2,1,1|1,45,6,1,,,
+Item,ITEM_10,Sofa goc chu L,3,2,1|0|0|1|1|1,60,14,0,,,
+Item,ITEM_11,Ban an go,2,2,1|1|1|1,45,10,0,,,
+Item,ITEM_12,Giuong ngu doi,2,3,1|1|1|1|1|1,70,16,0,,,
+Item,ITEM_13,Lo vi song,1,1,1,25,4,1,,,
+Item,ITEM_14,Dan piano go,2,1,1|1,80,16,1,,,
+Item,ITEM_15,May giat cua truoc,1,1,1,40,8,0,,,
+Item,ITEM_16,Giuong ngu don,1,2,1|1,35,8,0,,,
+Item,ITEM_17,Ban tra thap,2,1,1|1,25,5,1,,,
+Item,ITEM_18,Quat may dung,1,1,1,15,3,0,,,
+Item,ITEM_19,Quay bep chu L,2,2,1|1|1|0,65,14,0,,,
+Item,ITEM_20,Binh hoa gom su,1,1,1,20,3,1,,,
 JobCondition,,,,,,,,,Day1/Job_Small.asset,0,
-JobCondition,,,,,,,,,Day1/Job_Medium.asset,50,ITEM_02
-JobCondition,,,,,,,,,Day1/Job_Large.asset,100,ITEM_01
+JobCondition,,,,,,,,,Day1/Job_Medium.asset,0,
+JobCondition,,,,,,,,,Day1/Job_Large.asset,0,
+JobCondition,,,,,,,,,Day2/Job_Small.asset,0,
+JobCondition,,,,,,,,,Day2/Job_Medium.asset,0,
+JobCondition,,,,,,,,,Day2/Job_Large.asset,0,
+JobCondition,,,,,,,,,Day3/Job_Small.asset,0,
+JobCondition,,,,,,,,,Day3/Job_Medium.asset,80,
+JobCondition,,,,,,,,,Day3/Job_VIP.asset,150,
+JobCondition,,,,,,,,,Day4/Job_Small.asset,0,
+JobCondition,,,,,,,,,Day4/Job_Medium.asset,100,ITEM_09
+JobCondition,,,,,,,,,Day4/Job_Large.asset,160,ITEM_05
+JobCondition,,,,,,,,,Day5/Job_Small.asset,0,
+JobCondition,,,,,,,,,Day5/Job_Medium.asset,130,ITEM_19
+JobCondition,,,,,,,,,Day5/Job_VIP.asset,220,ITEM_14
+JobCondition,,,,,,,,,Day6/Job_Small.asset,0,
+JobCondition,,,,,,,,,Day6/Job_Medium.asset,160,ITEM_10
+JobCondition,,,,,,,,,Day6/Job_Large.asset,240,ITEM_12
+JobCondition,,,,,,,,,Day7/Job_Small.asset,0,ITEM_17
+JobCondition,,,,,,,,,Day7/Job_Medium.asset,220,ITEM_19
+JobCondition,,,,,,,,,Day7/Job_SuperVIP.asset,350,ITEM_14

@@ -27,6 +27,23 @@ public class JobEconomyManager : MonoBehaviour
     //Bien luu tong thoi gian va tong tien hien tai tren xe
     public float CurrentJobTime { get; private set; } = 0f;
     public int CurrentJobValue { get; private set; } = 0;
+
+    /// <summary>
+    /// Tổng giá trị tối đa có thể kiếm được của tất cả các món đồ trong đơn hàng hiện tại
+    /// </summary>
+    public int TotalJobValue
+    {
+        get
+        {
+            if (currentJobData == null || currentJobData.ItemQueue == null) return 0;
+            int sum = 0;
+            foreach (var item in currentJobData.ItemQueue)
+            {
+                if (item != null) sum += item.Value;
+            }
+            return sum;
+        }
+    }
     
     private void Awake()
     {
@@ -78,7 +95,7 @@ public class JobEconomyManager : MonoBehaviour
 
         // Giao trễ (TotalJobTime > Tmax) -> Phạt 1 sao cho mỗi K giây quá hạn
         float overTime = totalJobTime - tMax;
-        int penalty = Mathf.FloorToInt(overTime / timePenaltyFactorK);
+        int penalty = Mathf.CeilToInt(overTime / timePenaltyFactorK);
         int calculatedStars = maxStars - penalty;
 
         return Mathf.Max(minStars, calculatedStars);
@@ -164,8 +181,9 @@ public class JobEconomyManager : MonoBehaviour
         EventBus.Publish(new GameEvent.JobTimeUpdatedEvent(CurrentJobTime, timeMin, timeMax));
         
         //Phat tin cho nut xac nhan don hang 
-        //dieu kien: CurrentJobTime >= timeMin
-        bool canConfirm = CurrentJobTime >= timeMin;
+        //dieu kien: CurrentJobTime >= timeMin va CurrentJobValue >= RequiredMinGold
+        int minRequiredGold = (currentJobData != null) ? currentJobData.RequiredMinGold : 0;
+        bool canConfirm = CurrentJobTime >= timeMin && CurrentJobValue >= minRequiredGold;
         EventBus.Publish(new GameEvent.JobConfirmStateChangedEvent(canConfirm));
     }
     
@@ -179,7 +197,7 @@ public class JobEconomyManager : MonoBehaviour
         //Tru bot tien va thoi gian khi go item ra
         //Su dung Mathf.Max -> khong de gia tri bi am
         CurrentJobTime = Mathf.Max(0f, CurrentJobTime - e.Item.HandlingTime);
-        CurrentJobValue = Mathf.Max(0, CurrentJobValue);
+        CurrentJobValue = Mathf.Max(0, CurrentJobValue - e.Item.Value);
         
         //Tinh toan lai va bao tin len UI
         NotifyStateChanged();

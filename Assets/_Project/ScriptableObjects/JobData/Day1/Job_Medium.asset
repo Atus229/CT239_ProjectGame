@@ -12,17 +12,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e5775a22a68ee34429f6bddc7ecf59d7, type: 3}
   m_Name: Job_Medium
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.Data.JobData
-  jobID: JOB_MEDIUM
-  customerName: "C\xF4 Lan"
-  timeMin: 35
-  timeMax: 48
+  jobID: JOB_D1_M
+  customerName: "B\u1EA1n L\xE2m"
+  timeMin: 20
+  timeMax: 30
   itemQueue:
-  - {fileID: 11400000, guid: c8a226a983a4bde4eb427790d62b0513, type: 2}
-  - {fileID: 11400000, guid: 922ced7a7238f4540b50afbf26934ca1, type: 2}
-  - {fileID: 11400000, guid: 47e3f8c154c1426419416b4d946c2528, type: 2}
-  - {fileID: 11400000, guid: 84d54e7f22af0934ab0176f9ecbaf0b5, type: 2}
+  - {fileID: 11400000, guid: d0ae036ea9458dd4486c77b05829841e, type: 2}
+  - {fileID: 11400000, guid: 295615b1510813d4493a15d29c80c1d5, type: 2}
+  - {fileID: 11400000, guid: 595495a5f19d8554baa7b06409b432b8, type: 2}
+  - {fileID: 11400000, guid: 3001833afb302e642b737b20164d2dac, type: 2}
+  - {fileID: 11400000, guid: 21bf8e7d3e90d2647ac404f45efbf7fc, type: 2}
   - {fileID: 11400000, guid: 5dc1caf5f219fb748a4a987a832f5b52, type: 2}
-  - {fileID: 11400000, guid: 9b50199de9e590043893da2a90f99432, type: 2}
+  - {fileID: 11400000, guid: 28902dca2a8f1374093909ef25bed8c7, type: 2}
+  - {fileID: 11400000, guid: c461ee44a0f83d74386b9acab2724fce, type: 2}
   rewardMultiplier: 1
-  requiredMinGold: 50
-  requiredItem: {fileID: 11400000, guid: 5dc1caf5f219fb748a4a987a832f5b52, type: 2}
+  requiredMinGold: 0
+  requiredItem: {fileID: 0}
+  requiredStars: 0
