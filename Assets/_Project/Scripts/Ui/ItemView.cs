@@ -10,12 +10,18 @@ namespace _Project.Scripts.Ui
 {
     [RequireComponent(typeof(CanvasGroup))]
     [RequireComponent(typeof(LayoutElement))]
-    public class ItemView : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
+    public class ItemView : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerEnterHandler, IPointerExitHandler
     {
         [Header("UI Component References")]
         [SerializeField] private Image itemIcon;
         [SerializeField] private TextMeshProUGUI itemNameText;
         [SerializeField] private TextMeshProUGUI itemInfoText;
+
+        [Header("Icon Size Settings")]
+        [Tooltip("Tỉ lệ thu nhỏ icon khi nằm trên thẻ ở khay đồ (0.2 -> 1.0)")]
+        [Range(0.2f, 1f)] [SerializeField] private float trayIconScale = 0.65f;
+        [Tooltip("Tỉ lệ thu nhỏ icon khi kéo và xếp trên xe (0.5 -> 1.0)")]
+        [Range(0.5f, 1f)] [SerializeField] private float gridIconScale = 1.0f;
 
         [Header("Data Reference")]
         [SerializeField] private ItemData itemData;
@@ -98,9 +104,15 @@ namespace _Project.Scripts.Ui
             }
         }
 
+        private void OnDisable()
+        {
+            ItemInfoBoxUI.HideInfo();
+        }
+
         private void OnDestroy()
         {
             HidePlaceHolder();
+            ItemInfoBoxUI.HideInfo();
         }
 
         public Vector2 GetGridSize()
@@ -149,8 +161,22 @@ namespace _Project.Scripts.Ui
             SetTextVisible(!isPlacedOnGrid);
         }
 
+        public void OnPointerEnter(PointerEventData eventData)
+        {
+            if (!isDragging && !isPlacedOnGrid && itemData != null)
+            {
+                ItemInfoBoxUI.ShowInfo(itemData);
+            }
+        }
+
+        public void OnPointerExit(PointerEventData eventData)
+        {
+            ItemInfoBoxUI.HideInfo();
+        }
+
         public void OnBeginDrag(PointerEventData eventData)
         {
+            ItemInfoBoxUI.HideInfo();
             isDragging = true;
             canvasGroup.blocksRaycasts = false;
             SetTextVisible(false);
@@ -356,12 +382,14 @@ namespace _Project.Scripts.Ui
                 float cellSize = GridManager.Instance != null ? GridManager.Instance.CellSize : 100f;
                 if (itemData != null)
                 {
-                    iconRect.sizeDelta = new Vector2(itemData.Width * cellSize, itemData.Height * cellSize);
+                    iconRect.sizeDelta = new Vector2(itemData.Width * cellSize * gridIconScale, itemData.Height * cellSize * gridIconScale);
                 }
             }
             else
             {
-                iconRect.sizeDelta = new Vector2(Mathf.Max(10f, defaultCardSize.x - 20f), Mathf.Max(10f, defaultCardSize.y - 40f));
+                float targetW = Mathf.Max(10f, (defaultCardSize.x - 20f) * trayIconScale);
+                float targetH = Mathf.Max(10f, (defaultCardSize.y - 40f) * trayIconScale);
+                iconRect.sizeDelta = new Vector2(targetW, targetH);
             }
         }
 

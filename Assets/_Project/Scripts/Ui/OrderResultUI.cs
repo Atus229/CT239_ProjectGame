@@ -77,6 +77,17 @@ namespace _Project.Scripts.Ui
             {
                 canvasGroup = GetComponent<CanvasGroup>();
             }
+
+            // Đảm bảo OrderResultUI luôn nổi lên trên cùng (Sorting Order 50) không bị đồ đạc đè lên
+            Canvas canvas = GetComponent<Canvas>();
+            if (canvas == null) canvas = gameObject.AddComponent<Canvas>();
+            canvas.overrideSorting = true;
+            canvas.sortingOrder = 50;
+            if (GetComponent<GraphicRaycaster>() == null)
+            {
+                gameObject.AddComponent<GraphicRaycaster>();
+            }
+
             if (btnContinue != null)
             {
                 btnContinue.onClick.AddListener(OnContinueButtonPressed);
@@ -152,7 +163,11 @@ namespace _Project.Scripts.Ui
 
             gameObject.SetActive(true);
             SetVisibility(true);
-            transform.SetAsLastSibling(); // Luôn nổi lên trên cùng của Canvas khi hiển thị kết quả
+            transform.SetAsLastSibling();
+            if (transform.parent != null)
+            {
+                transform.parent.SetAsLastSibling();
+            }
         }
 
         public void Close()

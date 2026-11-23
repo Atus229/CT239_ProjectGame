@@ -37,12 +37,16 @@ namespace _Project.Scripts.Ui
         {
             EventBus.Subscribe<GameEvent.JobSelectedEvent>(OnJobSelected);
             EventBus.Subscribe<GameEvent.ContinueFromJobResultEvent>(OnContinueFromJobResult);
+            EventBus.Subscribe<GameEvent.DayEndedEvent>(OnDayEnded);
+            EventBus.Subscribe<GameEvent.DayStartedEvent>(OnDayStarted);
         }
 
         private void OnDisable()
         {
             EventBus.Unsubscribe<GameEvent.JobSelectedEvent>(OnJobSelected);
             EventBus.Unsubscribe<GameEvent.ContinueFromJobResultEvent>(OnContinueFromJobResult);
+            EventBus.Unsubscribe<GameEvent.DayEndedEvent>(OnDayEnded);
+            EventBus.Unsubscribe<GameEvent.DayStartedEvent>(OnDayStarted);
         }
 
         private void Start()
@@ -67,6 +71,16 @@ namespace _Project.Scripts.Ui
         }
 
         private void OnContinueFromJobResult(GameEvent.ContinueFromJobResultEvent evt)
+        {
+            ClearQueue();
+        }
+
+        private void OnDayEnded(GameEvent.DayEndedEvent evt)
+        {
+            ClearQueue();
+        }
+
+        private void OnDayStarted(GameEvent.DayStartedEvent evt)
         {
             ClearQueue();
         }
