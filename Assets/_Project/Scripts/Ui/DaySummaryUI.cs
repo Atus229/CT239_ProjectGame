@@ -87,6 +87,7 @@ namespace _Project.Scripts.Ui
             }
 
             SetVisibility(false);
+            SetDay7SummaryActive(false);
 
             if (btnStartNextDay != null)
                 btnStartNextDay.onClick.AddListener(() =>
@@ -205,11 +206,7 @@ namespace _Project.Scripts.Ui
             
             
             // Mặc định tắt dòng tổng tiền Ngày 7, chỉ khi tới Ngày 7 mới bật lên
-            if (txt_SummaryDay7 != null)
-            {
-                txt_SummaryDay7.gameObject.SetActive(false);
-                txt_ContainerSummaryD7.gameObject.SetActive(false);
-            }
+            SetDay7SummaryActive(false);
             DayHistoryRecord record = e.record;
 
             // Điền các chỉ số text
@@ -278,18 +275,10 @@ namespace _Project.Scripts.Ui
                 if (btnBusinessReport != null) btnBusinessReport.gameObject.SetActive(false);
                 if (btnUpgradeShop != null) btnUpgradeShop.gameObject.SetActive(false);
                 // 4. BẬT Text mới "txt_SummaryDay7" tại vị trí 2 nút vừa tắt
+                SetDay7SummaryActive(true);
                 if (txt_SummaryDay7 != null)
                 {
-                    txt_ContainerSummaryD7.gameObject.SetActive(true);
-                    txt_SummaryDay7.gameObject.SetActive(true);
-                    if (isVictory)
-                    {
-                        txt_SummaryDay7.text = $"${totalGold} / $5000";
-                    }
-                    else
-                    {
-                        txt_SummaryDay7.text = $"${totalGold} / $5000";
-                    }
+                    txt_SummaryDay7.text = $"${totalGold} / $5000";
                 }
 
                 // 5. Cập nhật nút bấm dưới cùng: Về Menu hoặc Chơi lại
@@ -320,7 +309,7 @@ namespace _Project.Scripts.Ui
             else
             {
                 // NẾU LÀ NGÀY BÌNH THƯỜNG (Ngày 1 -> 6): Bật lại các nút và ẩn text ngày 7
-                if (txt_SummaryDay7 != null) txt_SummaryDay7.gameObject.SetActive(false);
+                SetDay7SummaryActive(false);
                 if (btnBusinessReport != null) btnBusinessReport.gameObject.SetActive(true);
                 if (btnUpgradeShop != null) btnUpgradeShop.gameObject.SetActive(true);
 
@@ -555,10 +544,10 @@ namespace _Project.Scripts.Ui
                 txtCurrentDayBadge.text = $"Ngày {DayManager.Instance.CurrentDayIndex}";
             }
 
-            // 3. Tạm ẩn nút Sang ngày mới & Shop (vì đang ở giữa ngày)
+            // 3. Tạm ẩn nút Sang ngày mới, Shop & Tổng tài sản Ngày 7 (vì đang ở giữa ngày)
             if (btnStartNextDay != null) btnStartNextDay.gameObject.SetActive(false);
             if (btnUpgradeShop != null) btnUpgradeShop.gameObject.SetActive(false);
-            if (txt_SummaryDay7 != null) txt_SummaryDay7.gameObject.SetActive(false);
+            SetDay7SummaryActive(false);
 
             // 4. Bật khung Báo cáo + Vẽ biểu đồ
             if (todaySummaryBox != null) todaySummaryBox.SetActive(false);
@@ -580,6 +569,28 @@ namespace _Project.Scripts.Ui
             // 6. Hiện bảng lên trên cùng
             SetVisibility(true);
             transform.SetAsLastSibling();
+        }
+
+        /// <summary>
+        /// Bật/Tắt đồng bộ cụm hiển thị Tổng tài sản Ngày 7 (tắt cả chữ tiêu đề lẫn con số)
+        /// </summary>
+        private void SetDay7SummaryActive(bool active)
+        {
+            if (txt_SummaryDay7 != null)
+            {
+                // Nếu txt_SummaryDay7 nằm trong một container/GameObject cha (ví dụ Txt_SummaryDay7 chứa chữ "Tổng tài sản: ")
+                if (txt_SummaryDay7.transform.parent != null &&
+                    txt_SummaryDay7.transform.parent.name.Contains("SummaryDay7"))
+                {
+                    txt_SummaryDay7.transform.parent.gameObject.SetActive(active);
+                }
+                txt_SummaryDay7.gameObject.SetActive(active);
+            }
+
+            if (txt_ContainerSummaryD7 != null)
+            {
+                txt_ContainerSummaryD7.gameObject.SetActive(active);
+            }
         }
 
 
