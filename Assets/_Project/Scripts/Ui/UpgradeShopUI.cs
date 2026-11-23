@@ -46,6 +46,16 @@ namespace _Project.Scripts.Ui
             {
                 btnClose.onClick.AddListener(CloseShop);
             }
+
+            // Tự động tìm Text hiển thị tiền trong PlayerGold nếu chưa kéo vào Inspector
+            if (txtGold == null)
+            {
+                var playerGoldObj = transform.Find("PlayerGold");
+                if (playerGoldObj != null)
+                {
+                    txtGold = playerGoldObj.GetComponentInChildren<TextMeshProUGUI>();
+                }
+            }
         }
 
         private void OnDestroy()
@@ -131,7 +141,7 @@ namespace _Project.Scripts.Ui
         {
             if (txtGold != null)
             {
-                txtGold.text = $"Vàng hiện có: ${currentGold}";
+                txtGold.text = $"Số dư: ${currentGold}";
             }
         }
 

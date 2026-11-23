@@ -172,7 +172,11 @@ namespace _Project.Scripts.Ui
             isLocked = locked;
 
             // 1. Nạp Collapsed View
-            if (txtCollapsedTitle != null) txtCollapsedTitle.text = $"{customerName} - {itemCount} món";
+            if (txtCollapsedTitle != null)
+            {
+                // Nếu bị khóa thì thêm icon ổ khóa 🔒 vào trước tên khách
+                txtCollapsedTitle.text = locked ? $"[Khóa] {customerName}" : $"{customerName}";
+            }
             if (txtCollapsedTime != null) txtCollapsedTime.text = $"[{timeMin:0}s - {timeMax:0}s]";
             if (txtCollapsedReward != null) txtCollapsedReward.text = $"${reward}";
 
@@ -274,7 +278,7 @@ namespace _Project.Scripts.Ui
              }
              if (btnCollapsed != null)
              {
-                 btnCollapsed.interactable = !isLocked;
+                 btnCollapsed.interactable = true;
              }
          }
          
@@ -284,8 +288,31 @@ namespace _Project.Scripts.Ui
          public void UpdateLockStateWithTime(float dayTimeRemaining)
          {
              float minTime = (currentJob != null) ? currentJob.TimeMin : timeMin;
-             bool locked = dayTimeRemaining < minTime;
+             bool timeLocked = dayTimeRemaining < minTime;
+             // Kiểm tra xem người chơi có đủ sao uy tín để nhận đơn VIP này không
+             bool starLocked = false;
+             if (currentJob != null && currentJob.RequiredStars > 0 && DayManager.Instance != null)
+             {
+                 starLocked = DayManager.Instance.TotalReputationStars < currentJob.RequiredStars;
+             }
+             bool locked = timeLocked || starLocked;
              UpdateLockState(locked);
+             // Cập nhật câu chữ trên nút bấm cho rõ lý do bị khóa
+             if (txtAcceptButton != null)
+             {
+                 if (starLocked)
+                 {
+                     txtAcceptButton.text = $"Cần {currentJob.RequiredStars} Sao Uy tín";
+                 }
+                 else if (timeLocked)
+                 {
+                     txtAcceptButton.text = "Không đủ thời gian";
+                 }
+                 else
+                 {
+                     txtAcceptButton.text = "Nhận đơn";
+                 }
+             }
          }
 
         // Mở rộng thẻ này (TỰ ĐỘNG ĐÓNG THẺ KHÁC NẾU ĐANG MỞ)

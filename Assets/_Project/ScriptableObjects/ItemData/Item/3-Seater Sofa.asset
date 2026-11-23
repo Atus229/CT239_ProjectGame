@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: 3-Seater Sofa
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.Data.ItemData
   itemID: ITEM_05
-  itemName: 3-Seater Sofa
+  itemName: Sofa dai 3 cho
   itemIcon: {fileID: -5787780747190493906, guid: c5b6c4f580d8f2d4b8bceb5352f53015, type: 3}
   width: 3
   height: 1

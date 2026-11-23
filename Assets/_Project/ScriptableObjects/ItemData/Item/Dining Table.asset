@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Dining Table
   m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.Data.ItemData
   itemID: ITEM_11
-  itemName: Dining Table
+  itemName: Ban an go
   itemIcon: {fileID: 642499016186115177, guid: c5b6c4f580d8f2d4b8bceb5352f53015, type: 3}
   width: 2
   height: 2

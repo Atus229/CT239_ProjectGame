@@ -1,0 +1,41 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e5775a22a68ee34429f6bddc7ecf59d7, type: 3}
+  m_Name: Job_SuperVIP
+  m_EditorClassIdentifier: Assembly-CSharp::_Project.Scripts.Data.JobData
+  jobID: JOB_D7_SVIP
+  customerName: "\u2B50 Bi\u1EC7t th\u1EF1 ven h\u1ED3"
+  timeMin: 68
+  timeMax: 85
+  itemQueue:
+  - {fileID: 11400000, guid: 57379e165a1c02e47985da7fbfd253b7, type: 2}
+  - {fileID: 11400000, guid: c8a226a983a4bde4eb427790d62b0513, type: 2}
+  - {fileID: 11400000, guid: 922ced7a7238f4540b50afbf26934ca1, type: 2}
+  - {fileID: 11400000, guid: 20baed6485e16434fab793af116d63e2, type: 2}
+  - {fileID: 11400000, guid: 1f2b0aadea504204693c0f01578fe665, type: 2}
+  - {fileID: 11400000, guid: 47e3f8c154c1426419416b4d946c2528, type: 2}
+  - {fileID: 11400000, guid: bc2c0661812fe1740bacade11048d63c, type: 2}
+  - {fileID: 11400000, guid: fca5667031a256e41b670a6739ae8446, type: 2}
+  - {fileID: 11400000, guid: 84d54e7f22af0934ab0176f9ecbaf0b5, type: 2}
+  - {fileID: 11400000, guid: d0ae036ea9458dd4486c77b05829841e, type: 2}
+  - {fileID: 11400000, guid: 3001833afb302e642b737b20164d2dac, type: 2}
+  - {fileID: 11400000, guid: 595495a5f19d8554baa7b06409b432b8, type: 2}
+  - {fileID: 11400000, guid: 295615b1510813d4493a15d29c80c1d5, type: 2}
+  - {fileID: 11400000, guid: 71f3169949a676d4882da6b57df21e3a, type: 2}
+  - {fileID: 11400000, guid: 2ddd4d1f472afa24783392cb5d3c70d0, type: 2}
+  - {fileID: 11400000, guid: 9b50199de9e590043893da2a90f99432, type: 2}
+  - {fileID: 11400000, guid: 21bf8e7d3e90d2647ac404f45efbf7fc, type: 2}
+  - {fileID: 11400000, guid: 28902dca2a8f1374093909ef25bed8c7, type: 2}
+  rewardMultiplier: 1
+  requiredMinGold: 350
+  requiredItem: {fileID: 11400000, guid: 57379e165a1c02e47985da7fbfd253b7, type: 2}
+  requiredStars: 91

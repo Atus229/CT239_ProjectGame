@@ -16,7 +16,7 @@ MonoBehaviour:
   upgradeName: "M\u1EDF r\u1ED9ng th\xF9ng xe (+1 h\xE0ng)"
   upgradeType: VehicleCapacity
   baseCost: 150
-  costGrowth: 2.333
+  costGrowth: 2
   maxLevel: 3
   baseEffectValue: 1
   description: "M\u1EDF r\u1ED9ng th\xF9ng xe th\xEAm 1 h\xE0ng \xF4 \u0111\u1EC3
