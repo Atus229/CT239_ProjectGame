@@ -86,6 +86,16 @@ namespace _Project.Scripts.Ui
                 canvasGroup = GetComponent<CanvasGroup>();
             }
 
+            // Đảm bảo DaySummaryUI luôn nổi lên trên cùng (Sorting Order 60)
+            Canvas canvas = GetComponent<Canvas>();
+            if (canvas == null) canvas = gameObject.AddComponent<Canvas>();
+            canvas.overrideSorting = true;
+            canvas.sortingOrder = 60;
+            if (GetComponent<GraphicRaycaster>() == null)
+            {
+                gameObject.AddComponent<GraphicRaycaster>();
+            }
+
             SetVisibility(false);
             SetDay7SummaryActive(false);
 
@@ -93,6 +103,7 @@ namespace _Project.Scripts.Ui
                 btnStartNextDay.onClick.AddListener(() =>
                 {
                     SetVisibility(false);
+                    GridManager.Instance?.CleanGrid();
                     EventBus.Publish(new GameEvent.NextDayRequestedEvent());
                     OnStartNextDayClicked?.Invoke();
                 });
@@ -237,6 +248,9 @@ namespace _Project.Scripts.Ui
                 PopulateHistory(DayManager.Instance.AllDaysHistory);
             }
 
+            // Dọn sạch đồ đạc trên lưới để không bao giờ bị đè lên bảng tổng kết
+            GridManager.Instance?.CleanGrid();
+
             // Bật sáng bảng tổng kết lên màn hình
             SetVisibility(true);
             transform.SetAsLastSibling();
@@ -292,7 +306,7 @@ namespace _Project.Scripts.Ui
                         btnStartNextDay.onClick.AddListener(() =>
                         {
                             _Project.Scripts.Managers.SaveLoadManager.DeleteSaveData();
-                            SceneManager.LoadScene("MainMenu");
+                            LoadingScreenUI.LoadScene("MainMenu");
                         });
                     }
                     else
@@ -301,7 +315,7 @@ namespace _Project.Scripts.Ui
                         btnStartNextDay.onClick.AddListener(() =>
                         {
                             _Project.Scripts.Managers.SaveLoadManager.DeleteSaveData();
-                            SceneManager.LoadScene("MainMenu");
+                            LoadingScreenUI.LoadScene("MainMenu");
                         });
                     }
                 }

@@ -66,17 +66,12 @@ namespace _Project.Scripts.Ui
 
         private void Update()
         {
-            // Bắt phím Escape theo chuẩn New Input System
+            // Bắt phím Escape theo New Input System
             bool isEscPressed = false;
-
-#if ENABLE_INPUT_SYSTEM
             if (UnityEngine.InputSystem.Keyboard.current != null)
             {
                 isEscPressed = UnityEngine.InputSystem.Keyboard.current.escapeKey.wasPressedThisFrame;
             }
-#elif ENABLE_LEGACY_INPUT_MANAGER
-            isEscPressed = Input.GetKeyDown(KeyCode.Escape);
-#endif
 
             if (isEscPressed)
             {
@@ -139,7 +134,7 @@ namespace _Project.Scripts.Ui
             Time.timeScale = 1f; // Bắt buộc trả lại 1 trước khi đổi Scene
             PlayerPrefs.Save();
             AudioManager.Instance?.PlayButtonClick();
-            SceneManager.LoadScene("MainMenu");
+            LoadingScreenUI.LoadScene("MainMenu");
         }
 
         private void QuitGame()

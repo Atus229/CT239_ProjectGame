@@ -88,12 +88,24 @@ namespace _Project.Scripts.Core
             }
         }
 
-        private int baseRows;
+        private int baseColumns = 4;
+        private int baseRows = 4;
 
-        internal void RestoreVehicleCapacity(int bonusRows)
+        internal void RestoreVehicleCapacity(int level)
         {
-            int targetRows = Mathf.Clamp(baseRows + bonusRows, 1, MAX_ROWS);
-            if (targetRows > rows) ExpandGrid(0, targetRows - rows);
+            if (level <= 0) return;
+            int extraCols = (level + 1) / 2;
+            int extraRows = level / 2;
+
+            int targetCols = Mathf.Clamp(baseColumns + extraCols, 1, MAX_COLUMNS);
+            int targetRows = Mathf.Clamp(baseRows + extraRows, 1, MAX_ROWS);
+
+            int addCols = Mathf.Max(0, targetCols - columns);
+            int addRows = Mathf.Max(0, targetRows - rows);
+            if (addCols > 0 || addRows > 0)
+            {
+                ExpandGrid(addCols, addRows);
+            }
         }
 
         private void Awake()
@@ -127,6 +139,7 @@ namespace _Project.Scripts.Core
                 truckBedGridRect = transform.Find("TruckBedGrid") as RectTransform;
             }
 
+            baseColumns = columns;
             baseRows = rows;
             grid = new ItemData[columns, rows];
         }
@@ -255,9 +268,9 @@ namespace _Project.Scripts.Core
                     for (int y = 0; y < rows; y++)
                     {
                         grid[x, y] = null;
-                        RefreshAllSlotColors();
                     }
                 }
+                RefreshAllSlotColors();
             }
 
             // Xóa sạch toàn bộ GameObject ItemView đã xếp trên xe
@@ -270,6 +283,7 @@ namespace _Project.Scripts.Core
             }
 
             placedItemViews.Clear();
+            ClearPlacementPreview();
             Debug.Log("<color=green>[GridManager]</color> Đã làm sạch toàn bộ thùng xe và xóa các vật phẩm cũ.");
         }
 
@@ -305,6 +319,8 @@ namespace _Project.Scripts.Core
             EventBus.Subscribe<GameEvent.ItemRemovedEvent>(OnItemRemoved);
             EventBus.Subscribe<GameEvent.ContinueFromJobResultEvent>(OnContinueFromResult);
             EventBus.Subscribe<GameEvent.UpgradePurchasedEvent>(OnUpgradePurchased);
+            EventBus.Subscribe<GameEvent.DayEndedEvent>(OnDayEnded);
+            EventBus.Subscribe<GameEvent.DayStartedEvent>(OnDayStarted);
         }
 
         private void OnDisable()
@@ -313,6 +329,18 @@ namespace _Project.Scripts.Core
             EventBus.Unsubscribe<GameEvent.ItemRemovedEvent>(OnItemRemoved);
             EventBus.Unsubscribe<GameEvent.ContinueFromJobResultEvent>(OnContinueFromResult);
             EventBus.Unsubscribe<GameEvent.UpgradePurchasedEvent>(OnUpgradePurchased);
+            EventBus.Unsubscribe<GameEvent.DayEndedEvent>(OnDayEnded);
+            EventBus.Unsubscribe<GameEvent.DayStartedEvent>(OnDayStarted);
+        }
+
+        private void OnDayEnded(GameEvent.DayEndedEvent e)
+        {
+            CleanGrid();
+        }
+
+        private void OnDayStarted(GameEvent.DayStartedEvent e)
+        {
+            CleanGrid();
         }
 
         private void OnItemDropped(GameEvent.ItemDroppedEvent e)
@@ -471,8 +499,16 @@ namespace _Project.Scripts.Core
         {
             if (e.UpgradeType == UpgradeData.TypeVehicleCapacity)
             {
-                // Mở rộng thùng xe thêm 1 hàng
-                ExpandGrid(0, 1);
+                // Cấp lẻ (Lv1, Lv3): Thêm 1 cột ngang (ExpandGrid(1, 0))
+                // Cấp chẵn (Lv2): Thêm 1 hàng dọc (ExpandGrid(0, 1))
+                if (e.NewLevel % 2 != 0)
+                {
+                    ExpandGrid(1, 0); // Lv1: 4x4 -> 5x4 | Lv3: 5x5 -> 6x5
+                }
+                else
+                {
+                    ExpandGrid(0, 1); // Lv2: 5x4 -> 5x5
+                }
             }
         }
 

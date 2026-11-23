@@ -50,7 +50,7 @@ namespace _Project.Scripts.Ui
         {
             AudioManager.Instance?.PlayButtonClick();
             if (startButton != null) startButton.interactable = false;
-            SceneManager.LoadScene(targetSceneName);
+            LoadingScreenUI.LoadScene(targetSceneName);
         }
 
         private void OnHowToPlayClicked()

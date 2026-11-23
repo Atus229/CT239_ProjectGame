@@ -50,7 +50,6 @@ namespace _Project.Scripts.Ui
         {
             if (!gameObject.activeInHierarchy) return;
 
-#if ENABLE_INPUT_SYSTEM
             if (Keyboard.current != null)
             {
                 if (Keyboard.current.rightArrowKey.wasPressedThisFrame)
@@ -60,14 +59,6 @@ namespace _Project.Scripts.Ui
                 else if (Keyboard.current.escapeKey.wasPressedThisFrame)
                     ClosePopup();
             }
-#elif ENABLE_LEGACY_INPUT_MANAGER
-            if (Input.GetKeyDown(KeyCode.RightArrow))
-                NextPage();
-            else if (Input.GetKeyDown(KeyCode.LeftArrow))
-                PrevPage();
-            else if (Input.GetKeyDown(KeyCode.Escape))
-                ClosePopup();
-#endif
         }
 
         private void EnsureInitialized()

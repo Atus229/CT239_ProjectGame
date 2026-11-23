@@ -104,6 +104,8 @@ namespace _Project.Scripts.Ui
             {
                 usedCapacity = GridManager.Instance.OccupiedCellCount;
                 maxCapacity = GridManager.Instance.TotalCellCount;
+                // Dọn sạch thùng xe ngay sau khi ghi nhận thông số để đồ không đè lên bảng kết quả
+                GridManager.Instance.CleanGrid();
             }
 
             // 3. Lấy quỹ thời gian ngày còn lại từ DayManager (nếu có)
