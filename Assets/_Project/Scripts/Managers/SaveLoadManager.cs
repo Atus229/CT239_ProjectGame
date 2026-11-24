@@ -37,9 +37,16 @@ namespace _Project.Scripts.Managers
             var upgrades = UpgradeManager.Instance;
             if (day == null || upgrades == null || !day.CanSaveProgress) return false;
 
+            // Nếu đã kết thúc Ngày 7 (ngày cuối cùng của vòng lặp game), xóa save để hoàn tất game, không lưu sang Ngày 8
+            if (day.CurrentDayIndex >= 7)
+            {
+                DeleteSaveData();
+                return true;
+            }
+
             var snapshot = new GameSaveData
             {
-                currentDayIndex = day.CurrentDayIndex + 1,
+                currentDayIndex = Mathf.Clamp(day.CurrentDayIndex + 1, 1, 7),
                 playerGold = day.PlayerGold,
                 unlockedUpgradeIDs = new List<int>(),
                 playerUpgrades = upgrades.ExportPlayerUpgrades()
@@ -71,6 +78,14 @@ namespace _Project.Scripts.Managers
             {
                 snapshot = ReadSnapshot(SavePath);
                 if (snapshot == null) return false;
+
+                // Nếu file save có ngày vượt quá Ngày 7 (do lỗi phiên bản cũ hoặc test dở Ngày 7)
+                if (snapshot.currentDayIndex > 7)
+                {
+                    Debug.LogWarning("[SaveLoadManager] Dữ liệu lưu đã vượt quá Ngày 7. Đang xóa save cũ để bắt đầu vòng chơi mới từ Ngày 1.");
+                    DeleteSaveData();
+                    return false;
+                }
 
                 foreach (var record in snapshot.playerUpgrades)
                 {

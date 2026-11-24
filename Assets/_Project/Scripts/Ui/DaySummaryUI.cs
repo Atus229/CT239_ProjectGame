@@ -76,6 +76,7 @@ namespace _Project.Scripts.Ui
         }
 
         private readonly List<DayHistoryRowUI> spawnedRows = new List<DayHistoryRowUI>();
+        private ScrollRect historyScrollRect;
 
         private void Awake()
         {
@@ -85,6 +86,8 @@ namespace _Project.Scripts.Ui
             {
                 canvasGroup = GetComponent<CanvasGroup>();
             }
+
+            SetupHistoryScrollRect();
 
             // Đảm bảo DaySummaryUI luôn nổi lên trên cùng (Sorting Order 60)
             Canvas canvas = GetComponent<Canvas>();
@@ -183,6 +186,34 @@ namespace _Project.Scripts.Ui
             transform.SetAsLastSibling();
         }
 
+        private void SetupHistoryScrollRect()
+        {
+            if (historyContainer != null)
+            {
+                historyScrollRect = historyContainer.GetComponentInParent<ScrollRect>();
+                if (historyScrollRect != null)
+                {
+                    // 1. Gán Viewport nếu còn thiếu (giúp ScrollRect xác định đúng vùng hiển thị)
+                    if (historyScrollRect.viewport == null)
+                    {
+                        historyScrollRect.viewport = historyScrollRect.GetComponent<RectTransform>();
+                    }
+
+                    // 2. Tăng độ nhạy cuộn chuột (mặc định prefab đang bị đặt là 1 quá nhỏ)
+                    historyScrollRect.scrollSensitivity = 25f;
+
+                    // 3. Đảm bảo ScrollArea có Graphic (Image) với raycastTarget = true để bắt sự kiện lăn/kéo chuột
+                    Image scrollAreaImg = historyScrollRect.GetComponent<Image>();
+                    if (scrollAreaImg == null)
+                    {
+                        scrollAreaImg = historyScrollRect.gameObject.AddComponent<Image>();
+                        scrollAreaImg.color = Color.clear; // Trong suốt hoàn toàn
+                    }
+                    scrollAreaImg.raycastTarget = true;
+                }
+            }
+        }
+
         private void PopulateHistory(List<DayHistoryRecord> history)
         {
             if (historyContainer == null) return;
@@ -201,6 +232,28 @@ namespace _Project.Scripts.Ui
             {
                 DayHistoryRowUI newRow = Instantiate(historyRowPrefab, historyContainer);
                 newRow.SetData(record);
+
+                // Đảm bảo mỗi dòng có LayoutElement với chiều cao chuẩn (45px) để ContentSizeFitter tính chính xác
+                LayoutElement le = newRow.GetComponent<LayoutElement>();
+                if (le == null) le = newRow.gameObject.AddComponent<LayoutElement>();
+                le.minHeight = 45f;
+                le.preferredHeight = 45f;
+            }
+
+            // Cập nhật lại Layout ngay lập tức và cuộn lên đỉnh
+            StartCoroutine(RefreshHistoryScroll());
+        }
+
+        private System.Collections.IEnumerator RefreshHistoryScroll()
+        {
+            yield return null; // Đợi hết frame để Destroy các row cũ và sinh row mới hoàn tất
+            if (historyContainer != null && historyContainer is RectTransform rt)
+            {
+                LayoutRebuilder.ForceRebuildLayoutImmediate(rt);
+            }
+            if (historyScrollRect != null)
+            {
+                historyScrollRect.verticalNormalizedPosition = 1f;
             }
         }
 

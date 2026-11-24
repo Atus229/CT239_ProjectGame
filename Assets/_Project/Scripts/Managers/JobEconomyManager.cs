@@ -1,5 +1,6 @@
 using UnityEngine;
 using System;
+using System.Collections.Generic;
 using _Project.Scripts.Core;
 using _Project.Scripts.Data;
 
@@ -27,6 +28,7 @@ public class JobEconomyManager : MonoBehaviour
     //Bien luu tong thoi gian va tong tien hien tai tren xe
     public float CurrentJobTime { get; private set; } = 0f;
     public int CurrentJobValue { get; private set; } = 0;
+    private readonly List<ItemData> placedItems = new List<ItemData>();
 
     /// <summary>
     /// Tổng giá trị tối đa có thể kiếm được của tất cả các món đồ trong đơn hàng hiện tại
@@ -61,6 +63,8 @@ public class JobEconomyManager : MonoBehaviour
         EventBus.Subscribe<GameEvent.ItemPlacedEvent>(HandleItemPlaced);
         EventBus.Subscribe<GameEvent.ItemRemovedEvent>(HandleItemRemoved);
         EventBus.Subscribe<GameEvent.JobSelectedEvent>(HandleJobSelected);
+        EventBus.Subscribe<GameEvent.ContinueFromJobResultEvent>(HandleContinueFromJobResult);
+        EventBus.Subscribe<GameEvent.DayEndedEvent>(HandleDayEnded);
     }
 
     private void OnDisable()
@@ -68,6 +72,8 @@ public class JobEconomyManager : MonoBehaviour
         EventBus.Unsubscribe<GameEvent.ItemPlacedEvent>(HandleItemPlaced);
         EventBus.Unsubscribe<GameEvent.ItemRemovedEvent>(HandleItemRemoved);
         EventBus.Unsubscribe<GameEvent.JobSelectedEvent>(HandleJobSelected);
+        EventBus.Unsubscribe<GameEvent.ContinueFromJobResultEvent>(HandleContinueFromJobResult);
+        EventBus.Unsubscribe<GameEvent.DayEndedEvent>(HandleDayEnded);
     }
 
     private void Start()
@@ -111,11 +117,43 @@ public class JobEconomyManager : MonoBehaviour
     }
 
     /// <summary>
-    /// BR-03: Kiểm tra điều kiện bật nút "Xác nhận vận chuyển" (TotalJobTime >= Tmin).
+    /// BR-03: Kiểm tra điều kiện bật nút "Xác nhận vận chuyển" (TotalJobTime >= Tmin, Value >= RequiredMinGold, có món đồ bắt buộc).
     /// </summary>
     public bool CanSubmitJob(float totalJobTime, float tMin)
     {
-        return totalJobTime >= tMin;
+        int minRequiredGold = (currentJobData != null) ? currentJobData.RequiredMinGold : 0;
+        return totalJobTime >= tMin && CurrentJobValue >= minRequiredGold && HasRequiredItem();
+    }
+
+    /// <summary>
+    /// Kiểm tra xem đơn hàng hiện tại có yêu cầu món đồ bắt buộc không, và người chơi đã xếp món đó lên xe chưa.
+    /// </summary>
+    public bool HasRequiredItem()
+    {
+        if (currentJobData == null || currentJobData.RequiredItem == null)
+        {
+            return true; // Đơn không yêu cầu món đồ bắt buộc -> Thỏa mãn
+        }
+
+        ItemData required = currentJobData.RequiredItem;
+
+        // 1. Kiểm tra trực tiếp trên lưới thùng xe (GridManager)
+        if (GridManager.Instance != null && GridManager.Instance.HasItemOnGrid(required))
+        {
+            return true;
+        }
+
+        // 2. Kiểm tra phụ trợ qua danh sách món đồ đã bắt được qua sự kiện
+        for (int i = 0; i < placedItems.Count; i++)
+        {
+            ItemData item = placedItems[i];
+            if (item != null && (item == required || (!string.IsNullOrEmpty(item.ItemID) && item.ItemID == required.ItemID)))
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /// <summary>
@@ -162,9 +200,10 @@ public class JobEconomyManager : MonoBehaviour
         timeMin = job.TimeMin;
         timeMax = job.TimeMax;
         
-        //Reset thoi gian va tien
+        //Reset thoi gian, tien va danh sach mon do da xep
         CurrentJobTime = 0f;
         CurrentJobValue = 0;
+        placedItems.Clear();
 
         currentJobData = job;
         
@@ -181,9 +220,11 @@ public class JobEconomyManager : MonoBehaviour
         EventBus.Publish(new GameEvent.JobTimeUpdatedEvent(CurrentJobTime, timeMin, timeMax));
         
         //Phat tin cho nut xac nhan don hang 
-        //dieu kien: CurrentJobTime >= timeMin va CurrentJobValue >= RequiredMinGold
+        //dieu kien: CurrentJobTime >= timeMin, CurrentJobValue >= RequiredMinGold, va da dat mon do bat buoc
         int minRequiredGold = (currentJobData != null) ? currentJobData.RequiredMinGold : 0;
-        bool canConfirm = CurrentJobTime >= timeMin && CurrentJobValue >= minRequiredGold;
+        bool hasRequiredItem = HasRequiredItem();
+        bool canConfirm = CurrentJobTime >= timeMin && CurrentJobValue >= minRequiredGold && hasRequiredItem;
+
         EventBus.Publish(new GameEvent.JobConfirmStateChangedEvent(canConfirm));
     }
     
@@ -194,6 +235,17 @@ public class JobEconomyManager : MonoBehaviour
     {
         if (e.Item == null) return;
         
+        // Xoa 1 mon phu hop khoi danh sach placedItems
+        for (int i = placedItems.Count - 1; i >= 0; i--)
+        {
+            ItemData it = placedItems[i];
+            if (it == e.Item || (it != null && !string.IsNullOrEmpty(it.ItemID) && it.ItemID == e.Item.ItemID))
+            {
+                placedItems.RemoveAt(i);
+                break;
+            }
+        }
+
         //Tru bot tien va thoi gian khi go item ra
         //Su dung Mathf.Max -> khong de gia tri bi am
         CurrentJobTime = Mathf.Max(0f, CurrentJobTime - e.Item.HandlingTime);
@@ -210,6 +262,8 @@ public class JobEconomyManager : MonoBehaviour
     {
         if (e.Item == null) return;
         
+        placedItems.Add(e.Item);
+
         //Cong thoi gian va gia tri cua mon hang
         CurrentJobTime += e.Item.HandlingTime;
         CurrentJobValue += e.Item.Value;
@@ -224,6 +278,16 @@ public class JobEconomyManager : MonoBehaviour
         {
             LoadDataJob(e.SelectedJob);
         }
+    }
+
+    private void HandleContinueFromJobResult(GameEvent.ContinueFromJobResultEvent e)
+    {
+        placedItems.Clear();
+    }
+
+    private void HandleDayEnded(GameEvent.DayEndedEvent e)
+    {
+        placedItems.Clear();
     }
 }
 

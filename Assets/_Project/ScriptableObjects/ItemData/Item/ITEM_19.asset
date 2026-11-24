@@ -17,7 +17,7 @@ MonoBehaviour:
   itemIcon: {fileID: 3746304773323514018, guid: a2232f87d182e6749a313bfa3bc3d9d4, type: 3}
   width: 2
   height: 2
-  shapeSerialized: 01010100
+  shapeSerialized: 01010101
   value: 65
   handlingTime: 14
   isFragile: 0

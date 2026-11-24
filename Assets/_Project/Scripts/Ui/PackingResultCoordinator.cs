@@ -149,14 +149,16 @@ namespace _Project.Scripts.Ui
                 return;
             }
 
-            // Nếu có DayManager trong Scene, kiểm tra điều kiện kết thúc ngày
-            if (DayManager.Instance != null && autoEndDayWhenNoTime)
+            // Nếu có DayManager trong Scene, việc kiểm tra điều kiện kết thúc ngày được giao cho
+            // DayManager.Instance.CheckAutoEndDayCondition() xử lý chuẩn xác qua ContinueFromJobResultEvent
+            // (tránh việc lấy nhầm TimeMin của đơn vừa hoàn thành để so sánh gây ngắt nhầm các đơn nhỏ còn lại).
+            if (DayManager.Instance == null && autoEndDayWhenNoTime)
             {
                 float tMin = JobEconomyManager.Instance != null ? JobEconomyManager.Instance.TimeMin : 40f;
-                if (DayManager.Instance.TimeRemaining < tMin)
+                if (tMin > 0)
                 {
-                    Debug.Log("<color=#FFA500>[PackingResultCoordinator] Quỹ thời gian ngày không đủ cho đơn tiếp theo -> Kết thúc ngày!</color>");
-                    DayManager.Instance.EndDay(isManual: false);
+                    Debug.Log("<color=#FFA500>[PackingResultCoordinator] Scene Test: Không có DayManager -> Trigger kết thúc ngày!</color>");
+                    TriggerEndDay();
                     return;
                 }
             }

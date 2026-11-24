@@ -287,6 +287,26 @@ namespace _Project.Scripts.Core
             Debug.Log("<color=green>[GridManager]</color> Đã làm sạch toàn bộ thùng xe và xóa các vật phẩm cũ.");
         }
 
+        /// <summary>
+        /// Kiểm tra xem một loại món đồ cụ thể có đang được xếp trên lưới thùng xe hay không.
+        /// </summary>
+        public bool HasItemOnGrid(ItemData itemData)
+        {
+            if (itemData == null) return true;
+            for (int i = 0; i < placedItemViews.Count; i++)
+            {
+                if (placedItemViews[i] != null && placedItemViews[i].IsPlacedOnGrid)
+                {
+                    ItemData data = placedItemViews[i].Data;
+                    if (data != null && (data == itemData || (!string.IsNullOrEmpty(data.ItemID) && data.ItemID == itemData.ItemID)))
+                    {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+
         private void OnDrawGizmos()
         {
             if (cellSize <= 0f) cellSize = 100f;

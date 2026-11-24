@@ -105,6 +105,7 @@ namespace _Project.Scripts.Core
         {
             PlayerGold = gold;
             bonusTimeBudgetFromUpgrade = UpgradeManager.Instance.GetBonusDayTimeBudget();
+            dayIndex = Mathf.Clamp(dayIndex, 1, 7);
             DayData targetDay = (scheduledDays != null && dayIndex <= scheduledDays.Count && dayIndex > 0)
                 ? scheduledDays[dayIndex - 1]
                 : (currentDayData != null && currentDayData.DayIndex == dayIndex ? currentDayData : CreateDay(dayIndex));
@@ -264,8 +265,8 @@ namespace _Project.Scripts.Core
         
         private void HandleNextDayRequested(GameEvent.NextDayRequestedEvent obj)
         {
-            // Tăng chỉ số ngày và bắt đầu ngày mới với danh sách đơn hàng mẫu
-            if (!CanSaveProgress) return;
+            // Tăng chỉ số ngày và bắt đầu ngày mới với danh sách đơn hàng mẫu (tối đa Ngày 7)
+            if (!CanSaveProgress || currentDayIndex >= 7) return;
             int nextDayIndex = currentDayIndex + 1;
             DayData nextDay = (scheduledDays != null && nextDayIndex <= scheduledDays.Count && nextDayIndex > 0)
                 ? scheduledDays[nextDayIndex - 1]

@@ -42,6 +42,16 @@ namespace _Project.Scripts.Ui
                 canvasGroup = gameObject.AddComponent<CanvasGroup>();
             }
 
+            // Đảm bảo UpgradeShopUI luôn nổi lên trên cùng (Sorting Order 70, đè lên DaySummaryUI là 60)
+            Canvas canvas = GetComponent<Canvas>();
+            if (canvas == null) canvas = gameObject.AddComponent<Canvas>();
+            canvas.overrideSorting = true;
+            canvas.sortingOrder = 70;
+            if (GetComponent<GraphicRaycaster>() == null)
+            {
+                gameObject.AddComponent<GraphicRaycaster>();
+            }
+
             if (btnClose != null)
             {
                 btnClose.onClick.AddListener(CloseShop);
