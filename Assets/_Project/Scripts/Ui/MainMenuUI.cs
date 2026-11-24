@@ -22,6 +22,9 @@ namespace _Project.Scripts.Ui
         [Header("Scene Transition")] [SerializeField]
         private string targetSceneName = "PackingScene";
 
+        [Header("Confirm Exit Dialog")]
+        [SerializeField] private ConfirmPopupUI confirmPopup;
+
         private void Awake()
         {
             #if UNITY_ANDROID || UNITY_IOS
@@ -30,6 +33,19 @@ namespace _Project.Scripts.Ui
                 exitButton.gameObject.SetActive(false);
             }
             #endif
+
+            if (confirmPopup == null)
+            {
+                confirmPopup = FindObjectOfType<ConfirmPopupUI>(true);
+                if (confirmPopup == null)
+                {
+                    var popupObj = GameObject.Find("ConfirmPopup");
+                    if (popupObj != null)
+                    {
+                        confirmPopup = popupObj.GetComponent<ConfirmPopupUI>() ?? popupObj.AddComponent<ConfirmPopupUI>();
+                    }
+                }
+            }
 
             if (startButton != null) startButton.onClick.AddListener(OnStartClicked);
             if (btnHowToPlay != null) btnHowToPlay.onClick.AddListener(OnHowToPlayClicked);
@@ -82,6 +98,11 @@ namespace _Project.Scripts.Ui
         private void OnExitClicked()
         {
             AudioManager.Instance?.PlayButtonClick();
+            ConfirmPopupUI.ShowConfirm(ExecuteExit);
+        }
+
+        private void ExecuteExit()
+        {
             Debug.Log("[MainMenuUI] Đang thoát trò chơi...");
 
             #if UNITY_EDITOR

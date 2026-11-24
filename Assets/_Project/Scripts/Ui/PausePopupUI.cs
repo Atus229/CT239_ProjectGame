@@ -22,6 +22,9 @@ namespace _Project.Scripts.Ui
         [SerializeField] private Button mainMenuButton;  // Nút Về Menu Chính (thay cho Reset Data)
         [SerializeField] private Button quitGameButton;  // Nút Thoát Game (tuỳ chọn)
 
+        [Header("Confirm Exit Dialog")]
+        [SerializeField] private ConfirmPopupUI confirmPopup;
+
         private bool _isSyncing;
         private bool _isPaused;
 
@@ -40,15 +43,28 @@ namespace _Project.Scripts.Ui
                 }
             }
 
+            if (confirmPopup == null)
+            {
+                confirmPopup = FindObjectOfType<ConfirmPopupUI>(true);
+                if (confirmPopup == null)
+                {
+                    var popupObj = GameObject.Find("ConfirmPopup");
+                    if (popupObj != null)
+                    {
+                        confirmPopup = popupObj.GetComponent<ConfirmPopupUI>() ?? popupObj.AddComponent<ConfirmPopupUI>();
+                    }
+                }
+            }
+
             // Gán sự kiện cho các nút
             if (resumeButton != null)
                 resumeButton.onClick.AddListener(ResumeGame);
 
             if (mainMenuButton != null)
-                mainMenuButton.onClick.AddListener(GoToMainMenu);
+                mainMenuButton.onClick.AddListener(OnMainMenuButtonClicked);
 
             if (quitGameButton != null)
-                quitGameButton.onClick.AddListener(QuitGame);
+                quitGameButton.onClick.AddListener(OnQuitGameButtonClicked);
 
             // Gán sự kiện chỉnh âm thanh
             if (bgmSlider != null)
@@ -97,6 +113,8 @@ namespace _Project.Scripts.Ui
 
         public void ResumeGame()
         {
+            if (confirmPopup != null) confirmPopup.Hide();
+            if (ConfirmPopupUI.Instance != null) ConfirmPopupUI.Instance.Hide();
             Time.timeScale = 1f; // KHÔI PHỤC THỜI GIAN GAME
             PlayerPrefs.Save();
             SetVisible(false);
@@ -127,6 +145,18 @@ namespace _Project.Scripts.Ui
             {
                 transform.SetAsLastSibling(); // Luôn nổi lên trên cùng màn hình
             }
+        }
+
+        private void OnMainMenuButtonClicked()
+        {
+            AudioManager.Instance?.PlayButtonClick();
+            ConfirmPopupUI.ShowConfirm(GoToMainMenu);
+        }
+
+        private void OnQuitGameButtonClicked()
+        {
+            AudioManager.Instance?.PlayButtonClick();
+            ConfirmPopupUI.ShowConfirm(QuitGame);
         }
 
         private void GoToMainMenu()
