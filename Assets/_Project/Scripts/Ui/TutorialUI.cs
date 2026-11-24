@@ -20,6 +20,8 @@ namespace _Project.Scripts.Ui
 
         [Header("Thành phần hiển thị nội dung trang")]
         [SerializeField] private Image imgIllustration;
+        [Tooltip("Bỏ tích để ảnh tự động dãn bung vừa khít toàn bộ khung viền (mặc định: false). Tích chọn nếu muốn ép giữ nguyên tỉ lệ gốc.")]
+        [SerializeField] private bool preserveAspect = false;
         [SerializeField] private TextMeshProUGUI txtTitle;
         [SerializeField] private TextMeshProUGUI txtDescription;
         [SerializeField] private TextMeshProUGUI txtPageCounter; // VD: "1 / 4"
@@ -118,7 +120,7 @@ namespace _Project.Scripts.Ui
             if (imgIllustration != null)
             {
                 imgIllustration.sprite = data.stepIllustration;
-                imgIllustration.preserveAspect = true;
+                imgIllustration.preserveAspect = preserveAspect;
                 imgIllustration.enabled = (data.stepIllustration != null);
             }
 

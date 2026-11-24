@@ -948,6 +948,7 @@ MonoBehaviour:
   btnNext: {fileID: 506270201473346884}
   txtNextLabel: {fileID: 9177445970893735335}
   imgIllustration: {fileID: 4075050565254282703}
+  preserveAspect: 0
   txtTitle: {fileID: 6083310047775445208}
   txtDescription: {fileID: 442826585670722112}
   txtPageCounter: {fileID: 3895690550307989910}
@@ -1215,10 +1216,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 8061338438783845964}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 190}
-  m_SizeDelta: {x: -246.99991, y: -999}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 191}
+  m_SizeDelta: {x: 770, y: 430}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5176057322401219777
 CanvasRenderer:

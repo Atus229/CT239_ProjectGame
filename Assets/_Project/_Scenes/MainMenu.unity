@@ -175,6 +175,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: -17.5
       objectReference: {fileID: 0}
+    - target: {fileID: 4075050565254282703, guid: 1922e546a0203494ba9f0f1c2067a98c, type: 3}
+      propertyPath: m_Type
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4414255494904827858, guid: 1922e546a0203494ba9f0f1c2067a98c, type: 3}
       propertyPath: m_AnchorMax.y
       value: 1
@@ -1275,6 +1279,11 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 639319905}
   m_CullTransparentMesh: 1
+--- !u!224 &647572446 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 4203477434286758285, guid: eb7f221b163cc9445ae257f1fae69534, type: 3}
+  m_PrefabInstance: {fileID: 7303136564619892182}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &705435741
 GameObject:
   m_ObjectHideFlags: 0
@@ -1826,7 +1835,7 @@ RectTransform:
   - {fileID: 366134105}
   - {fileID: 12490582}
   - {fileID: 297239403}
-  - {fileID: 7303136564619892182}
+  - {fileID: 647572446}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -1853,6 +1862,7 @@ MonoBehaviour:
   settingsPopup: {fileID: 366134106}
   tutorialPopup: {fileID: 757753111}
   targetSceneName: PackingScene
+  confirmPopup: {fileID: 0}
 --- !u!1001 &1509493697
 PrefabInstance:
   m_ObjectHideFlags: 0
