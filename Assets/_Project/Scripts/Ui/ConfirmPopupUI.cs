@@ -11,6 +11,7 @@ namespace _Project.Scripts.Ui
         [SerializeField] private Button buttonYes;
         [SerializeField] private Button buttonNo;
         [SerializeField] private CanvasGroup canvasGroup;
+        [SerializeField] private int sortingOrder = 110;
 
         private Action _onConfirmAction;
 
@@ -72,6 +73,16 @@ namespace _Project.Scripts.Ui
             {
                 canvasGroup = GetComponent<CanvasGroup>();
                 if (canvasGroup == null) canvasGroup = gameObject.AddComponent<CanvasGroup>();
+            }
+
+            // Đảm bảo ConfirmPopupUI luôn nổi lên trên cùng (Sorting Order 110, đè lên PausePopupUI là 100)
+            Canvas canvas = GetComponent<Canvas>();
+            if (canvas == null) canvas = gameObject.AddComponent<Canvas>();
+            canvas.overrideSorting = true;
+            canvas.sortingOrder = sortingOrder;
+            if (GetComponent<GraphicRaycaster>() == null)
+            {
+                gameObject.AddComponent<GraphicRaycaster>();
             }
 
             // 3. Đảm bảo căn chỉnh RectTransform vừa khít toàn màn hình ở chính giữa

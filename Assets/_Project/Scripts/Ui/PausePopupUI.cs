@@ -12,6 +12,7 @@ namespace _Project.Scripts.Ui
 
         [Header("UI Control")]
         [SerializeField] private CanvasGroup canvasGroup;
+        [SerializeField] private int sortingOrder = 100;
 
         [Header("Audio Sliders (Chỉnh âm lượng khi Pause)")]
         [SerializeField] private Slider bgmSlider;
@@ -41,6 +42,16 @@ namespace _Project.Scripts.Ui
                 {
                     canvasGroup = gameObject.AddComponent<CanvasGroup>();
                 }
+            }
+
+            // Đảm bảo PausePopupUI luôn nổi lên trên cùng (Sorting Order 100, đè lên DaySummaryUI là 60 và UpgradeShopUI là 70)
+            Canvas canvas = GetComponent<Canvas>();
+            if (canvas == null) canvas = gameObject.AddComponent<Canvas>();
+            canvas.overrideSorting = true;
+            canvas.sortingOrder = sortingOrder;
+            if (GetComponent<GraphicRaycaster>() == null)
+            {
+                gameObject.AddComponent<GraphicRaycaster>();
             }
 
             if (confirmPopup == null)

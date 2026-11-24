@@ -175,7 +175,7 @@ namespace _Project.Scripts.Ui
                 txtDailyRevenue.text = $"${dailyRevenue}";
 
             if (txtAverageRating != null)
-                txtAverageRating.text = $"Star {averageRating:0.0}";
+                txtAverageRating.text = $"{averageRating:0.0}";
 
             if (imgUsedTimeFill != null)
                 imgUsedTimeFill.fillAmount = Mathf.Clamp01(usedTimeNormalized);

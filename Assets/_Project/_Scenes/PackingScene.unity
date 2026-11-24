@@ -257,7 +257,6 @@ RectTransform:
   m_Children:
   - {fileID: 31363939}
   - {fileID: 1247433524}
-  - {fileID: 3428378053476099256}
   m_Father: {fileID: 1144663451}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -3046,6 +3045,7 @@ RectTransform:
   - {fileID: 985302986}
   - {fileID: 433882250}
   - {fileID: 1083717846}
+  - {fileID: 3428378053476099256}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -6851,12 +6851,12 @@ RectTransform:
   - {fileID: 7132876924386675215}
   - {fileID: 2083778910792848239}
   - {fileID: 2245115721916836082}
-  m_Father: {fileID: 74036186}
+  m_Father: {fileID: 1144663451}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 1, y: 10}
-  m_SizeDelta: {x: 980, y: 1820}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3477295139939692427
 CanvasRenderer:
@@ -7399,6 +7399,7 @@ MonoBehaviour:
   resumeButton: {fileID: 4821789602461319299}
   mainMenuButton: {fileID: 3953159667744550717}
   quitGameButton: {fileID: 1212486425}
+  confirmPopup: {fileID: 0}
 --- !u!1 &4753867105065351182
 GameObject:
   m_ObjectHideFlags: 0
