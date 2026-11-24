@@ -10,5 +10,7 @@ namespace _Project.Scripts.Data
         public int playerGold;
         public List<int> unlockedUpgradeIDs;
         public List<Player_Upgrade> playerUpgrades;
+        
+        public List<DayHistoryRecord> daysHistory;
     }
 }

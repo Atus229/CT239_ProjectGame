@@ -101,11 +101,18 @@ namespace _Project.Scripts.Core
             if (Instance == this) Instance = null;
         }
 
-        internal void RestoreProgress(int dayIndex, int gold)
+        internal void RestoreProgress(int dayIndex, int gold, List<DayHistoryRecord> history = null)
         {
             PlayerGold = gold;
             bonusTimeBudgetFromUpgrade = UpgradeManager.Instance.GetBonusDayTimeBudget();
             dayIndex = Mathf.Clamp(dayIndex, 1, 7);
+            
+            allDaysHistory.Clear();
+            if (history != null && history.Count > 0)
+            {
+                allDaysHistory.AddRange(history);
+            }
+            
             DayData targetDay = (scheduledDays != null && dayIndex <= scheduledDays.Count && dayIndex > 0)
                 ? scheduledDays[dayIndex - 1]
                 : (currentDayData != null && currentDayData.DayIndex == dayIndex ? currentDayData : CreateDay(dayIndex));

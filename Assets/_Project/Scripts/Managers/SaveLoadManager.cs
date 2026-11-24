@@ -49,7 +49,9 @@ namespace _Project.Scripts.Managers
                 currentDayIndex = Mathf.Clamp(day.CurrentDayIndex + 1, 1, 7),
                 playerGold = day.PlayerGold,
                 unlockedUpgradeIDs = new List<int>(),
-                playerUpgrades = upgrades.ExportPlayerUpgrades()
+                playerUpgrades = upgrades.ExportPlayerUpgrades(),
+                
+                daysHistory = new List<DayHistoryRecord>(day.AllDaysHistory)
             };
             snapshot.playerUpgrades.RemoveAll(record => record.CurrentLevel == 0);
             foreach (var record in snapshot.playerUpgrades)
@@ -109,7 +111,7 @@ namespace _Project.Scripts.Managers
             snapshot.playerUpgrades.RemoveAll(record => upgrades.GetUpgradeData(record.UpgradeID) == null);
             upgrades.ImportPlayerUpgrades(snapshot.playerUpgrades);
             GridManager.Instance?.RestoreVehicleCapacity(upgrades.GetBonusGridColumns());
-            day.RestoreProgress(snapshot.currentDayIndex, snapshot.playerGold);
+            day.RestoreProgress(snapshot.currentDayIndex, snapshot.playerGold, snapshot.daysHistory);
             return true;
         }
         
